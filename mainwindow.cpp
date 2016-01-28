@@ -62,11 +62,13 @@ void MainWindow::on_plusButton_clicked()
 {
     setTemp++;
     ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    emit newTemp(setTemp);
 }
 void MainWindow::on_minusButton_clicked()
 {
     setTemp--;
     ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    emit newTemp(setTemp);
 }
 
 void MainWindow::on_presetButton_1_pressed()

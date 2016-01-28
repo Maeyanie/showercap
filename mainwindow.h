@@ -37,6 +37,9 @@ private slots:
 
     void on_onOffButton_clicked();
 
+signals:
+    void newTemp(qint32 temp);
+
 private:
     Ui::MainWindow *ui;
 
