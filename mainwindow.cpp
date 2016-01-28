@@ -35,7 +35,7 @@ void MainWindow::readSettings()
 {
     QSettings settings("NMSoft", "Digital Shower Prototype");
     setTemp = settings.value("setTemp", 405).toInt(); // Average shower temperature is 105F, which is ~40.5C
-    ui->lcdNumber_2->display(setTemp/10.0);
+    ui->label_2->setText(QString().setNum(setTemp/10.0));
     preset[0] = settings.value("preset0", 405).toInt();
     preset[1] = settings.value("preset1", 405).toInt();
     preset[2] = settings.value("preset2", 405).toInt();
@@ -54,18 +54,18 @@ void MainWindow::writeSettings()
 void MainWindow::update(qreal newTemp)
 {
     curTemp = newTemp;
-    ui->lcdNumber->display(curTemp);
+    ui->label->setText(QString().setNum(curTemp));
 }
 
 void MainWindow::on_plusButton_clicked()
 {
     setTemp++;
-    ui->lcdNumber_2->display(setTemp/10.0);
+    ui->label_2->setText(QString().setNum(setTemp/10.0));
 }
 void MainWindow::on_minusButton_clicked()
 {
     setTemp--;
-    ui->lcdNumber_2->display(setTemp/10.0);
+    ui->label_2->setText(QString().setNum(setTemp/10.0));
 }
 
 void MainWindow::on_presetButton_1_pressed()
@@ -78,7 +78,7 @@ void MainWindow::on_presetButton_1_released()
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
         setTemp = preset[0];
-        ui->lcdNumber_2->display(setTemp/10.0);
+        ui->label_2->setText(QString().setNum(setTemp/10.0));
     } else {
         preset[0] = setTemp;
         writeSettings();
@@ -97,7 +97,7 @@ void MainWindow::on_presetButton_2_released()
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
         setTemp = preset[1];
-        ui->lcdNumber_2->display(setTemp/10.0);
+        ui->label_2->setText(QString().setNum(setTemp/10.0));
     } else {
         preset[1] = setTemp;
         writeSettings();
@@ -116,7 +116,7 @@ void MainWindow::on_presetButton_3_released()
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
         setTemp = preset[2];
-        ui->lcdNumber_2->display(setTemp/10.0);
+        ui->label_2->setText(QString().setNum(setTemp/10.0));
     } else {
         preset[2] = setTemp;
         writeSettings();
@@ -135,7 +135,7 @@ void MainWindow::on_presetButton_4_released()
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
         setTemp = preset[3];
-        ui->lcdNumber_2->display(setTemp/10.0);
+        ui->label_2->setText(QString().setNum(setTemp/10.0));
     } else {
         preset[3] = setTemp;
         writeSettings();

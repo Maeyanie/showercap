@@ -56,25 +56,6 @@
      <string>-</string>
     </property>
    </widget>
-   <widget class="QLCDNumber" name="lcdNumber">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>160</y>
-      <width>640</width>
-      <height>251</height>
-     </rect>
-    </property>
-    <property name="digitCount">
-     <number>5</number>
-    </property>
-    <property name="segmentStyle">
-     <enum>QLCDNumber::Filled</enum>
-    </property>
-    <property name="value" stdset="0">
-     <double>24.100000000000001</double>
-    </property>
-   </widget>
    <widget class="QPushButton" name="presetButton_1">
     <property name="geometry">
      <rect>
@@ -165,17 +146,46 @@
      <string>On/Off</string>
     </property>
    </widget>
-   <widget class="QLCDNumber" name="lcdNumber_2">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>389</x>
-      <y>20</y>
-      <width>251</width>
-      <height>110</height>
+      <x>140</x>
+      <y>160</y>
+      <width>741</width>
+      <height>251</height>
      </rect>
     </property>
-    <property name="value" stdset="0">
-     <double>40.500000000000000</double>
+    <property name="font">
+     <font>
+      <pointsize>200</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>00.0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>206</x>
+      <y>22</y>
+      <width>611</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>72</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>00.0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
