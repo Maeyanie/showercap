@@ -35,6 +35,8 @@ private slots:
     void on_presetButton_4_pressed();
     void on_presetButton_4_released();
 
+    void on_onOffButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 

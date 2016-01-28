@@ -144,3 +144,8 @@ void MainWindow::on_presetButton_4_released()
     delete pressStart;
     pressStart = NULL;
 }
+
+void MainWindow::on_onOffButton_clicked()
+{
+    exit(0);
+}
