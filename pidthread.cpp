@@ -19,7 +19,7 @@ void PIDThread::run()
             line = in.readLine();
             dev.close();
 
-            curTemp = line.mid(29).toDouble();
+            curTemp = ((line.mid(29).toInt()+50)/100)/10.0;
 
             emit update(curTemp);
         }
