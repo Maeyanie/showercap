@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     memset(preset, 0, sizeof(preset));
 
     ui->setupUi(this);
+    QMainWindow::showFullScreen();
 
     readSettings();
 
