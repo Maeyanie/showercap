@@ -52,6 +52,20 @@ void MainWindow::writeSettings()
     settings.setValue("preset2", preset[2]);
     settings.setValue("preset3", preset[3]);
 }
+void MainWindow::loadPreset(qint32 p)
+{
+    lock.lock();
+    setTemp = preset[p];
+    ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    lock.unlock();
+}
+void MainWindow::savePreset(qint32 p)
+{
+    lock.lock();
+    preset[p] = setTemp;
+    writeSettings();
+    lock.unlock();
+}
 qint32 MainWindow::getSetTemp()
 {
     qint32 ret;
@@ -90,16 +104,12 @@ void MainWindow::on_presetButton_1_pressed()
 void MainWindow::on_presetButton_1_released()
 {
     if (!pressStart) return;
-    lock.lock();
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
-        setTemp = preset[0];
-        ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+        loadPreset(0);
     } else {
-        preset[0] = setTemp;
-        writeSettings();
+        savePreset(0);
     }
-    lock.unlock();
     delete pressStart;
     pressStart = NULL;
 }
@@ -111,16 +121,12 @@ void MainWindow::on_presetButton_2_pressed()
 void MainWindow::on_presetButton_2_released()
 {
     if (!pressStart) return;
-    lock.lock();
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
-        setTemp = preset[1];
-        ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+        loadPreset(1);
     } else {
-        preset[1] = setTemp;
-        writeSettings();
+        savePreset(1);
     }
-    lock.unlock();
     delete pressStart;
     pressStart = NULL;
 }
@@ -132,16 +138,12 @@ void MainWindow::on_presetButton_3_pressed()
 void MainWindow::on_presetButton_3_released()
 {
     if (!pressStart) return;
-    lock.lock();
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
-        setTemp = preset[2];
-        ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+        loadPreset(2);
     } else {
-        preset[2] = setTemp;
-        writeSettings();
+        savePreset(2);
     }
-    lock.unlock();
     delete pressStart;
     pressStart = NULL;
 }
@@ -153,16 +155,12 @@ void MainWindow::on_presetButton_4_pressed()
 void MainWindow::on_presetButton_4_released()
 {
     if (!pressStart) return;
-    lock.lock();
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
-        setTemp = preset[3];
-        ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+        loadPreset(3);
     } else {
-        preset[3] = setTemp;
-        writeSettings();
+        savePreset(3);
     }
-    lock.unlock();
     delete pressStart;
     pressStart = NULL;
 }

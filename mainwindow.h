@@ -19,6 +19,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void readSettings();
     void writeSettings();
+    void loadPreset(qint32 preset);
+    void savePreset(qint32 preset);
     qint32 getSetTemp();
     ~MainWindow();
 
