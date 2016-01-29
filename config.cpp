@@ -16,7 +16,7 @@ Config::Config()
     }
 
     QTextStream in(&file);
-    while ((line = in.readLine()) != NULL) {
+    while (!(line = in.readLine()).isNull()) {
         if (line == "" || line.startsWith("#")) continue;
         QStringList parts = line.split(QRegExp("\\s*=\\s*"));
         if (parts.length() != 2) {
@@ -26,8 +26,10 @@ Config::Config()
 
         if (parts.at(0) == "MaxTemp") {
             maxTemp = parts.at(1).toInt();
+            QTextStream(stdout) << "Config: Set MaxTemp to " << maxTemp << endl;
         } else if (parts.at(0) == "SensorFile") {
             sensorFile = parts.at(1);
+            QTextStream(stdout) << "Config: Set SensorFile to '" << sensorFile << "'" << endl;
         }
     }
     file.close();

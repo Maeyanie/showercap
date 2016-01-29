@@ -50,6 +50,8 @@ void PIDThread::run()
             // remember the error for the next time around.
             preError = error;
             last = now;
+        } else {
+            sleep(1);
         }
     }
 }
