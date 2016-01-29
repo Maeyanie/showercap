@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QDateTime>
+#include <QMutex>
 #include "pidthread.h"
 
 namespace Ui {
@@ -18,6 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void readSettings();
     void writeSettings();
+    qint32 getSetTemp();
     ~MainWindow();
 
 private slots:
@@ -43,6 +45,7 @@ signals:
 private:
     Ui::MainWindow *ui;
 
+    QMutex lock;
     qint32 setTemp; // in decidegrees
     qreal curTemp;
     bool onOff;

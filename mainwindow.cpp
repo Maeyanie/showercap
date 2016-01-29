@@ -51,6 +51,14 @@ void MainWindow::writeSettings()
     settings.setValue("preset2", preset[2]);
     settings.setValue("preset3", preset[3]);
 }
+qint32 MainWindow::getSetTemp()
+{
+    qint32 ret;
+    lock.lock();
+    ret = setTemp;
+    lock.unlock();
+    return ret;
+}
 
 void MainWindow::update(qreal newTemp)
 {
@@ -60,15 +68,18 @@ void MainWindow::update(qreal newTemp)
 
 void MainWindow::on_plusButton_clicked()
 {
+    lock.lock();
     setTemp++;
+    if (setTemp > 480) setTemp = 480;
     ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
-    emit newTemp(setTemp);
+    lock.unlock();
 }
 void MainWindow::on_minusButton_clicked()
 {
+    lock.lock();
     setTemp--;
     ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
-    emit newTemp(setTemp);
+    lock.unlock();
 }
 
 void MainWindow::on_presetButton_1_pressed()
@@ -78,6 +89,7 @@ void MainWindow::on_presetButton_1_pressed()
 void MainWindow::on_presetButton_1_released()
 {
     if (!pressStart) return;
+    lock.lock();
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
         setTemp = preset[0];
@@ -86,6 +98,7 @@ void MainWindow::on_presetButton_1_released()
         preset[0] = setTemp;
         writeSettings();
     }
+    lock.unlock();
     delete pressStart;
     pressStart = NULL;
 }
@@ -97,6 +110,7 @@ void MainWindow::on_presetButton_2_pressed()
 void MainWindow::on_presetButton_2_released()
 {
     if (!pressStart) return;
+    lock.lock();
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
         setTemp = preset[1];
@@ -105,6 +119,7 @@ void MainWindow::on_presetButton_2_released()
         preset[1] = setTemp;
         writeSettings();
     }
+    lock.unlock();
     delete pressStart;
     pressStart = NULL;
 }
@@ -116,6 +131,7 @@ void MainWindow::on_presetButton_3_pressed()
 void MainWindow::on_presetButton_3_released()
 {
     if (!pressStart) return;
+    lock.lock();
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
         setTemp = preset[2];
@@ -124,6 +140,7 @@ void MainWindow::on_presetButton_3_released()
         preset[2] = setTemp;
         writeSettings();
     }
+    lock.unlock();
     delete pressStart;
     pressStart = NULL;
 }
@@ -135,6 +152,7 @@ void MainWindow::on_presetButton_4_pressed()
 void MainWindow::on_presetButton_4_released()
 {
     if (!pressStart) return;
+    lock.lock();
     qint64 difftime = pressStart->msecsTo(QDateTime::currentDateTime());
     if (difftime < 1000) {
         setTemp = preset[3];
@@ -143,6 +161,7 @@ void MainWindow::on_presetButton_4_released()
         preset[3] = setTemp;
         writeSettings();
     }
+    lock.unlock();
     delete pressStart;
     pressStart = NULL;
 }
