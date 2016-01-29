@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "pidthread.h"
+#include "config.h"
 #include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -17,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     readSettings();
 
-    pidthread = new PIDThread(this, "/sys/bus/w1/devices/28-000005cd0b3b/w1_slave");
+    pidthread = new PIDThread(this, config.sensorFile);
     connect(pidthread, &PIDThread::update, this, &MainWindow::update);
     connect(pidthread, &PIDThread::finished, pidthread, &QObject::deleteLater);
     pidthread->start();
@@ -70,7 +71,7 @@ void MainWindow::on_plusButton_clicked()
 {
     lock.lock();
     setTemp++;
-    if (setTemp > 480) setTemp = 480;
+    if (setTemp > config.maxTemp) setTemp = config.maxTemp;
     ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
     lock.unlock();
 }

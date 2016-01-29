@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    pidthread.cpp
+    pidthread.cpp \
+    config.cpp
 
 HEADERS  += mainwindow.h \
-    pidthread.h
+    pidthread.h \
+    config.h
 
 FORMS    += mainwindow.ui
