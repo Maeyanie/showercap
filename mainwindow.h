@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QMutex>
+#include <wiringPi.h>
 #include "pidthread.h"
 
 namespace Ui {
@@ -26,6 +27,7 @@ public:
 
 private slots:
     void update(qreal newTemp);
+    void tick();
 
     void on_plusButton_clicked();
     void on_minusButton_clicked();
@@ -41,19 +43,19 @@ private slots:
 
     void on_onOffButton_clicked();
 
-signals:
-    void newTemp(qint32 temp);
-
 private:
     Ui::MainWindow *ui;
 
+    PIDThread* pidthread;
     QMutex lock;
     qint32 setTemp; // in decidegrees
     qreal curTemp;
     bool onOff;
     qint32 preset[4];
+    QDateTime startTime;
+    QTimer* timer;
+
     QDateTime* pressStart;
-    PIDThread* pidthread;
 };
 
 #endif // MAINWINDOW_H

@@ -22,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(pidthread, &PIDThread::update, this, &MainWindow::update);
     connect(pidthread, &PIDThread::finished, pidthread, &QObject::deleteLater);
     pidthread->start();
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
+    timer->start(1000);
 }
 
 MainWindow::~MainWindow()
@@ -37,7 +41,7 @@ void MainWindow::readSettings()
 {
     QSettings settings("NMSoft", "Digital Shower Prototype");
     setTemp = settings.value("setTemp", 405).toInt(); // Average shower temperature is 105F, which is ~40.5C
-    ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
     preset[0] = settings.value("preset0", 405).toInt();
     preset[1] = settings.value("preset1", 405).toInt();
     preset[2] = settings.value("preset2", 405).toInt();
@@ -56,7 +60,7 @@ void MainWindow::loadPreset(qint32 p)
 {
     lock.lock();
     setTemp = preset[p];
-    ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
     lock.unlock();
 }
 void MainWindow::savePreset(qint32 p)
@@ -78,7 +82,15 @@ qint32 MainWindow::getSetTemp()
 void MainWindow::update(qreal newTemp)
 {
     curTemp = newTemp;
-    ui->label->setText(QString().sprintf("%.1lf", curTemp));
+    ui->curTemp->setText(QString().sprintf("%.1lf", curTemp));
+}
+void MainWindow::tick()
+{
+    ui->clock->setText(QTime::currentTime().toString("h:mm A"));
+    if (onOff) {
+        qint64 elapsed = startTime.msecsTo(QDateTime::currentDateTime()) / 1000;
+        ui->timer->setText(QString().sprintf("%lld:%02lld", elapsed/60, elapsed%60));
+    }
 }
 
 void MainWindow::on_plusButton_clicked()
@@ -86,14 +98,14 @@ void MainWindow::on_plusButton_clicked()
     lock.lock();
     setTemp++;
     if (setTemp > config.maxTemp) setTemp = config.maxTemp;
-    ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
     lock.unlock();
 }
 void MainWindow::on_minusButton_clicked()
 {
     lock.lock();
     setTemp--;
-    ui->label_2->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
     lock.unlock();
 }
 
@@ -167,5 +179,14 @@ void MainWindow::on_presetButton_4_released()
 
 void MainWindow::on_onOffButton_clicked()
 {
-    exit(0);
+    if (onOff) {
+        // Turn off
+        onOff = 0;
+        digitalWrite(ONOFFPIN, LOW);
+    } else {
+        // Turn on
+        onOff = 1;
+        startTime = QDateTime::currentDateTime();
+        digitalWrite(ONOFFPIN, HIGH);
+    }
 }
