@@ -14,6 +14,7 @@ public:
 
 extern Config config;
 
-#define ONOFFPIN 24
+#define ONOFFPIN 26
+#define THERMOMETER 0x18
 
 #endif // CONFIG_H

@@ -7,12 +7,14 @@ Config config;
 
 Config::Config()
 {
+    config.maxTemp = 450;
+    config.sensorFile = "";
+
     QFile file("config.txt");
     QString line;
 
     if (!file.open(QIODevice::ReadOnly)) {
         QTextStream(stderr) << "Error: Could not open config.txt" << endl;
-        exit(1);
     }
 
     QTextStream in(&file);

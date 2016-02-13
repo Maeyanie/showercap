@@ -9,16 +9,14 @@
 int main(int argc, char *argv[])
 {
 #if __linux__
-    qint32 uid = getuid();
-    qint32 euid = geteuid();
-    printf("Running as UID %d, EUID %d\n", uid, euid);
+    printf("Running as UID %d, EUID %d\n", getuid(), geteuid());
 #endif
 
     wiringPiSetupGpio();
     pinMode(ONOFFPIN, OUTPUT);
 
 #if __linux__
-    setuid(uid);
+    setuid(getuid());
     printf("Privileges dropped.\n");
 #endif
 
