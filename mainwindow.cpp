@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
-    timer->start(1000);
+    timer->start(100);
 }
 
 MainWindow::~MainWindow()
@@ -82,14 +82,20 @@ qint32 MainWindow::getSetTemp()
 void MainWindow::update(qreal newTemp)
 {
     curTemp = newTemp;
-    ui->curTemp->setText(QString().sprintf("%.1lf", curTemp));
 }
 void MainWindow::tick()
 {
-    ui->clock->setText(QTime::currentTime().toString("h:mm A"));
     if (onOff) {
+        ui->curTemp->setText(QString().sprintf("%.1lf", curTemp));
+
         qint64 elapsed = startTime.msecsTo(QDateTime::currentDateTime()) / 1000;
         ui->timer->setText(QString().sprintf("%lld:%02lld", elapsed/60, elapsed%60));
+
+        ui->clock->setText(QTime::currentTime().toString("h:mm A"));
+    } else {
+        ui->curTemp->setText(QTime::currentTime().toString("h:mm A"));
+        ui->timer->setText("");
+        ui->clock->setText("");
     }
 }
 
@@ -189,4 +195,5 @@ void MainWindow::on_onOffButton_clicked()
         startTime = QDateTime::currentDateTime();
         digitalWrite(ONOFFPIN, HIGH);
     }
+    tick();
 }
