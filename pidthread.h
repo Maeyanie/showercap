@@ -11,13 +11,20 @@ class PIDThread : public QThread
 
     void run() Q_DECL_OVERRIDE;
 
-    QString filename;
-
 signals:
     void update(qreal curTemp);
 
 public:
-    PIDThread(QObject* parent, QString filename);
+    PIDThread(QObject* parent);
 };
+
+void ow_init();
+double ow_read();
+
+void i2csensor_init();
+double i2csensor_read();
+
+void thermistor_init();
+double thermistor_read();
 
 #endif // PIDTHREAD_H

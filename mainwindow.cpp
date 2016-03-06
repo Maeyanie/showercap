@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     readSettings();
 
-    pidthread = new PIDThread(this, config.sensorFile);
+    pidthread = new PIDThread(this);
     connect(pidthread, &PIDThread::update, this, &MainWindow::update);
     connect(pidthread, &PIDThread::finished, pidthread, &QObject::deleteLater);
     pidthread->start();

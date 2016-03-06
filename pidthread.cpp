@@ -2,23 +2,13 @@
 #include "mainwindow.h"
 #include "config.h"
 #include <QTextStream>
-#include <wiringPiI2C.h>
 
-PIDThread::PIDThread(QObject* parent, QString fname) : QThread(parent)
+PIDThread::PIDThread(QObject* parent) : QThread(parent)
 {
-    filename = fname;
 }
 
 void PIDThread::run()
 {
-#ifdef ONEWIRE
-    QFile dev(filename);
-    QString line;
-#else
-    qint32 dev = wiringPiI2CSetup(THERMOMETER);
-    if (dev == -1) { fprintf(stderr, "Error opening I2C sensor: %m\n"); exit(1); }
-    qint32 data;
-#endif
     QDateTime now, last = QDateTime::currentDateTime();
     qreal error, integral, derivative, output;
     qreal setTemp = 40.5, curTemp = 0.0;
@@ -26,29 +16,28 @@ void PIDThread::run()
     qreal Dt = 0.8, Kp = 2.0, Ki = 0.0, Kd = 0.0;
     qreal iMax = 1.0, iMin = -1.0;
 
+    switch (config.sensorType) {
+    case ONEWIRE:
+        ow_init();
+        break;
+    case I2CSENSOR:
+        i2csensor_init();
+        break;
+    case THERMISTOR:
+        thermistor_init();
+    }
+
     while (!QThread::currentThread()->isInterruptionRequested()) {
-#ifdef ONEWIRE
-        if (dev.open(QIODevice::ReadOnly)) {
-            QTextStream in(&dev);
-            in.readLine();
-            line = in.readLine();
-            dev.close();
-
-            curTemp = ((line.mid(29).toInt()+50)/100)/10.0;
-        } else {
-            sleep(1);
-            continue;
+        switch (config.sensorType) {
+        case ONEWIRE:
+            curTemp = ow_read();
+            break;
+        case I2CSENSOR:
+            curTemp = i2csensor_read();
+            break;
+        case THERMISTOR:
+            curTemp = thermistor_read();
         }
-#else
-        data = wiringPiI2CReadReg16(dev, 0x05);
-        data = ((data & 0xFF00) >> 8) | ((data & 0x001F << 8)); // Byteswap and clear flag bits
-
-        if (data & 0x1000) {
-            curTemp = 256 - (data / 16.0);
-        } else {
-            curTemp = data / 16.0;
-        }
-#endif
 
         emit update(curTemp);
 

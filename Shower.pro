@@ -15,11 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     pidthread.cpp \
-    config.cpp
+    config.cpp \
+    thermistor.cpp \
+    onewire.cpp \
+    i2csensor.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \
-    config.h
+    config.h \
+    spline.h
 
 FORMS    += mainwindow.ui
 

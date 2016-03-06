@@ -3,11 +3,18 @@
 
 #include <QString>
 
+enum SensorType {
+    ONEWIRE,
+    I2CSENSOR,
+    THERMISTOR
+};
+
 class Config
 {
 public:
     Config();
 
+    SensorType sensorType;
     QString sensorFile;
     qint32 maxTemp;
 };
@@ -15,6 +22,5 @@ public:
 extern Config config;
 
 #define ONOFFPIN 26
-#define THERMOMETER 0x18
 
 #endif // CONFIG_H
