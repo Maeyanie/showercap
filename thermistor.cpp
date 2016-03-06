@@ -2753,7 +2753,7 @@ double thermistor_read() {
     delay(8);
 
     int ref = bswap16(wiringPiI2CReadReg16(dev, 0x00));
-    int v = 4.096 / (32767.0 / (double)ref);
+    double v = 4.096 / (32767.0 / (double)ref);
     ref *= 2; // ref is read at half the gain of temperature.
     printf("[Thermistor] Ref:  %d (%x) = %lf v\n", ref, ref, v);
 
