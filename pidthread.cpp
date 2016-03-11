@@ -7,6 +7,16 @@ PIDThread::PIDThread(QObject* parent) : QThread(parent)
 {
 }
 
+static qint32 pwmVal(qreal output) {
+    output = abs(output);
+
+    qint32 ret = output * 100;
+
+    if (output > 1024) output = 1024;
+    else if (output < 0) output = 0;
+    return ret;
+}
+
 void PIDThread::run()
 {
     QDateTime now, last = QDateTime::currentDateTime();
@@ -42,6 +52,13 @@ void PIDThread::run()
         emit update(curTemp);
 
         now = QDateTime::currentDateTime();
+
+        if (!(((MainWindow*)this->parent())->isOn())) {
+            last = now;
+            delay(100);
+            continue;
+        }
+
         Dt = last.msecsTo(now);
 
         setTemp = ((MainWindow*)this->parent())->getSetTemp() / 10.0;
@@ -64,6 +81,34 @@ void PIDThread::run()
         preError = error;
         last = now;
 
-        delay(250);
+        if (output > 0.05) {
+            if (digitalRead(FULLHOTPIN)) {
+                digitalWrite(HOTPIN, 0);
+                digitalWrite(COLDPIN, 0);
+                pwmWrite(PWMPIN, 0);
+                emit fullhot();
+            } else {
+                digitalWrite(HOTPIN, 1);
+                digitalWrite(COLDPIN, 0);
+                pwmWrite(PWMPIN, pwmVal(output));
+            }
+        } else if (output < -0.05) {
+            if (digitalRead(FULLCOLDPIN)) {
+                digitalWrite(HOTPIN, 0);
+                digitalWrite(COLDPIN, 0);
+                pwmWrite(PWMPIN, 0);
+                emit fullcold();
+            } else {
+                digitalWrite(HOTPIN, 0);
+                digitalWrite(COLDPIN, 1);
+                pwmWrite(PWMPIN, pwmVal(output));
+            }
+        } else {
+            digitalWrite(HOTPIN, 0);
+            digitalWrite(COLDPIN, 0);
+            pwmWrite(PWMPIN, 0);
+        }
+
+        delay(10);
     }
 }

@@ -143,21 +143,24 @@
      </font>
     </property>
     <property name="text">
-     <string>On/Off</string>
+     <string>On</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="curTemp">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>160</y>
-      <width>741</width>
-      <height>251</height>
+      <x>230</x>
+      <y>280</y>
+      <width>561</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>170</pointsize>
+      <pointsize>100</pointsize>
      </font>
     </property>
     <property name="text">
@@ -171,7 +174,7 @@
     <property name="geometry">
      <rect>
       <x>206</x>
-      <y>22</y>
+      <y>150</y>
       <width>611</width>
       <height>111</height>
      </rect>
@@ -228,6 +231,48 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="showerButton">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>10</y>
+      <width>221</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>36</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Shower</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="bathButton">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>10</y>
+      <width>221</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>36</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Bath</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

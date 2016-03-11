@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setTemp = 0;
     curTemp = 0;
     onOff = 0;
+    bathMode = 0;
     memset(preset, 0, sizeof(preset));
 
     ui->setupUi(this);
@@ -18,8 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     readSettings();
 
+    if (bathMode) ui->bathButton->setChecked(true);
+    else ui->showerButton->setChecked(true);
+
     pidthread = new PIDThread(this);
     connect(pidthread, &PIDThread::update, this, &MainWindow::update);
+    connect(pidthread, &PIDThread::fullhot, this, &MainWindow::fullhot);
+    connect(pidthread, &PIDThread::fullcold, this, &MainWindow::fullcold);
     connect(pidthread, &PIDThread::finished, pidthread, &QObject::deleteLater);
     pidthread->start();
 
@@ -46,6 +52,7 @@ void MainWindow::readSettings()
     preset[1] = settings.value("preset1", 405).toInt();
     preset[2] = settings.value("preset2", 405).toInt();
     preset[3] = settings.value("preset3", 405).toInt();
+    bathMode = settings.value("bathMode", 0).toBool();
 }
 void MainWindow::writeSettings()
 {
@@ -55,6 +62,7 @@ void MainWindow::writeSettings()
     settings.setValue("preset1", preset[1]);
     settings.setValue("preset2", preset[2]);
     settings.setValue("preset3", preset[3]);
+    settings.setValue("bathMode", bathMode);
 }
 void MainWindow::loadPreset(qint32 p)
 {
@@ -78,15 +86,29 @@ qint32 MainWindow::getSetTemp()
     lock.unlock();
     return ret;
 }
+bool MainWindow::isOn()
+{
+    return onOff;
+}
 
 void MainWindow::update(qreal newTemp)
 {
     curTemp = newTemp;
 }
+void MainWindow::fullhot()
+{
+    ui->setTemp->setStyleSheet("QLabel { color: red; }");
+}
+void MainWindow::fullcold()
+{
+    ui->setTemp->setStyleSheet("QLabel { color: blue; }");
+}
 void MainWindow::tick()
 {
     if (onOff) {
         ui->curTemp->setText(QString().sprintf("%.1lf", curTemp));
+
+        ui->setTemp->setStyleSheet("");
 
         qint64 elapsed = startTime.msecsTo(QDateTime::currentDateTime()) / 1000;
         ui->timer->setText(QString().sprintf("%lld:%02lld", elapsed/60, elapsed%60));
@@ -103,7 +125,7 @@ void MainWindow::on_plusButton_clicked()
 {
     lock.lock();
     setTemp++;
-    if (setTemp > config.maxTemp) setTemp = config.maxTemp;
+    if (!bathMode && setTemp > config.maxTemp) setTemp = config.maxTemp;
     ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
     lock.unlock();
 }
@@ -189,11 +211,38 @@ void MainWindow::on_onOffButton_clicked()
         // Turn off
         onOff = 0;
         digitalWrite(ONOFFPIN, LOW);
+        ui->bathButton->show();
+        ui->showerButton->show();
     } else {
         // Turn on
         onOff = 1;
         startTime = QDateTime::currentDateTime();
         digitalWrite(ONOFFPIN, HIGH);
+        ui->bathButton->hide();
+        ui->showerButton->hide();
     }
     tick();
+}
+
+void MainWindow::on_showerButton_clicked()
+{
+    ui->showerButton->setChecked(true);
+    ui->bathButton->setChecked(false);
+    bathMode = false;
+    if (setTemp > config.maxTemp) setTemp = config.maxTemp;
+    digitalWrite(SHOWERPIN, HIGH);
+    writeSettings();
+    delay(100);
+    digitalWrite(SHOWERPIN, LOW);
+}
+
+void MainWindow::on_bathButton_clicked()
+{
+    ui->bathButton->setChecked(true);
+    ui->showerButton->setChecked(false);
+    bathMode = true;
+    digitalWrite(BATHPIN, HIGH);
+    writeSettings();
+    delay(100);
+    digitalWrite(BATHPIN, LOW);
 }

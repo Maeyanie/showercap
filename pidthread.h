@@ -13,6 +13,8 @@ class PIDThread : public QThread
 
 signals:
     void update(qreal curTemp);
+    void fullhot();
+    void fullcold();
 
 public:
     PIDThread(QObject* parent);

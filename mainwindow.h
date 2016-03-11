@@ -23,10 +23,13 @@ public:
     void loadPreset(qint32 preset);
     void savePreset(qint32 preset);
     qint32 getSetTemp();
+    bool isOn();
     ~MainWindow();
 
 private slots:
     void update(qreal newTemp);
+    void fullhot();
+    void fullcold();
     void tick();
 
     void on_plusButton_clicked();
@@ -43,6 +46,10 @@ private slots:
 
     void on_onOffButton_clicked();
 
+    void on_showerButton_clicked();
+
+    void on_bathButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -51,6 +58,7 @@ private:
     qint32 setTemp; // in decidegrees
     qreal curTemp;
     bool onOff;
+    bool bathMode;
     qint32 preset[4];
     QDateTime startTime;
     QTimer* timer;
