@@ -2737,8 +2737,8 @@ void thermistor_init() {
     vector<double> x(count), y(count);
 
     for (int i = 0; i < count; i++) {
-        y[i] = thermistor_curve[i][0];
-        x[i] = thermistor_curve[i][1];
+        y[count-i-1] = thermistor_curve[i][0];
+        x[count-i-1] = thermistor_curve[i][1];
     }
 
     thermistor_spline.set_points(x, y);
