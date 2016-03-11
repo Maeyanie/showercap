@@ -13,19 +13,27 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     pidthread.cpp \
     config.cpp \
     thermistor.cpp \
     onewire.cpp \
-    i2csensor.cpp
+    i2csensor.cpp \
+    showermode.cpp \
+    mainwindow.cpp \
+    bathmode.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     pidthread.h \
     config.h \
-    spline.h
+    spline.h \
+    showermode.h \
+    mainwindow.h \
+    bathmode.h
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    showermode.ui \
+    mainwindow.ui \
+    bathmode.ui
 
 win32: LIBS += -LD:/Devel/build/wiringPiFake/lib/
 win32: INCLUDEPATH += D:/Devel/build/wiringPiFake/include

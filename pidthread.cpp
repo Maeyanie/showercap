@@ -1,5 +1,5 @@
 #include "pidthread.h"
-#include "mainwindow.h"
+#include "showermode.h"
 #include "config.h"
 #include <QTextStream>
 
@@ -44,7 +44,7 @@ void PIDThread::run()
         now = QDateTime::currentDateTime();
         Dt = last.msecsTo(now);
 
-        setTemp = ((MainWindow*)this->parent())->getSetTemp() / 10.0;
+        setTemp = ((ShowerMode*)this->parent())->getSetTemp() / 10.0;
 
         error = (setTemp/10.0) - curTemp;
 

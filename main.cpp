@@ -3,6 +3,7 @@
 #include <unistd.h>
 #endif
 #include "mainwindow.h"
+#include "wiringPi.h"
 #include "config.h"
 #include <QApplication>
 
