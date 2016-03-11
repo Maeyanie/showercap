@@ -14,6 +14,13 @@ int main(int argc, char *argv[])
 
     wiringPiSetupGpio();
     pinMode(ONOFFPIN, OUTPUT);
+    pinMode(BATHPIN, OUTPUT);
+    pinMode(SHOWERPIN, OUTPUT);
+    pinMode(HOTPIN, OUTPUT);
+    pinMode(COLDPIN, OUTPUT);
+    pinMode(PWMPIN, PWM_OUTPUT);
+    pinMode(FULLHOTPIN, INPUT);
+    pinMode(FULLCOLDPIN, INPUT);
 
 #if __linux__
     setuid(getuid());
