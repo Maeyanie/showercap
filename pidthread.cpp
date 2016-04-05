@@ -27,9 +27,6 @@ void PIDThread::run()
     qreal iMax = 1.0, iMin = -1.0;
     bool on = 0;
 
-    Input* input;
-    Output* output;
-
     switch (config.sensorType) {
     case ONEWIRE:
         input = new Input_Onewire();
@@ -87,7 +84,13 @@ void PIDThread::run()
         preError = error;
         last = now;
 
-        output->set(value);
+        switch (output->mod(value)) {
+        case 1:
+            emit fullhot();
+            break;
+        case -1:
+            emit fullcold();
+        }
 
         delay(10);
     }

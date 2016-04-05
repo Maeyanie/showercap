@@ -9,6 +9,9 @@ class PIDThread : public QThread
 {
     Q_OBJECT
 
+    class Input* input;
+    class Output* output;
+
     void run() Q_DECL_OVERRIDE;
 
 signals:
@@ -51,15 +54,16 @@ public:
     virtual ~Output() {};
     virtual void on() =0;
     virtual void off() =0;
-    virtual void set(double) =0;
+    virtual qint8 mod(double) =0;
 };
 class Output_Servo : public Output {
     qint32 dev;
+    double position;
 public:
     Output_Servo();
     void on();
     void off();
-    void set(double);
+    qint8 mod(double);
 };
 
 #endif // PIDTHREAD_H
