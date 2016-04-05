@@ -2,15 +2,14 @@
 #include <QString>
 #include <QTextStream>
 #include <cmath>
-#include <config.h>
+#include "config.h"
+#include "pidthread.h"
 
-static QFile dev;
-
-void ow_init() {
+Input_Onewire::Input_Onewire() {
     dev.setFileName(config.sensorFile);
 }
 
-double ow_read() {
+double Input_Onewire::read() {
     QString line;
 
     if (dev.open(QIODevice::ReadOnly)) {

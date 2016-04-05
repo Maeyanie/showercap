@@ -20,43 +20,49 @@ static qint32 pwmVal(qreal output) {
 void PIDThread::run()
 {
     QDateTime now, last = QDateTime::currentDateTime();
-    qreal error, integral, derivative, output;
+    qreal error, integral, derivative, value;
     qreal setTemp = 40.5, curTemp = 0.0;
     qreal preError = 0.0;
     qreal Dt = 0.8, Kp = 2.0, Ki = 0.0, Kd = 0.0;
     qreal iMax = 1.0, iMin = -1.0;
+    bool on = 0;
+
+    Input* input;
+    Output* output;
 
     switch (config.sensorType) {
     case ONEWIRE:
-        ow_init();
+        input = new Input_Onewire();
         break;
     case I2CSENSOR:
-        i2csensor_init();
+        input = new Input_I2CSensor();
         break;
     case THERMISTOR:
-        thermistor_init();
+        input = new Input_Thermistor();
+    }
+    switch (config.outputType) {
+    case SERVO:
+        output = new Output_Servo();
     }
 
     while (!QThread::currentThread()->isInterruptionRequested()) {
-        switch (config.sensorType) {
-        case ONEWIRE:
-            curTemp = ow_read();
-            break;
-        case I2CSENSOR:
-            curTemp = i2csensor_read();
-            break;
-        case THERMISTOR:
-            curTemp = thermistor_read();
-        }
-
+        curTemp = input->read();
         emit update(curTemp);
 
         now = QDateTime::currentDateTime();
 
         if (!(((MainWindow*)this->parent())->isOn())) {
+            if (on) {
+                output->off();
+                on = 0;
+            }
             last = now;
             delay(100);
             continue;
+        }
+        if (!on) {
+            output->on();
+            on = 1;
         }
 
         Dt = last.msecsTo(now);
@@ -75,40 +81,17 @@ void PIDThread::run()
 
         // calculate how much to drive the output in order to get to the
         // desired setpoint.
-        output = (Kp * error) + (Ki * integral) + (Kd * derivative);
+        value = (Kp * error) + (Ki * integral) + (Kd * derivative);
 
         // remember the error for the next time around.
         preError = error;
         last = now;
 
-        if (output > 0.05) {
-            if (digitalRead(FULLHOTPIN)) {
-                digitalWrite(HOTPIN, 0);
-                digitalWrite(COLDPIN, 0);
-                pwmWrite(PWMPIN, 0);
-                emit fullhot();
-            } else {
-                digitalWrite(HOTPIN, 1);
-                digitalWrite(COLDPIN, 0);
-                pwmWrite(PWMPIN, pwmVal(output));
-            }
-        } else if (output < -0.05) {
-            if (digitalRead(FULLCOLDPIN)) {
-                digitalWrite(HOTPIN, 0);
-                digitalWrite(COLDPIN, 0);
-                pwmWrite(PWMPIN, 0);
-                emit fullcold();
-            } else {
-                digitalWrite(HOTPIN, 0);
-                digitalWrite(COLDPIN, 1);
-                pwmWrite(PWMPIN, pwmVal(output));
-            }
-        } else {
-            digitalWrite(HOTPIN, 0);
-            digitalWrite(COLDPIN, 0);
-            pwmWrite(PWMPIN, 0);
-        }
+        output->set(value);
 
         delay(10);
     }
+
+    delete input;
+    delete output;
 }

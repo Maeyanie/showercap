@@ -2,6 +2,7 @@
 #include <vector>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
+#include "pidthread.h"
 #include "spline.h"
 using namespace std;
 using namespace tk;
@@ -2726,13 +2727,12 @@ static const double thermistor_curve[][2] = {
     { 80.00, 1255.51 }
 };
 static spline thermistor_spline;
-static qint32 dev;
 
 static inline short bswap16(short a) {
     return ((((a) & 0xFF00) >> 8) | (((a) & 0x00FF) << 8));
 }
 
-void thermistor_init() {
+Input_Thermistor::Input_Thermistor() {
     int count = sizeof(thermistor_curve) / sizeof(thermistor_curve[0]);
     vector<double> x(count), y(count);
 
@@ -2747,7 +2747,7 @@ void thermistor_init() {
     if (dev == -1) { fprintf(stderr, "Error opening I2C thermistor ADC: %m\n"); exit(1); }
 }
 
-double thermistor_read() {
+double Input_Thermistor::read() {
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
     // 128 SPS = ~7.8 ms/read
     delay(8);

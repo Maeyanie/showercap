@@ -211,6 +211,7 @@ void MainWindow::on_onOffButton_clicked()
         // Turn off
         onOff = 0;
         digitalWrite(ONOFFPIN, LOW);
+        digitalWrite(STBYPIN, LOW);
         ui->bathButton->show();
         ui->showerButton->show();
     } else {
@@ -218,6 +219,7 @@ void MainWindow::on_onOffButton_clicked()
         onOff = 1;
         startTime = QDateTime::currentDateTime();
         digitalWrite(ONOFFPIN, HIGH);
+        digitalWrite(STBYPIN, HIGH);
         ui->bathButton->hide();
         ui->showerButton->hide();
     }

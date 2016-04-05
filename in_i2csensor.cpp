@@ -1,17 +1,16 @@
 #include <QTypeInfo>
 #include <wiringPiI2C.h>
 #include <cstdio>
+#include "pidthread.h"
 
 #define THERMOMETER 0x18
 
-static qint32 dev;
-
-void i2csensor_init() {
+Input_I2CSensor::Input_I2CSensor() {
     dev = wiringPiI2CSetup(THERMOMETER);
     if (dev == -1) { fprintf(stderr, "Error opening I2C sensor: %m\n"); exit(1); }
 }
 
-double i2csensor_read() {
+double Input_I2CSensor::read() {
     qint32 data;
 
     data = wiringPiI2CReadReg16(dev, 0x05);

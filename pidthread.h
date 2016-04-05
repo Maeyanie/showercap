@@ -20,13 +20,46 @@ public:
     PIDThread(QObject* parent);
 };
 
-void ow_init();
-double ow_read();
 
-void i2csensor_init();
-double i2csensor_read();
+class Input {
+public:
+    virtual ~Input() {};
+    virtual double read() =0;
+};
+class Input_Onewire : public Input {
+    QFile dev;
+public:
+    Input_Onewire();
+    virtual double read();
+};
+class Input_I2CSensor : public Input {
+    qint32 dev;
+public:
+    Input_I2CSensor();
+    virtual double read();
+};
+class Input_Thermistor : public Input {
+    qint32 dev;
+public:
+    Input_Thermistor();
+    virtual double read();
+};
 
-void thermistor_init();
-double thermistor_read();
+
+class Output {
+public:
+    virtual ~Output() {};
+    virtual void on() =0;
+    virtual void off() =0;
+    virtual void set(double) =0;
+};
+class Output_Servo : public Output {
+    qint32 dev;
+public:
+    Output_Servo();
+    void on();
+    void off();
+    void set(double);
+};
 
 #endif // PIDTHREAD_H

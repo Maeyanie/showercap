@@ -16,9 +16,10 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     pidthread.cpp \
     config.cpp \
-    thermistor.cpp \
-    onewire.cpp \
-    i2csensor.cpp
+    in_i2csensor.cpp \
+    in_onewire.cpp \
+    in_thermistor.cpp \
+    out_servo.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \
