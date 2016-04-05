@@ -25,7 +25,7 @@ void Output_Servo::on() {
     wiringPiI2CWriteReg8(dev, 0x08, 0);
     wiringPiI2CWriteReg8(dev, 0x09, 0);
     wiringPiI2CWriteReg8(dev, 0x00, 0b00000001);
-    time(1);
+    delay(1);
 }
 void Output_Servo::off() {
     wiringPiI2CWriteReg8(dev, 0x00, 0b00010001);
@@ -58,6 +58,8 @@ qint8 Output_Servo::mod(double value) {
     // each PWM is 20 ms
     // 1 ms is 204.8 counts
     qint32 t = (qint32)(value * 2.048 + 204.8 + 0.5);
+
+    // Note: Experimentally is all definitely wrong, and needs values in the range of 100 to 900.
 
     wiringPiI2CWriteReg8(dev, 0x08, (t & 0xFF));
     wiringPiI2CWriteReg8(dev, 0x09, (t & 0xFF00) >> 8);
