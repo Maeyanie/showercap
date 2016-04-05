@@ -23,7 +23,7 @@ void PIDThread::run()
     qreal error, integral, derivative, value;
     qreal setTemp = 40.5, curTemp = 0.0;
     qreal preError = 0.0;
-    qreal Dt = 0.8, Kp = 2.0, Ki = 0.0, Kd = 0.0;
+    qreal Dt = 0.0, Kp = 1.0, Ki = 0.0, Kd = 0.0;
     qreal iMax = 1.0, iMin = -1.0;
     bool on = 0;
 
@@ -62,7 +62,7 @@ void PIDThread::run()
             on = 1;
         }
 
-        Dt = last.msecsTo(now);
+        Dt = last.msecsTo(now) / 1000.0;
 
         setTemp = ((MainWindow*)this->parent())->getSetTemp() / 10.0;
 
