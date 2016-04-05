@@ -27,6 +27,15 @@ void Output_Servo::off() {
     wiringPiI2CWriteReg8(dev, 0x00, 0b00010001);
 }
 
+void Output_Servo::set(double value) {
+    position = value;
+
+    qint32 t = (qint32)(value * 2.048 + 204.8 + 0.5);
+
+    wiringPiI2CWriteReg8(dev, 0x08, (t & 0xFF));
+    wiringPiI2CWriteReg8(dev, 0x09, (t & 0xFF00) >> 8);
+}
+
 qint8 Output_Servo::mod(double value) {
     qint8 ret = 0;
     position += value;

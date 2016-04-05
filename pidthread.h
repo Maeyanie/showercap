@@ -54,6 +54,7 @@ public:
     virtual ~Output() {};
     virtual void on() =0;
     virtual void off() =0;
+    virtual void set(double) =0;
     virtual qint8 mod(double) =0;
 };
 class Output_Servo : public Output {
@@ -63,6 +64,7 @@ public:
     Output_Servo();
     void on();
     void off();
+    void set(double);
     qint8 mod(double);
 };
 
