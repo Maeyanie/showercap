@@ -17,11 +17,15 @@ Output_Servo::Output_Servo() {
     wiringPiI2CWriteReg8(dev, 0xFE, 121);
 }
 
+qint32 Output_Servo::time(qint32 t) {
+    return std::max(20 - t, 0);
+}
+
 void Output_Servo::on() {
     wiringPiI2CWriteReg8(dev, 0x08, 0);
     wiringPiI2CWriteReg8(dev, 0x09, 0);
     wiringPiI2CWriteReg8(dev, 0x00, 0b00000001);
-    delay(1);
+    time(1);
 }
 void Output_Servo::off() {
     wiringPiI2CWriteReg8(dev, 0x00, 0b00010001);

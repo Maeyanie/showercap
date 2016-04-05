@@ -28,6 +28,7 @@ class Input {
 public:
     virtual ~Input() {};
     virtual double read() =0;
+    virtual qint32 time() { return 0; }
 };
 class Input_Onewire : public Input {
     QFile dev;
@@ -46,6 +47,7 @@ class Input_Thermistor : public Input {
 public:
     Input_Thermistor();
     virtual double read();
+    virtual qint32 time() { return 16; }
 };
 
 
@@ -56,6 +58,7 @@ public:
     virtual void off() =0;
     virtual void set(double) =0;
     virtual qint8 mod(double) =0;
+    virtual qint32 time(qint32) { return 10; }
 };
 class Output_Servo : public Output {
     qint32 dev;
@@ -66,6 +69,7 @@ public:
     void off();
     void set(double);
     qint8 mod(double);
+    qint32 time(qint32);
 };
 
 #endif // PIDTHREAD_H

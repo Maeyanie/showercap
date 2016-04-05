@@ -92,7 +92,7 @@ void PIDThread::run()
             emit fullcold();
         }
 
-        delay(20);
+        delay(output->time(input->time()));
     }
 
     delete input;
