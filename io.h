@@ -51,6 +51,8 @@ public:
 };
 class Output_Motor : public Output {
 public:
+    qint8 status;
+
     Output_Servo();
     void on();
     void off();

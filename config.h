@@ -36,10 +36,10 @@ extern Config config;
 #define SHOWERPIN 23
 #define BATHPIN 24
 
-#define HOTPIN 12
-#define COLDPIN 16
+#define HOTPIN 13
+#define COLDPIN 19
 #define PWMPIN 18
-#define STBYPIN 12
+#define STBYPIN 6
 
 #define FULLHOTPIN 20
 #define FULLCOLDPIN 21
