@@ -2,11 +2,10 @@
 #include <wiringPiI2C.h>
 #include <cstdio>
 #include "pidthread.h"
-
-#define THERMOMETER 0x18
+#include "config.h"
 
 Input_I2CSensor::Input_I2CSensor() {
-    dev = wiringPiI2CSetup(THERMOMETER);
+    dev = wiringPiI2CSetup(I2C_THERMOMETER);
     if (dev == -1) { fprintf(stderr, "Error opening I2C sensor: %m\n"); exit(1); }
 }
 

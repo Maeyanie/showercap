@@ -2,12 +2,11 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <cstdio>
-#include "pidthread.h"
-
-#define SERVO 0x40
+#include "io.h"
+#include "config.h"
 
 Output_Servo::Output_Servo() {
-    dev = wiringPiI2CSetup(SERVO);
+    dev = wiringPiI2CSetup(I2C_PWM);
     if (dev == -1) { fprintf(stderr, "Error opening I2C servo controller: %m\n"); exit(1); }
 
     position = 50;

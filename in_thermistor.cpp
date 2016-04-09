@@ -3,11 +3,11 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include "pidthread.h"
+#include "config.h"
 #include "spline.h"
 using namespace std;
 using namespace tk;
 
-#define THERMISTOR 0x48
 #define RESISTOR 10000.0
 
 #define ONESHOT 0b1000000000000000
@@ -2743,7 +2743,7 @@ Input_Thermistor::Input_Thermistor() {
 
     thermistor_spline.set_points(x, y);
 
-    dev = wiringPiI2CSetup(THERMISTOR);
+    dev = wiringPiI2CSetup(I2C_ADC);
     if (dev == -1) { fprintf(stderr, "Error opening I2C thermistor ADC: %m\n"); exit(1); }
 }
 

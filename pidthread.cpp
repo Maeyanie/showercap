@@ -40,6 +40,9 @@ void PIDThread::run()
     switch (config.outputType) {
     case SERVO:
         output = new Output_Servo();
+        break;
+    case MOTOR:
+        output = new Output_Motor();
     }
 
     while (!QThread::currentThread()->isInterruptionRequested()) {

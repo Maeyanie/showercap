@@ -10,7 +10,8 @@ enum SensorType {
 };
 
 enum OutputType {
-    SERVO
+    SERVO,
+    MOTOR
 };
 
 class Config
@@ -25,6 +26,10 @@ public:
 };
 
 extern Config config;
+
+#define I2C_THERMOMETER 0x18
+#define I2C_PWM 0x40
+#define I2C_ADC 0x48
 
 #define ONOFFPIN 26
 

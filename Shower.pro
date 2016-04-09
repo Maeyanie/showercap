@@ -19,12 +19,14 @@ SOURCES += main.cpp\
     in_i2csensor.cpp \
     in_onewire.cpp \
     in_thermistor.cpp \
-    out_servo.cpp
+    out_servo.cpp \
+    out_motor.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \
     config.h \
-    spline.h
+    spline.h \
+    io.h
 
 FORMS    += mainwindow.ui
 
