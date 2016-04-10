@@ -9,6 +9,8 @@ using namespace std;
 using namespace tk;
 
 #define RESISTOR 10000.0
+// The reference voltage seems pretty stable at 3.284600 V, and we can save 8 ms by not checking it.
+#define REF 52552.0
 
 #define ONESHOT 0b1000000000000000
 #define MUX0G   0b0100000000000000
@@ -2748,6 +2750,7 @@ Input_Thermistor::Input_Thermistor() {
 }
 
 double Input_Thermistor::read() {
+    /*
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
     // 128 SPS = ~7.8 ms/read
     delay(8);
@@ -2756,6 +2759,7 @@ double Input_Thermistor::read() {
     double v = 4.096 / (32767.0 / (double)ref);
     ref *= 2; // ref is read at half the gain of temperature.
     printf("[Thermistor] Ref:  %d (%x) = %lf v\n", ref, ref, v);
+    */
 
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTMP));
     delay(8);
@@ -2764,7 +2768,7 @@ double Input_Thermistor::read() {
     v = 2.048 / (32767.0 / (double)data);
     printf("[Thermistor] Data: %d (%x) = %lf v\n", data, data, v);
 
-    double R = RESISTOR / ((double)ref/(double)data - 1);
+    double R = RESISTOR / REF / (double)data - 1);
     printf("[Thermistor] Resistance: %lf Ω\n", R);
 
     double t = thermistor_spline(R);
