@@ -2768,7 +2768,7 @@ double Input_Thermistor::read() {
     v = 2.048 / (32767.0 / (double)data);
     printf("[Thermistor] Data: %d (%x) = %lf v\n", data, data, v);
 
-    double R = RESISTOR / REF / (double)data - 1);
+    double R = RESISTOR / (REF / (double)data - 1);
     printf("[Thermistor] Resistance: %lf Ω\n", R);
 
     double t = thermistor_spline(R);
