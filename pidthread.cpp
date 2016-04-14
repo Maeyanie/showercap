@@ -7,16 +7,6 @@ PIDThread::PIDThread(QObject* parent) : QThread(parent)
 {
 }
 
-static qint32 pwmVal(qreal output) {
-    output = abs(output);
-
-    qint32 ret = output * 100;
-
-    if (output > 1024) output = 1024;
-    else if (output < 0) output = 0;
-    return ret;
-}
-
 void PIDThread::run()
 {
     QDateTime now, last = QDateTime::currentDateTime();

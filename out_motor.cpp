@@ -7,12 +7,12 @@
 static Output_Motor* omotor;
 
 void fullhot() {
-    omotor->fullhot = digitalRead(FULLHOTPIN);
-    if (omotor->fullhot) digitalWrite(HOTPIN, 0);
+    omotor->hotflag = digitalRead(FULLHOTPIN);
+    if (omotor->hotflag) digitalWrite(HOTPIN, 0);
 }
 void fullcold() {
-    omotor->fullcold = digitalRead(FULLCOLDPIN);
-    if (omotor->fullcold) digitalWrite(COLDPIN, 0);
+    omotor->coldflag = digitalRead(FULLCOLDPIN);
+    if (omotor->coldflag) digitalWrite(COLDPIN, 0);
 }
 
 Output_Motor::Output_Motor() {
@@ -34,16 +34,21 @@ void Output_Motor::off() {
     digitalWrite(STBYPIN, 0);
 }
 
+void Output_Motor::set(double v) {
+    fprintf(stderr, "Error: Cannot set() on Output_Motor.\n");
+    exit(1);
+}
+
 qint8 Output_Motor::mod(double d) {
     if (d > 1) {
-        if (fullhot) return 1;
+        if (hotflag) return 1;
         d /= 100.0;
         if (d > 1.0) d = 1.0;
         digitalWrite(COLDPIN, 0);
         pwmWrite(PWMPIN, 512 * d);
         digitalWrite(HOTPIN, 1);
     } else if (d < -1) {
-        if (fullcold) return -1;
+        if (coldflag) return -1;
         d /= 100.0;
         if (d < -1.0) d = -1.0;
         digitalWrite(HOTPIN, 0);

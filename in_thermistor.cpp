@@ -2765,7 +2765,7 @@ double Input_Thermistor::read() {
     delay(8);
 
     int data = bswap16(wiringPiI2CReadReg16(dev, 0x00));
-    v = 2.048 / (32767.0 / (double)data);
+    double v = 2.048 / (32767.0 / (double)data);
     printf("[Thermistor] Data: %d (%x) = %lf v\n", data, data, v);
 
     double R = RESISTOR / (REF / (double)data - 1);

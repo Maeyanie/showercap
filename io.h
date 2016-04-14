@@ -1,6 +1,7 @@
 #ifndef IO_H
 #define IO_H
 
+#include <QFile>
 
 class Input {
 public:
@@ -50,14 +51,18 @@ public:
     qint32 time(qint32);
 };
 class Output_Motor : public Output {
-public:
-    qint8 status;
+    bool hotflag, coldflag;
 
-    Output_Servo();
+public:
+    Output_Motor();
     void on();
     void off();
+    void set(double);
     qint8 mod(double);
     qint32 time(qint32);
+
+    friend void fullhot();
+    friend void fullcold();
 };
 
 #endif // IO_H
