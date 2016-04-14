@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "settempdialog.h"
 #include "pidthread.h"
 #include "config.h"
 #include <QSettings>
@@ -86,6 +87,15 @@ qint32 MainWindow::getSetTemp()
     lock.unlock();
     return ret;
 }
+void MainWindow::setSetTemp(qint32 t)
+{
+    lock.lock();
+    setTemp = t;
+    if (!bathMode && setTemp > config.maxTemp) setTemp = config.maxTemp;
+    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    lock.unlock();
+}
+
 bool MainWindow::isOn()
 {
     return onOff;
@@ -247,4 +257,10 @@ void MainWindow::on_bathButton_clicked()
     writeSettings();
     delay(100);
     digitalWrite(BATHPIN, LOW);
+}
+
+void MainWindow::on_setTemp_clicked()
+{
+    SetTempDialog* std = new SetTempDialog(this);
+    std->show();
 }

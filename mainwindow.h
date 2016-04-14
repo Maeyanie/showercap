@@ -23,6 +23,7 @@ public:
     void loadPreset(qint32 preset);
     void savePreset(qint32 preset);
     qint32 getSetTemp();
+    void setSetTemp(qint32 t);
     bool isOn();
     ~MainWindow();
 
@@ -49,6 +50,8 @@ private slots:
     void on_showerButton_clicked();
 
     void on_bathButton_clicked();
+
+    void on_setTemp_clicked();
 
 private:
     Ui::MainWindow *ui;

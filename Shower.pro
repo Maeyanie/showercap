@@ -20,15 +20,18 @@ SOURCES += main.cpp\
     in_onewire.cpp \
     in_thermistor.cpp \
     out_servo.cpp \
-    out_motor.cpp
+    out_motor.cpp \
+    settempdialog.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \
     config.h \
     spline.h \
-    io.h
+    io.h \
+    settempdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    settempdialog.ui
 
 win32: LIBS += -LD:/Devel/build/wiringPiFake/lib/
 win32: INCLUDEPATH += D:/Devel/build/wiringPiFake/include
