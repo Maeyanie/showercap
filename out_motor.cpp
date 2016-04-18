@@ -45,14 +45,14 @@ qint8 Output_Motor::mod(double d) {
         d /= 100.0;
         if (d > 1.0) d = 1.0;
         digitalWrite(COLDPIN, 0);
-        pwmWrite(PWMPIN, 512 * d);
+        pwmWrite(PWMPIN, 768 * d + 256);
         digitalWrite(HOTPIN, 1);
     } else if (d < -1) {
         if (coldflag) return -1;
         d /= 100.0;
         if (d < -1.0) d = -1.0;
         digitalWrite(HOTPIN, 0);
-        pwmWrite(PWMPIN, 512 * -d);
+        pwmWrite(PWMPIN, 768 * -d + 256);
         digitalWrite(COLDPIN, 1);
     } else {
         digitalWrite(HOTPIN, 0);
