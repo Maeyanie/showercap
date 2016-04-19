@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     in_thermistor.cpp \
     out_servo.cpp \
     out_motor.cpp \
-    settempdialog.cpp
+    settempdialog.cpp \
+    out_motor_softpwm.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \

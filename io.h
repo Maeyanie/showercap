@@ -51,6 +51,7 @@ public:
     qint32 time(qint32);
 };
 class Output_Motor : public Output {
+protected:
     bool hotflag, coldflag;
 
 public:
@@ -64,5 +65,14 @@ public:
     friend void fullhot();
     friend void fullcold();
 };
+class Output_Motor_SoftPWM : public Output_Motor {
+public:
+    Output_Motor_SoftPWM();
+    void on();
+    void off();
+    qint8 mod(double);
 
+    friend void sfullhot();
+    friend void sfullcold();
+};
 #endif // IO_H

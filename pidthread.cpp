@@ -33,6 +33,9 @@ void PIDThread::run()
         break;
     case MOTOR:
         output = new Output_Motor();
+        break;
+    case MOTORSOFTPWM:
+        output = new Output_Motor_SoftPWM();
     }
 
     while (!QThread::currentThread()->isInterruptionRequested()) {
