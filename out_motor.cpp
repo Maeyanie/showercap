@@ -17,6 +17,8 @@ void fullcold() {
 
 Output_Motor::Output_Motor() {
     omotor = this;
+    hotflag = digitalRead(FULLHOTPIN);
+    coldflag = digitalRead(FULLCOLDPIN);
     wiringPiISR(FULLHOTPIN, INT_EDGE_BOTH, fullhot);
     wiringPiISR(FULLCOLDPIN, INT_EDGE_BOTH, fullcold);
 }

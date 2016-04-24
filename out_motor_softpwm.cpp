@@ -18,6 +18,8 @@ void sfullcold() {
 
 Output_Motor_SoftPWM::Output_Motor_SoftPWM() {
     omotor = this;
+    hotflag = digitalRead(FULLHOTPIN);
+    coldflag = digitalRead(FULLCOLDPIN);
     wiringPiISR(FULLHOTPIN, INT_EDGE_BOTH, sfullhot);
     wiringPiISR(FULLCOLDPIN, INT_EDGE_BOTH, sfullcold);
 }
