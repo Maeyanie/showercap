@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
     pinMode(PWMPIN, PWM_OUTPUT);
     pinMode(FULLHOTPIN, INPUT);
     pinMode(FULLCOLDPIN, INPUT);
+    pullUpDnControl(FULLHOTPIN, PUD_DOWN);
+    pullUpDnControl(FULLCOLDPIN, PUD_DOWN);
 
 #if __linux__
     setuid(getuid());
