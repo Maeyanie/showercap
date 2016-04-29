@@ -22,18 +22,22 @@ Output_Motor_SoftPWM::Output_Motor_SoftPWM() {
     coldflag = digitalRead(FULLCOLDPIN);
     wiringPiISR(FULLHOTPIN, INT_EDGE_BOTH, sfullhot);
     wiringPiISR(FULLCOLDPIN, INT_EDGE_BOTH, sfullcold);
+    digitalWrite(STBYPIN, 0);
+    digitalWrite(PWMPIN, 0);
 }
 
 void Output_Motor_SoftPWM::on() {
     softPwmCreate(HOTPIN, 0, 100);
     softPwmCreate(COLDPIN, 0, 100);
     digitalWrite(STBYPIN, 1);
+    digitalWrite(PWMPIN, 1);
 }
 void Output_Motor_SoftPWM::off() {
     softPwmWrite(HOTPIN, 0);
     softPwmWrite(COLDPIN, 0);
     softPwmStop(HOTPIN);
     softPwmStop(COLDPIN);
+    digitalWrite(PWMPIN, 0);
     digitalWrite(STBYPIN, 0);
 }
 

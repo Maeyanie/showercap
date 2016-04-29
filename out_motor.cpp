@@ -21,6 +21,10 @@ Output_Motor::Output_Motor() {
     coldflag = digitalRead(FULLCOLDPIN);
     wiringPiISR(FULLHOTPIN, INT_EDGE_BOTH, fullhot);
     wiringPiISR(FULLCOLDPIN, INT_EDGE_BOTH, fullcold);
+    digitalWrite(HOTPIN, 0);
+    digitalWrite(COLDPIN, 0);
+    pwmWrite(PWMPIN, 0);
+    digitalWrite(STBYPIN, 0);
 }
 
 void Output_Motor::on() {

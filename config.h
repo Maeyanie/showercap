@@ -32,15 +32,15 @@ extern Config config;
 #define I2C_PWM 0x40
 #define I2C_ADC 0x48
 
-#define ONOFFPIN 26
+#define ONOFFPIN 25
 
 #define SHOWERPIN 23
 #define BATHPIN 24
 
-#define HOTPIN 13
-#define COLDPIN 19
+#define HOTPIN 20
+#define COLDPIN 21
 #define PWMPIN 18
-#define STBYPIN 6
+#define STBYPIN 12
 
 #define FULLHOTPIN 20
 #define FULLCOLDPIN 21

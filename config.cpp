@@ -11,7 +11,7 @@ Config::Config()
     config.sensorType = THERMISTOR;
     config.sensorFile = "";
     config.maxTemp = 450;
-    config.outputType = MOTORSOFTPWM;
+    config.outputType = MOTOR;
 
     QFile file("config.txt");
     QString line;
