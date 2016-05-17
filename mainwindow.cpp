@@ -221,6 +221,7 @@ void MainWindow::on_onOffButton_clicked()
         // Turn off
         onOff = 0;
         digitalWrite(ONOFFPIN, LOW);
+        delay(10);
         digitalWrite(STBYPIN, LOW);
         ui->bathButton->show();
         ui->showerButton->show();
@@ -228,8 +229,9 @@ void MainWindow::on_onOffButton_clicked()
         // Turn on
         onOff = 1;
         startTime = QDateTime::currentDateTime();
-        digitalWrite(ONOFFPIN, HIGH);
         digitalWrite(STBYPIN, HIGH);
+        delay(10);
+        digitalWrite(ONOFFPIN, HIGH);
         ui->bathButton->hide();
         ui->showerButton->hide();
     }
@@ -242,10 +244,13 @@ void MainWindow::on_showerButton_clicked()
     ui->bathButton->setChecked(false);
     bathMode = false;
     if (setTemp > config.maxTemp) setTemp = config.maxTemp;
+    digitalWrite(SBSTDBYPIN, HIGH);
+    delay(10);
     digitalWrite(SHOWERPIN, HIGH);
     writeSettings();
     delay(100);
     digitalWrite(SHOWERPIN, LOW);
+    digitalWrite(SBSTDBYPIN, LOW);
 }
 
 void MainWindow::on_bathButton_clicked()
@@ -253,10 +258,13 @@ void MainWindow::on_bathButton_clicked()
     ui->bathButton->setChecked(true);
     ui->showerButton->setChecked(false);
     bathMode = true;
+    digitalWrite(SBSTDBYPIN, HIGH);
+    delay(10);
     digitalWrite(BATHPIN, HIGH);
     writeSettings();
     delay(100);
     digitalWrite(BATHPIN, LOW);
+    digitalWrite(SBSTDBYPIN, LOW);
 }
 
 void MainWindow::on_setTemp_clicked()

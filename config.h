@@ -36,6 +36,7 @@ extern Config config;
 
 #define SHOWERPIN 23
 #define BATHPIN 24
+#define SBSTDBYPIN 16
 
 #define HOTPIN 20
 #define COLDPIN 21
