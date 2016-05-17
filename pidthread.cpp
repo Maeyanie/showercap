@@ -10,7 +10,7 @@ PIDThread::PIDThread(QObject* parent) : QThread(parent)
 void PIDThread::run()
 {
     QDateTime now, last = QDateTime::currentDateTime();
-    qreal error, integral, derivative, value;
+    qreal error, integral = 0.0, derivative, value;
     qreal setTemp = 40.5, curTemp = 0.0;
     qreal preError = 0.0;
     qreal Dt = 0.0, Kp = 1.0, Ki = 0.0, Kd = 0.0;
