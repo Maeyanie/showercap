@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
     pullUpDnControl(FULLCOLDPIN, PUD_DOWN);
 	
 	pwmSetMode(PWM_MODE_MS);
-	pwmSetClock(8);
-	pwmSetRange(1024);
+    pwmSetClock(1);
+    pwmSetRange(512);
 
 #if __linux__
     setuid(getuid());

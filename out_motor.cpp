@@ -5,8 +5,9 @@
 #include "config.h"
 
 static Output_Motor* omotor;
-#define MINPWM 640
-#define DEADBAND (1.0/300.0)
+#define CYCLETIME 10
+#define MINPWM 320
+#define DEADBAND (1.0/150.0)
 
 void fullhot() {
     omotor->hotflag = digitalRead(FULLHOTPIN);
@@ -56,10 +57,10 @@ qint8 Output_Motor::mod(double d) {
 
     if (d > 100) d = 100;
     else if (d < -100) d = -100;
+    v = 512 * d;
 
     if (d > DEADBAND) {
         if (hotflag) return 1;
-        v = (1024-MINPWM) * d + MINPWM;
 
         if (dir != 1) {
             digitalWrite(COLDPIN, 0);
@@ -80,7 +81,16 @@ qint8 Output_Motor::mod(double d) {
         }
 
         printf("[Output_Motor] Hot: d=%f v=%d\n", d, v);
-        pwmWrite(PWMPIN, v);
+        if (v < MINPWM) {
+            int t = (double)CYCLETIME * ((double)v/(double)MINPWM);
+            pwmWrite(PWMPIN, MINPWM);
+            delay(t);
+            pwmWrite(PWMPIN, 0);
+            delay(CYCLETIME-t);
+        } else {
+            pwmWrite(PWMPIN, v);
+            delay(CYCLETIME);
+        }
     } else if (d < -DEADBAND) {
         if (coldflag) return -1;
         v = (1024-MINPWM) * -d + MINPWM;
@@ -104,17 +114,27 @@ qint8 Output_Motor::mod(double d) {
         }
 
         printf("[Output_Motor] Cold: d=%f v=%d\n", d, v);
-        pwmWrite(PWMPIN, v);
+        if (v < MINPWM) {
+            int t = (double)CYCLETIME * ((double)v/(double)MINPWM);
+            pwmWrite(PWMPIN, MINPWM);
+            delay(t);
+            pwmWrite(PWMPIN, 0);
+            delay(CYCLETIME-t);
+        } else {
+            pwmWrite(PWMPIN, v);
+            delay(CYCLETIME);
+        }
     } else {
         if (dir != 0) {
             digitalWrite(HOTPIN, 0);
             digitalWrite(COLDPIN, 0);
             pwmWrite(PWMPIN, 0);
         }
+        delay(CYCLETIME);
     }
     return 0;
 }
 
 qint32 Output_Motor::time(qint32 t) {
-    return std::max(20-t, 0);
+    return 0;
 }

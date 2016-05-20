@@ -21,8 +21,7 @@ using namespace tk;
 #define DR128   0b0000000010000000
 #define CMPOFF  0b0000000000000011
 
-#define READREF (ONESHOT|MUX0G|PGA1|MODESS|DR128|CMPOFF)
-#define READTMP (ONESHOT|MUX1G|PGA2|MODESS|DR128|CMPOFF)
+#define READTEMP (ONESHOT|MUX0G|PGA2|MODESS|DR128|CMPOFF)
 
 
 static const double thermistor_curve[][2] = {
@@ -2750,6 +2749,7 @@ Input_Thermistor::Input_Thermistor() {
 }
 
 double Input_Thermistor::read() {
+    static unsigned int last;
     /*
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
     // 128 SPS = ~7.8 ms/read
@@ -2760,19 +2760,26 @@ double Input_Thermistor::read() {
     ref *= 2; // ref is read at half the gain of temperature.
     printf("[Thermistor] Ref:  %d (%x) = %lf v\n", ref, ref, v);
     */
-
-    wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTMP));
-    delay(8);
+    if (millis() - last > 100) {
+        wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
+        last = millis();
+        delay(8);
+    } else if (millis() - last < 8) {
+        delay(8 - (millis() - last));
+    }
 
     int data = bswap16(wiringPiI2CReadReg16(dev, 0x00));
-    double v = 2.048 / (32767.0 / (double)data);
-    printf("[Thermistor] Data: %d (%x) = %lf v\n", data, data, v);
+    //double v = 2.048 / (32767.0 / (double)data);
+    //printf("[Thermistor] Data: %d (%x) = %lf v\n", data, data, v);
 
     double R = RESISTOR / (REF / (double)data - 1);
-    printf("[Thermistor] Resistance: %lf Ω\n", R);
+    //printf("[Thermistor] Resistance: %lf Ω\n", R);
 
     double t = thermistor_spline(R);
-    printf("[Thermistor] Temperature: %lf C\n", t);
+    //printf("[Thermistor] Temperature: %lf C\n", t);
+
+    wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
+    last = millis();
 
     return t;
 }

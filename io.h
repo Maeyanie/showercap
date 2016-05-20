@@ -26,7 +26,6 @@ class Input_Thermistor : public Input {
 public:
     Input_Thermistor();
     virtual double read();
-    virtual qint32 time() { return 16; }
 };
 
 
