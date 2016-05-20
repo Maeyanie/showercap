@@ -43,7 +43,7 @@ extern Config config;
 #define PWMPIN 18
 #define STBYPIN 12
 
-#define FULLHOTPIN 20
-#define FULLCOLDPIN 21
+#define FULLHOTPIN 27
+#define FULLCOLDPIN 22
 
 #endif // CONFIG_H

@@ -5,6 +5,8 @@
 #include "config.h"
 
 static Output_Motor* omotor;
+#define MINPWM 640
+#define DEADBAND (1.0/300.0)
 
 void fullhot() {
     omotor->hotflag = digitalRead(FULLHOTPIN);
@@ -32,8 +34,10 @@ void Output_Motor::on() {
     digitalWrite(COLDPIN, 0);
     pwmWrite(PWMPIN, 0);
     digitalWrite(STBYPIN, 1);
+    digitalWrite(ONOFFPIN, 1);
 }
 void Output_Motor::off() {
+    digitalWrite(ONOFFPIN, 0);
     digitalWrite(HOTPIN, 0);
     digitalWrite(COLDPIN, 0);
     pwmWrite(PWMPIN, 0);
@@ -46,28 +50,71 @@ void Output_Motor::set(double v) {
 }
 
 qint8 Output_Motor::mod(double d) {
-    if (d > 1) {
+    static int dir = 0;
+    static int ease = 0;
+    int v;
+
+    if (d > 100) d = 100;
+    else if (d < -100) d = -100;
+
+    if (d > DEADBAND) {
         if (hotflag) return 1;
-        d /= 100.0;
-        if (d > 1.0) d = 1.0;
-        digitalWrite(COLDPIN, 0);
-        pwmWrite(PWMPIN, 768 * d + 256);
-        digitalWrite(HOTPIN, 1);
-    } else if (d < -1) {
+        v = (1024-MINPWM) * d + MINPWM;
+
+        if (dir != 1) {
+            digitalWrite(COLDPIN, 0);
+            digitalWrite(HOTPIN, 0);
+            dir = 1;
+            ease = -10;
+        }
+        if (ease < 0) {
+            v = 0;
+            ease++;
+        } else if (ease == 0) {
+            digitalWrite(HOTPIN, 1);
+            v = 0;
+            ease++;
+        } else if (ease < 50) {
+            v *= ease / 50.0;
+            ease++;
+        }
+
+        printf("[Output_Motor] Hot: d=%f v=%d\n", d, v);
+        pwmWrite(PWMPIN, v);
+    } else if (d < -DEADBAND) {
         if (coldflag) return -1;
-        d /= 100.0;
-        if (d < -1.0) d = -1.0;
-        digitalWrite(HOTPIN, 0);
-        pwmWrite(PWMPIN, 768 * -d + 256);
-        digitalWrite(COLDPIN, 1);
+        v = (1024-MINPWM) * -d + MINPWM;
+
+        if (dir != -1) {
+            digitalWrite(COLDPIN, 0);
+            digitalWrite(HOTPIN, 0);
+            dir = -1;
+            ease = -10;
+        }
+        if (ease < 0) {
+            v = 0;
+            ease++;
+        } else if (ease == 0) {
+            digitalWrite(COLDPIN, 1);
+            v = 0;
+            ease++;
+        } else if (ease < 50) {
+            v *= ease / 50.0;
+            ease++;
+        }
+
+        printf("[Output_Motor] Cold: d=%f v=%d\n", d, v);
+        pwmWrite(PWMPIN, v);
     } else {
-        digitalWrite(HOTPIN, 0);
-        digitalWrite(COLDPIN, 0);
-        pwmWrite(PWMPIN, 0);
+        if (dir != 0) {
+            digitalWrite(HOTPIN, 0);
+            digitalWrite(COLDPIN, 0);
+            pwmWrite(PWMPIN, 0);
+        }
     }
     return 0;
 }
 
 qint32 Output_Motor::time(qint32 t) {
-    return std::max(10-t, 0);
+    return std::max(20-t, 0);
 }

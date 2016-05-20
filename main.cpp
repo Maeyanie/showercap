@@ -23,6 +23,10 @@ int main(int argc, char *argv[])
     pinMode(FULLCOLDPIN, INPUT);
     pullUpDnControl(FULLHOTPIN, PUD_DOWN);
     pullUpDnControl(FULLCOLDPIN, PUD_DOWN);
+	
+	pwmSetMode(PWM_MODE_MS);
+	pwmSetClock(8);
+	pwmSetRange(1024);
 
 #if __linux__
     setuid(getuid());
