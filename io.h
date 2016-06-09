@@ -74,4 +74,16 @@ public:
     friend void sfullhot();
     friend void sfullcold();
 };
+class Output_Stepper : public Output {
+    void save();
+    double position;
+public:
+    Output_Stepper();
+    void on();
+    void off();
+    void set(double);
+    qint8 mod(double);
+    qint32 time(qint32);
+};
+
 #endif // IO_H

@@ -12,7 +12,8 @@ enum SensorType {
 enum OutputType {
     SERVO,
     MOTOR,
-    MOTORSOFTPWM
+    MOTORSOFTPWM,
+    STEPPER
 };
 
 class Config

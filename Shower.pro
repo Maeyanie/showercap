@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     out_servo.cpp \
     out_motor.cpp \
     settempdialog.cpp \
-    out_motor_softpwm.cpp
+    out_motor_softpwm.cpp \
+    out_stepper.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \

@@ -36,6 +36,9 @@ void PIDThread::run()
         break;
     case MOTORSOFTPWM:
         output = new Output_Motor_SoftPWM();
+        break;
+    case STEPPER:
+        output = new Output_Stepper();
     }
 
     while (!QThread::currentThread()->isInterruptionRequested()) {
