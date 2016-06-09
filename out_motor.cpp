@@ -5,9 +5,9 @@
 #include "config.h"
 
 static Output_Motor* omotor;
-#define CYCLETIME 10
-#define MINPWM 320
-#define DEADBAND (1.0/150.0)
+#define CYCLETIME 50
+#define MINPWM 96
+#define DEADBAND (1.0/250.0)
 
 void fullhot() {
     omotor->hotflag = digitalRead(FULLHOTPIN);
@@ -57,7 +57,7 @@ qint8 Output_Motor::mod(double d) {
 
     if (d > 100) d = 100;
     else if (d < -100) d = -100;
-    v = 512 * d;
+    v = (512 * abs(d)) / 100;
 
     if (d > DEADBAND) {
         if (hotflag) return 1;
@@ -75,25 +75,24 @@ qint8 Output_Motor::mod(double d) {
             digitalWrite(HOTPIN, 1);
             v = 0;
             ease++;
-        } else if (ease < 50) {
-            v *= ease / 50.0;
+        } else if (ease < 20) {
+            v *= ease / 20.0;
             ease++;
         }
 
         printf("[Output_Motor] Hot: d=%f v=%d\n", d, v);
         if (v < MINPWM) {
-            int t = (double)CYCLETIME * ((double)v/(double)MINPWM);
+            int t = (double)(CYCLETIME*1000.0) * ((double)v/(double)MINPWM);
             pwmWrite(PWMPIN, MINPWM);
-            delay(t);
+            delayMicroseconds(t);
             pwmWrite(PWMPIN, 0);
-            delay(CYCLETIME-t);
+            delayMicroseconds((CYCLETIME*1000)-t);
         } else {
             pwmWrite(PWMPIN, v);
             delay(CYCLETIME);
         }
     } else if (d < -DEADBAND) {
         if (coldflag) return -1;
-        v = (1024-MINPWM) * -d + MINPWM;
 
         if (dir != -1) {
             digitalWrite(COLDPIN, 0);
@@ -108,18 +107,18 @@ qint8 Output_Motor::mod(double d) {
             digitalWrite(COLDPIN, 1);
             v = 0;
             ease++;
-        } else if (ease < 50) {
-            v *= ease / 50.0;
+        } else if (ease < 20) {
+            v *= ease / 20.0;
             ease++;
         }
 
         printf("[Output_Motor] Cold: d=%f v=%d\n", d, v);
         if (v < MINPWM) {
-            int t = (double)CYCLETIME * ((double)v/(double)MINPWM);
+            int t = (double)(CYCLETIME*1000.0) * ((double)v/(double)MINPWM);
             pwmWrite(PWMPIN, MINPWM);
-            delay(t);
+            delayMicroseconds(t);
             pwmWrite(PWMPIN, 0);
-            delay(CYCLETIME-t);
+            delayMicroseconds((CYCLETIME*1000)-t);
         } else {
             pwmWrite(PWMPIN, v);
             delay(CYCLETIME);

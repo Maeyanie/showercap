@@ -38,8 +38,8 @@ extern Config config;
 #define BATHPIN 24
 #define SBSTDBYPIN 16
 
-#define HOTPIN 20
-#define COLDPIN 21
+#define HOTPIN 21
+#define COLDPIN 20
 #define PWMPIN 18
 #define STBYPIN 12
 

@@ -170,9 +170,9 @@
    <widget class="QLabel" name="curTemp">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>140</x>
       <y>280</y>
-      <width>581</width>
+      <width>741</width>
       <height>121</height>
      </rect>
     </property>

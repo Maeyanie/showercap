@@ -62,7 +62,7 @@ void PIDThread::run()
 
         setTemp = ((MainWindow*)this->parent())->getSetTemp() / 10.0;
 
-        error = (setTemp/10.0) - curTemp;
+        error = setTemp - curTemp;
 
         // track error over time, scaled to the timer interval
         integral = integral + (error * Dt);
