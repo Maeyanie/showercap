@@ -27,6 +27,7 @@ void Output_Stepper::on() {
     digitalWrite(COLDPIN, 0);
     digitalWrite(STBYPIN, 1);
     digitalWrite(ONOFFPIN, 1);
+    delay(1);
 }
 void Output_Stepper::off() {
     digitalWrite(ONOFFPIN, 0);
