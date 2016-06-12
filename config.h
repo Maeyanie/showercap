@@ -41,6 +41,8 @@ extern Config config;
 
 #define HOTPIN 21
 #define COLDPIN 20
+#define STEPPIN 20
+#define DIRPIN 21
 #define PWMPIN 18
 #define STBYPIN 12
 

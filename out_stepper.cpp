@@ -10,8 +10,8 @@
 #define FULLCOLD 0
 
 Output_Stepper::Output_Stepper() {
-    digitalWrite(HOTPIN, 0);
-    digitalWrite(COLDPIN, 0);
+    digitalWrite(STEPPIN, 0);
+    digitalWrite(DIRPIN, 0);
     digitalWrite(STBYPIN, 0);
 
     QSettings settings("NMSoft", "Digital Shower Prototype");
@@ -23,54 +23,61 @@ void Output_Stepper::save() {
 }
 
 void Output_Stepper::on() {
-    digitalWrite(HOTPIN, 0);
-    digitalWrite(COLDPIN, 0);
+    digitalWrite(STEPPIN, 0);
+    digitalWrite(DIRPIN, 0);
     digitalWrite(STBYPIN, 1);
     digitalWrite(ONOFFPIN, 1);
     delay(1);
 }
 void Output_Stepper::off() {
     digitalWrite(ONOFFPIN, 0);
-    digitalWrite(HOTPIN, 0);
-    digitalWrite(COLDPIN, 0);
+    digitalWrite(STEPPIN, 0);
+    digitalWrite(DIRPIN, 0);
     digitalWrite(STBYPIN, 0);
 }
 
 void Output_Stepper::set(double v) {
     v *= 100.0;
-    while (v >= position+1) {
-        digitalWrite(HOTPIN, 1);
-        delayMicroseconds(10);
-        digitalWrite(HOTPIN, 0);
-        delayMicroseconds(10);
-        position++;
-    }
-    while (v <= position-1) {
-        digitalWrite(COLDPIN, 1);
-        delayMicroseconds(10);
-        digitalWrite(COLDPIN, 0);
-        delayMicroseconds(10);
-        position--;
+    if (v >= position+1) {
+        digitalWrite(DIRPIN, 1);
+        while (v >= position+1) {
+            digitalWrite(STEPPIN, 1);
+            delayMicroseconds(10);
+            digitalWrite(STEPPIN, 0);
+            delayMicroseconds(10);
+            position++;
+        }
+    } else if (v <= position-1) {
+        digitalWrite(DIRPIN, 0);
+        while (v <= position-1) {
+            digitalWrite(STEPPIN, 1);
+            delayMicroseconds(10);
+            digitalWrite(STEPPIN, 0);
+            delayMicroseconds(10);
+            position--;
+        }
     }
     save();
 }
 
 qint8 Output_Stepper::mod(double d) {
-    d *= 100;
+    d *= 100.0;
 
     if (d > 10) {
+        digitalWrite(DIRPIN, 1);
         for (int i = 0; i < d; i++) {
-            digitalWrite(HOTPIN, 1);
+            digitalWrite(STEPPIN, 1);
             delayMicroseconds(10);
-            digitalWrite(HOTPIN, 0);
+            digitalWrite(STEPPIN, 0);
             delayMicroseconds(10);
             position++;
         }
     } else if (d < -10) {
+        digitalWrite(DIRPIN, 0);
         for (int i = 0; i < -d; i++) {
-            digitalWrite(COLDPIN, 1);
+            digitalWrite(STEPPIN, 1);
             delayMicroseconds(10);
-            digitalWrite(COLDPIN, 0);
+            digitalWrite(STEPPIN, 0);
             delayMicroseconds(10);
             position--;
         }
