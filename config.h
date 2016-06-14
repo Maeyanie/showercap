@@ -45,6 +45,7 @@ extern Config config;
 #define DIRPIN 21
 #define PWMPIN 18
 #define STBYPIN 12
+#define ENABLEPIN 16
 
 #define FULLHOTPIN 27
 #define FULLCOLDPIN 22

@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
     pinMode(SHOWERPIN, OUTPUT);
     pinMode(HOTPIN, OUTPUT);
     pinMode(COLDPIN, OUTPUT);
+    pinMode(STBYPIN, OUTPUT);
+    pinMode(ENABLEPIN, OUTPUT);
     pinMode(PWMPIN, PWM_OUTPUT);
     pinMode(FULLHOTPIN, INPUT);
     pinMode(FULLCOLDPIN, INPUT);
