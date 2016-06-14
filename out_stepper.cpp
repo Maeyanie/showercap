@@ -6,6 +6,7 @@
 #include "config.h"
 
 #define CYCLETIME 50
+#define STEPTIME 1000
 #define FULLHOT 10000
 #define FULLCOLD 0
 
@@ -42,18 +43,18 @@ void Output_Stepper::set(double v) {
         digitalWrite(DIRPIN, 1);
         while (v >= position+1) {
             digitalWrite(STEPPIN, 1);
-            delayMicroseconds(10);
+            delayMicroseconds(STEPTIME);
             digitalWrite(STEPPIN, 0);
-            delayMicroseconds(10);
+            delayMicroseconds(STEPTIME);
             position++;
         }
     } else if (v <= position-1) {
         digitalWrite(DIRPIN, 0);
         while (v <= position-1) {
             digitalWrite(STEPPIN, 1);
-            delayMicroseconds(10);
+            delayMicroseconds(STEPTIME);
             digitalWrite(STEPPIN, 0);
-            delayMicroseconds(10);
+            delayMicroseconds(STEPTIME);
             position--;
         }
     }
@@ -63,22 +64,22 @@ void Output_Stepper::set(double v) {
 qint8 Output_Stepper::mod(double d) {
     d *= 100.0;
 
-    if (d > 10) {
+    if (d > 1) {
         digitalWrite(DIRPIN, 1);
         for (int i = 0; i < d; i++) {
             digitalWrite(STEPPIN, 1);
-            delayMicroseconds(10);
+            delayMicroseconds(STEPTIME);
             digitalWrite(STEPPIN, 0);
-            delayMicroseconds(10);
+            delayMicroseconds(STEPTIME);
             position++;
         }
-    } else if (d < -10) {
+    } else if (d < -1) {
         digitalWrite(DIRPIN, 0);
         for (int i = 0; i < -d; i++) {
             digitalWrite(STEPPIN, 1);
-            delayMicroseconds(10);
+            delayMicroseconds(STEPTIME);
             digitalWrite(STEPPIN, 0);
-            delayMicroseconds(10);
+            delayMicroseconds(STEPTIME);
             position--;
         }
     }
