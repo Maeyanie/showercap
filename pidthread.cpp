@@ -15,6 +15,7 @@ void PIDThread::run()
     qreal preError = 0.0;
     qreal Dt = 0.0, Kp = 1.0, Ki = 0.0, Kd = 0.0;
     qreal iMax = 1.0, iMin = -1.0;
+    qint32 d;
     bool on = 0;
 
     switch (config.sensorType) {
@@ -83,6 +84,9 @@ void PIDThread::run()
         preError = error;
         last = now;
 
+	printf("pidthread: setTemp=%f curTemp=%f error=%f p=%f i=%f d=%f\n",
+		setTemp, curTemp, error, Kp*error, Ki*integral, Kp*derivative);
+
         switch (output->mod(value)) {
         case 1:
             emit fullhot();
@@ -91,7 +95,8 @@ void PIDThread::run()
             emit fullcold();
         }
 
-        delay(output->time(input->time()));
+        d = output->time(input->time());
+        if (d > 0) delay(d);
     }
 
     delete input;
