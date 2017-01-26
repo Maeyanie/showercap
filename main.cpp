@@ -18,14 +18,16 @@ int main(int argc, char *argv[])
     pinMode(SHOWERPIN, OUTPUT);
     pinMode(HOTPIN, OUTPUT);
     pinMode(COLDPIN, OUTPUT);
-    pinMode(STBYPIN, OUTPUT);
+    pinMode(STEPPIN, OUTPUT);
+    pinMode(DIRPIN, OUTPUT);
     pinMode(ENABLEPIN, OUTPUT);
+    pinMode(STBYPIN, OUTPUT);
     pinMode(PWMPIN, PWM_OUTPUT);
     pinMode(FULLHOTPIN, INPUT);
     pinMode(FULLCOLDPIN, INPUT);
     pullUpDnControl(FULLHOTPIN, PUD_DOWN);
     pullUpDnControl(FULLCOLDPIN, PUD_DOWN);
-	
+
 	pwmSetMode(PWM_MODE_MS);
     pwmSetClock(1);
     pwmSetRange(512);

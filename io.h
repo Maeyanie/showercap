@@ -5,7 +5,7 @@
 
 class Input {
 public:
-    virtual ~Input() {};
+    virtual ~Input() {}
     virtual double read() =0;
     virtual qint32 time() { return 0; }
 };
@@ -31,9 +31,9 @@ public:
 
 class Output {
 public:
-    virtual ~Output() {};
-    virtual void on() {};
-    virtual void off() {};
+    virtual ~Output() {}
+    virtual void on() {}
+    virtual void off() {}
     virtual void set(double) =0;
     virtual qint8 mod(double) =0;
     virtual qint32 time(qint32) { return 10; }
@@ -77,6 +77,7 @@ public:
 class Output_Stepper : public Output {
     void save();
     double position;
+    int duration;
 public:
     Output_Stepper();
     void on();
