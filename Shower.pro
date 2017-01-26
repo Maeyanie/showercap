@@ -23,17 +23,20 @@ SOURCES += main.cpp\
     out_motor.cpp \
     settempdialog.cpp \
     out_motor_softpwm.cpp \
-    out_stepper.cpp
+    out_stepper.cpp \
+    manualwindow.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \
     config.h \
     spline.h \
     io.h \
-    settempdialog.h
+    settempdialog.h \
+    manualwindow.h
 
 FORMS    += mainwindow.ui \
-    settempdialog.ui
+    settempdialog.ui \
+    manualwindow.ui
 
 win32: LIBS += -LD:/Devel/build/wiringPiFake/lib/
 win32: INCLUDEPATH += D:/Devel/build/wiringPiFake/include

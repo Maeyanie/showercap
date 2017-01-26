@@ -23,8 +23,8 @@
    <widget class="QPushButton" name="plusButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
+      <x>870</x>
+      <y>20</y>
       <width>128</width>
       <height>128</height>
      </rect>
@@ -50,8 +50,8 @@
    <widget class="QPushButton" name="minusButton">
     <property name="geometry">
      <rect>
-      <x>886</x>
-      <y>10</y>
+      <x>20</x>
+      <y>20</y>
       <width>128</width>
       <height>128</height>
      </rect>
@@ -293,6 +293,24 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="manualButton">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>430</y>
+      <width>131</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Manual</string>
+    </property>
+   </widget>
    <zorder>setTemp</zorder>
    <zorder>plusButton</zorder>
    <zorder>minusButton</zorder>
@@ -306,6 +324,7 @@
    <zorder>clock</zorder>
    <zorder>showerButton</zorder>
    <zorder>bathButton</zorder>
+   <zorder>manualButton</zorder>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">

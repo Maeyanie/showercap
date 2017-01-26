@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "settempdialog.h"
+#include "manualwindow.h"
 #include "pidthread.h"
 #include "config.h"
 #include <QSettings>
@@ -271,4 +272,10 @@ void MainWindow::on_setTemp_clicked()
 {
     SetTempDialog* std = new SetTempDialog(this);
     std->show();
+}
+
+void MainWindow::on_manualButton_clicked()
+{
+    ManualWindow* mw = new ManualWindow(this);
+    mw->show();
 }

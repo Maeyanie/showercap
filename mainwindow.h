@@ -53,6 +53,8 @@ private slots:
 
     void on_setTemp_clicked();
 
+    void on_manualButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
