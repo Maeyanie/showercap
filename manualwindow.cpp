@@ -5,7 +5,7 @@
 #include "ui_manualwindow.h"
 
 ManualWindow::ManualWindow(QWidget *parent) :
-    QDialog(parent),
+    QMainWindow(parent),
     ui(new Ui::ManualWindow)
 {
     ui->setupUi(this);

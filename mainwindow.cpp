@@ -278,4 +278,5 @@ void MainWindow::on_manualButton_clicked()
 {
     ManualWindow* mw = new ManualWindow(this);
     mw->show();
+    mw->showFullScreen();
 }

@@ -1,7 +1,7 @@
 #ifndef MANUALWINDOW_H
 #define MANUALWINDOW_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include <QTimer>
 #include "io.h"
 
@@ -9,7 +9,7 @@ namespace Ui {
 class ManualWindow;
 }
 
-class ManualWindow : public QDialog
+class ManualWindow : public QMainWindow
 {
     Q_OBJECT
 
