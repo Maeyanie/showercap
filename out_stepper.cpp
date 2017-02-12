@@ -6,7 +6,7 @@
 #include "config.h"
 
 #define CYCLETIME 100
-#define STEPTIME 2000
+#define STEPTIME 5000
 #define FULLHOT 10000
 #define FULLCOLD 0
 
