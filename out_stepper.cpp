@@ -56,12 +56,12 @@ void Output_Stepper::set(double v) {
             delayMicroseconds(STEPTIME);
             position++;
         }
-	delay(5);
+        delay(5);
         digitalWrite(ENABLEPIN, 1);
-    } else if (v <= position-10) {
+    } else if (v <= position-1) {
         duration = ((position - v) * STEPTIME) / 1000 + 5;
         digitalWrite(DIRPIN, 0);
-	digitalWrite(ENABLEPIN, 1);
+        digitalWrite(ENABLEPIN, 1);
         while (v <= position-1) {
             digitalWrite(STEPPIN, 1);
             delayMicroseconds(STEPTIME);
@@ -69,8 +69,8 @@ void Output_Stepper::set(double v) {
             delayMicroseconds(STEPTIME);
             position--;
         }
-	delay(5);
-	digitalWrite(ENABLEPIN, 1);
+        delay(5);
+        digitalWrite(ENABLEPIN, 1);
     } else {
         duration = 0;
     }
@@ -107,7 +107,7 @@ qint8 Output_Stepper::mod(double d) {
         delay(5);
         digitalWrite(ENABLEPIN, 1);
     } else {
-	duration = 0;
+        duration = 0;
     }
     save();
     return 0;
