@@ -34,7 +34,8 @@ HEADERS  += mainwindow.h \
     settempdialog.h \
     manualwindow.h \
     rt_dc103j2k.h \
-    rt_usp10972.h
+    rt_usp10972.h \
+    rt_ppg102a1.h
 
 FORMS    += mainwindow.ui \
     settempdialog.ui \
