@@ -38,6 +38,8 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication a(argc, argv);
+    a.setStyleSheet("QPushButton:checked { color: white; background: black; }");
+
     MainWindow w;
     w.show();
 

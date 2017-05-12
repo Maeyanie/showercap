@@ -46,3 +46,7 @@ win32: INCLUDEPATH += D:/Devel/build/wiringPiFake/include
 win32: DEPENDPATH += D:/Devel/build/wiringPiFake/include
 
 LIBS += -lwiringPi
+
+DISTFILES +=
+
+RESOURCES +=

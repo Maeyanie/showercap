@@ -226,6 +226,7 @@ void MainWindow::on_onOffButton_clicked()
         digitalWrite(STBYPIN, LOW);
         ui->bathButton->show();
         ui->showerButton->show();
+        ui->manualButton->show();
     } else {
         // Turn on
         onOff = 1;
@@ -235,6 +236,7 @@ void MainWindow::on_onOffButton_clicked()
         digitalWrite(ONOFFPIN, HIGH);
         ui->bathButton->hide();
         ui->showerButton->hide();
+        ui->manualButton->hide();
     }
     tick();
 }
