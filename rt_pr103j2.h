@@ -1,7 +1,7 @@
-#ifndef RT_DC103J2K_H
-#define RT_DC103J2K_H
+#ifndef RT_PR103J2_H
+#define RT_PR103J2_H
 
-// For USSensor DC103J2K (Thermistor R-T curve J)
+// For USSensor PR103J2 (NTC thermistor curve J)
 static const double thermistor_curve[][2] = {
     { -55.00, 963849.00 },
     { -54.95, 960288.78 },
@@ -2706,4 +2706,4 @@ static const double thermistor_curve[][2] = {
     { 80.00, 1255.51 }
 };
 
-#endif // RT_DC103J2K_H
+#endif // RT_PR103J2_H

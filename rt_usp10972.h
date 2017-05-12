@@ -1,7 +1,7 @@
 #ifndef RT_USP10972_H
 #define RT_USP10972_H
 
-// For USSensor USP10972 (NTC, B0/50=3892K)
+// For USSensor USP10972 (NTC thermistor curve J)
 static const double thermistor_curve[][2] = {
 	{ -40, 336479.00 },
 	{ -39, 314904.00 },
