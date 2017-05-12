@@ -32,7 +32,9 @@ HEADERS  += mainwindow.h \
     spline.h \
     io.h \
     settempdialog.h \
-    manualwindow.h
+    manualwindow.h \
+    rt_dc103j2k.h \
+    rt_usp10972.h
 
 FORMS    += mainwindow.ui \
     settempdialog.ui \

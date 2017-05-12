@@ -5,10 +5,11 @@
 #include "io.h"
 #include "config.h"
 
-#define CYCLETIME 100
-#define STEPTIME 5000
+#define CYCLETIME 100 // in ms
+#define STEPTIME 5000 // in us
 #define FULLHOT 10000
 #define FULLCOLD 0
+#define MAXSTEPS ((CYCLETIME-5)/((STEPTIME/1000)*2))
 
 Output_Stepper::Output_Stepper() {
     digitalWrite(STEPPIN, 0);
@@ -78,9 +79,8 @@ void Output_Stepper::set(double v) {
 }
 
 qint8 Output_Stepper::mod(double d) {
-    d *= 10.0;
-
     if (d > 1) {
+        if (d > MAXSTEPS) d = MAXSTEPS;
         duration = (d * STEPTIME) / 1000 + 5;
         digitalWrite(ENABLEPIN, 0);
         digitalWrite(DIRPIN, 1);
@@ -94,6 +94,7 @@ qint8 Output_Stepper::mod(double d) {
         delay(5);
         digitalWrite(ENABLEPIN, 1);
     } else if (d < -1) {
+        if (d < -MAXSTEPS) d = -MAXSTEPS;
         duration = (d * STEPTIME) / 1000 + 5;
         digitalWrite(ENABLEPIN, 0);
         digitalWrite(DIRPIN, 0);
