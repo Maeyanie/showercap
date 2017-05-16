@@ -9,21 +9,27 @@ using namespace std;
 using namespace tk;
 
 #define RESISTOR 10000.0
-#include "rt_usp10972.h"
+//#include "rt_usp10972.h"
+#include "rt_ppg102a1.h"
 
 // The reference voltage seems pretty stable at 3.284600 V, and we can save 8 ms by not checking it.
-#define REF 52552.0
+#define REF (26276.0*4.0)
 
 #define ONESHOT 0b1000000000000000
 #define MUX0G   0b0100000000000000
 #define MUX1G   0b0101000000000000
 #define PGA1    0b0000001000000000
 #define PGA2    0b0000010000000000
+#define PGA3    0b0000100000000000
 #define MODESS  0b0000000100000000
 #define DR128   0b0000000010000000
 #define CMPOFF  0b0000000000000011
 
-#define READTEMP (ONESHOT|MUX0G|PGA2|MODESS|DR128|CMPOFF)
+#define PGA4096V (PGA1)
+#define PGA2048V (PGA2)
+#define PGA1024V (PGA2|PGA1)
+
+#define READTEMP (ONESHOT|MUX0G|PGA1024V|MODESS|DR128|CMPOFF)
 
 static spline thermistor_spline;
 

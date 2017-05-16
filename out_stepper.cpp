@@ -79,6 +79,9 @@ void Output_Stepper::set(double v) {
 }
 
 qint8 Output_Stepper::mod(double d) {
+    static double frac = 0.0;
+    d += frac;
+
     if (d > 1) {
         if (d > MAXSTEPS) d = MAXSTEPS;
         duration = (d * STEPTIME) / 1000 + 5;
@@ -108,6 +111,7 @@ qint8 Output_Stepper::mod(double d) {
         delay(5);
         digitalWrite(ENABLEPIN, 1);
     } else {
+        if (d > 0.1 || d < -0.1) frac = d;
         duration = 0;
     }
     save();
