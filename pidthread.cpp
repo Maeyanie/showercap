@@ -13,7 +13,7 @@ void PIDThread::run()
     qreal error, integral = 0.0, derivative, value;
     qreal setTemp = 40.5, curTemp = 0.0;
     qreal preError = 0.0;
-    qreal Dt = 0.0, Kp = 2.0, Ki = 0.0, Kd = 0.0;
+    qreal Dt = 0.0, Kp = 5.0, Ki = 0.0, Kd = 0.0;
     qreal iMax = 1.0, iMin = -1.0;
     qint32 d;
     bool on = 0;
