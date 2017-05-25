@@ -9,11 +9,11 @@ PIDThread::PIDThread(QObject* parent) : QThread(parent)
 
 void PIDThread::run()
 {
-    QDateTime now, last = QDateTime::currentDateTime();
+    QDateTime start, now, last = QDateTime::currentDateTime();
     qreal error, integral = 0.0, derivative, value;
     qreal setTemp = 40.5, curTemp = 0.0;
     qreal preError = 0.0;
-    qreal Dt = 0.0, Kp = 5.0, Ki = 0.0, Kd = 0.0;
+    qreal Dt = 0.0, Kp = 5.0, Ki = 0.0, Kd = 0.1;
     qreal iMax = 1.0, iMin = -1.0;
     qint32 d;
     bool on = 0;
@@ -58,8 +58,15 @@ void PIDThread::run()
             continue;
         }
         if (!on) {
+            start = QDateTime::currentDateTime();
             output->on();
             on = 1;
+        }
+
+        if (start.msecsTo(now) < 10000) { // 10-second warmup time
+            last = now;
+            delay(100);
+            continue;
         }
 
         Dt = last.msecsTo(now) / 1000.0;

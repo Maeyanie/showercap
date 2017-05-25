@@ -82,7 +82,7 @@ qint8 Output_Stepper::mod(double d) {
     static double frac = 0.0;
     d += frac;
 
-    if (d > 1) {
+    if (d > 1.0) {
         if (d > MAXSTEPS) d = MAXSTEPS;
         duration = (d * STEPTIME) / 1000 + 5;
         digitalWrite(ENABLEPIN, 0);
@@ -96,9 +96,10 @@ qint8 Output_Stepper::mod(double d) {
         }
         delay(5);
         digitalWrite(ENABLEPIN, 1);
-    } else if (d < -1) {
+        frac = 0.0;
+    } else if (d < -1.0) {
         if (d < -MAXSTEPS) d = -MAXSTEPS;
-        duration = (d * STEPTIME) / 1000 + 5;
+        duration = (-d * STEPTIME) / 1000 + 5;
         digitalWrite(ENABLEPIN, 0);
         digitalWrite(DIRPIN, 0);
         for (int i = 0; i < -d; i++) {
@@ -110,8 +111,9 @@ qint8 Output_Stepper::mod(double d) {
         }
         delay(5);
         digitalWrite(ENABLEPIN, 1);
+        frac = 0.0;
     } else {
-        if (d > 0.1 || d < -0.1) frac = d;
+        if (d > 0.01 || d < -0.01) frac = d;
         duration = 0;
     }
     save();
