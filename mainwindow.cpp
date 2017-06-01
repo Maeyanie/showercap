@@ -21,8 +21,37 @@ MainWindow::MainWindow(QWidget *parent) :
 
     readSettings();
 
-    if (bathMode) ui->bathButton->setChecked(true);
-    else ui->showerButton->setChecked(true);
+    switch (config.sensorType) {
+    case ONEWIRE:
+        input = new Input_Onewire();
+        break;
+    case I2CSENSOR:
+        input = new Input_I2CSensor();
+        break;
+    case THERMISTOR:
+        input = new Input_Thermistor();
+    }
+    switch (config.outputType) {
+    case SERVO:
+        output = new Output_Servo();
+        break;
+    case MOTOR:
+        output = new Output_Motor();
+        break;
+    case MOTORSOFTPWM:
+        output = new Output_Motor_SoftPWM();
+        break;
+    case STEPPER:
+        output = new Output_Stepper();
+    }
+
+    if (bathMode) {
+        ui->bathButton->setChecked(true);
+        output->bath();
+    } else {
+        ui->showerButton->setChecked(true);
+        output->shower();
+    }
 
     pidthread = new PIDThread(this);
     connect(pidthread, &PIDThread::update, this, &MainWindow::update);
@@ -247,13 +276,7 @@ void MainWindow::on_showerButton_clicked()
     ui->bathButton->setChecked(false);
     bathMode = false;
     if (setTemp > config.maxTemp) setTemp = config.maxTemp;
-    digitalWrite(SBSTDBYPIN, HIGH);
-    delay(10);
-    digitalWrite(SHOWERPIN, HIGH);
-    writeSettings();
-    delay(100);
-    digitalWrite(SHOWERPIN, LOW);
-    digitalWrite(SBSTDBYPIN, LOW);
+
 }
 
 void MainWindow::on_bathButton_clicked()
@@ -261,13 +284,7 @@ void MainWindow::on_bathButton_clicked()
     ui->bathButton->setChecked(true);
     ui->showerButton->setChecked(false);
     bathMode = true;
-    digitalWrite(SBSTDBYPIN, HIGH);
-    delay(10);
-    digitalWrite(BATHPIN, HIGH);
-    writeSettings();
-    delay(100);
-    digitalWrite(BATHPIN, LOW);
-    digitalWrite(SBSTDBYPIN, LOW);
+
 }
 
 void MainWindow::on_setTemp_clicked()

@@ -15,9 +15,14 @@ Output_Stepper::Output_Stepper() {
     digitalWrite(STEPPIN, 0);
     digitalWrite(DIRPIN, 0);
     digitalWrite(STBYPIN, 0);
+    digitalWrite(ONOFFPIN, 0);
+    digitalWrite(SHOWERPIN, 0);
+    digitalWrite(BATHPIN, 0);
 
     position = 0;
     duration = 0;
+    onOff = 0;
+    mode = 1;
 //    QSettings settings("NMSoft", "Digital Shower Prototype");
 //    position = settings.value("stepperpos", 0).toInt();
 
@@ -33,15 +38,48 @@ void Output_Stepper::on() {
     digitalWrite(DIRPIN, 0);
     digitalWrite(ENABLEPIN, 1);
     digitalWrite(STBYPIN, 1);
+
+    if (mode == 1) {
+        digitalWrite(SHOWERPIN, 1);
+    } else {
+        digitalWrite(BATHPIN, 1);
+    }
+    onOff = 1;
+
     digitalWrite(ONOFFPIN, 1);
-    delay(1);
+    delay(50);
+    digitalWrite(ONOFFPIN, 0);
 }
 void Output_Stepper::off() {
+    onOff = 0;
     digitalWrite(ONOFFPIN, 0);
     digitalWrite(STEPPIN, 0);
     digitalWrite(DIRPIN, 0);
     digitalWrite(ENABLEPIN, 1);
     digitalWrite(STBYPIN, 0);
+    digitalWrite(SHOWERPIN, 0);
+    digitalWrite(BATHPIN, 0);
+}
+
+void Output_Stepper::shower() {
+    if (onOff) {
+        digitalWrite(BATHPIN, 0);
+        digitalWrite(SHOWERPIN, 1);
+        digitalWrite(ONOFFPIN, 1);
+        delay(50);
+        digitalWrite(ONOFFPIN, 0);
+    }
+    mode = 1;
+}
+void Output_Stepper::bath() {
+    if (onOff) {
+        digitalWrite(SHOWERPIN, 0);
+        digitalWrite(BATHPIN, 1);
+        digitalWrite(ONOFFPIN, 1);
+        delay(50);
+        digitalWrite(ONOFFPIN, 0);
+    }
+    mode = 0;
 }
 
 void Output_Stepper::set(double v) {

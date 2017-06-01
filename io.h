@@ -34,6 +34,8 @@ public:
     virtual ~Output() {}
     virtual void on() {}
     virtual void off() {}
+    virtual void shower() {}
+    virtual void bath() {}
     virtual void set(double) =0;
     virtual qint8 mod(double) =0;
     virtual qint32 time(qint32) { return 10; }
@@ -49,6 +51,7 @@ public:
     qint8 mod(double);
     qint32 time(qint32);
 };
+
 class Output_Motor : public Output {
 protected:
     bool hotflag, coldflag;
@@ -74,14 +77,20 @@ public:
     friend void sfullhot();
     friend void sfullcold();
 };
+
 class Output_Stepper : public Output {
     void save();
     double position;
     int duration;
+    bool onOff;
+    bool mode;
+
 public:
     Output_Stepper();
     void on();
     void off();
+    void shower();
+    void bath();
     void set(double);
     qint8 mod(double);
     qint32 time(qint32);

@@ -9,6 +9,7 @@ PIDThread::PIDThread(QObject* parent) : QThread(parent)
 
 void PIDThread::run()
 {
+    MainWindow* mw = (MainWindow*)this->parent();
     QDateTime start, now, last = QDateTime::currentDateTime();
     qreal error, integral = 0.0, derivative, value;
     qreal setTemp = 40.5, curTemp = 0.0;
@@ -18,29 +19,8 @@ void PIDThread::run()
     qint32 d;
     bool on = 0;
 
-    switch (config.sensorType) {
-    case ONEWIRE:
-        input = new Input_Onewire();
-        break;
-    case I2CSENSOR:
-        input = new Input_I2CSensor();
-        break;
-    case THERMISTOR:
-        input = new Input_Thermistor();
-    }
-    switch (config.outputType) {
-    case SERVO:
-        output = new Output_Servo();
-        break;
-    case MOTOR:
-        output = new Output_Motor();
-        break;
-    case MOTORSOFTPWM:
-        output = new Output_Motor_SoftPWM();
-        break;
-    case STEPPER:
-        output = new Output_Stepper();
-    }
+    input = mw->input;
+    output = mw->output;
 
     while (!QThread::currentThread()->isInterruptionRequested()) {
         curTemp = input->read();
@@ -48,7 +28,7 @@ void PIDThread::run()
 
         now = QDateTime::currentDateTime();
 
-        if (!(((MainWindow*)this->parent())->isOn())) {
+        if (!mw->isOn()) {
             if (on) {
                 output->off();
                 on = 0;

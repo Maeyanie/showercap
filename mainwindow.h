@@ -25,7 +25,12 @@ public:
     qint32 getSetTemp();
     void setSetTemp(qint32 t);
     bool isOn();
+    bool isShower() { return !bathMode; }
+    bool isBath() { return bathMode; }
     ~MainWindow();
+
+    class Input* input;
+    class Output* output;
 
 private slots:
     void update(qreal newTemp);
