@@ -27,6 +27,7 @@ void PIDThread::run()
         emit update(curTemp);
 
         now = QDateTime::currentDateTime();
+        setTemp = ((MainWindow*)this->parent())->getSetTemp() / 10.0;
 
         if (!mw->isOn()) {
             if (on) {
@@ -43,16 +44,13 @@ void PIDThread::run()
             on = 1;
         }
 
-        if (start.msecsTo(now) < 10000) { // 10-second warmup time
+        if (start.msecsTo(now) < 10000 && curTemp < setTemp) { // 10-second warmup time
             last = now;
             delay(100);
             continue;
         }
 
         Dt = last.msecsTo(now) / 1000.0;
-
-        setTemp = ((MainWindow*)this->parent())->getSetTemp() / 10.0;
-
         error = setTemp - curTemp;
 
         // track error over time, scaled to the timer interval
