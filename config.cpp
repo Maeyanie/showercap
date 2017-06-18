@@ -12,6 +12,9 @@ Config::Config()
     config.sensorFile = "";
     config.maxTemp = 450;
     config.outputType = STEPPER;
+    config.Kp = 5.0;
+    config.Ki = 0.0;
+    config.Kd = 0.1;
 
     QFile file("config.txt");
     QString line;
@@ -50,6 +53,15 @@ Config::Config()
             } else {
                 QTextStream(stderr) << "[Config] Warning: Unrecognized sensorType '" << type << "'" << endl;
             }
+        } else if (parts.at(0) == "P") {
+            config.Kp = parts.at(1).toDouble();
+            QTextStream(stdout) << "[Config] Set P to " << config.Kp << endl;
+        } else if (parts.at(0) == "I") {
+            config.Ki = parts.at(1).toDouble();
+            QTextStream(stdout) << "[Config] Set I to " << config.Ki << endl;
+        } else if (parts.at(0) == "D") {
+            config.Kd = parts.at(1).toDouble();
+            QTextStream(stdout) << "[Config] Set D to " << config.Kd << endl;
         }
     }
     file.close();
