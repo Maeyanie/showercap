@@ -50,7 +50,7 @@ extern Config config;
 #define MS2PIN 27
 #define MS3PIN 22
 
-#define FULLHOTPIN 27
-#define FULLCOLDPIN 22
+#define FULLHOTPIN 5
+#define FULLCOLDPIN 6
 
 #endif // CONFIG_H
