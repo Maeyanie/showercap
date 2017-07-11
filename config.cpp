@@ -5,6 +5,10 @@
 
 Config config;
 
+#ifndef ETCDIR
+#define ETCDIR "."
+#endif
+
 Config::Config()
 {
     // Defaults
@@ -16,11 +20,11 @@ Config::Config()
     config.Ki = 0.0;
     config.Kd = 0.1;
 
-    QFile file("config.txt");
+    QFile file(ETCDIR"/showercap.conf");
     QString line;
 
     if (!file.open(QIODevice::ReadOnly)) {
-        QTextStream(stderr) << "[Config] Error: Could not open config.txt" << endl;
+        QTextStream(stderr) << "[Config] Warning: Could not open "ETCDIR"/showercap.conf. Using defaults." << endl;
         return;
     }
 
