@@ -22,7 +22,12 @@ int main(int argc, char *argv[])
     pinMode(DIRPIN, OUTPUT);
     pinMode(ENABLEPIN, OUTPUT);
     pinMode(STBYPIN, OUTPUT);
+    pinMode(MS1PIN, OUTPUT);
+    pinMode(MS2PIN, OUTPUT);
+    pinMode(MS3PIN, OUTPUT);
+
     pinMode(PWMPIN, PWM_OUTPUT);
+
     pinMode(FULLHOTPIN, INPUT);
     pinMode(FULLCOLDPIN, INPUT);
     pullUpDnControl(FULLHOTPIN, PUD_DOWN);

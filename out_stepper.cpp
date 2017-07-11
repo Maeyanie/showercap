@@ -18,6 +18,9 @@ Output_Stepper::Output_Stepper() {
     digitalWrite(ONOFFPIN, 0);
     digitalWrite(SHOWERPIN, 0);
     digitalWrite(BATHPIN, 0);
+    digitalWrite(MS1PIN, 0);
+    digitalWrite(MS2PIN, 0);
+    digitalWrite(MS3PIN, 0);
 
     position = 0;
     duration = 0;
@@ -47,8 +50,8 @@ void Output_Stepper::on() {
     onOff = 1;
 
     digitalWrite(ONOFFPIN, 1);
-    delay(50);
-    digitalWrite(ONOFFPIN, 0);
+    //delay(100);
+    //digitalWrite(ONOFFPIN, 0);
 }
 void Output_Stepper::off() {
     onOff = 0;
@@ -66,8 +69,8 @@ void Output_Stepper::shower() {
         digitalWrite(BATHPIN, 0);
         digitalWrite(SHOWERPIN, 1);
         digitalWrite(ONOFFPIN, 1);
-        delay(50);
-        digitalWrite(ONOFFPIN, 0);
+        //delay(100);
+        //digitalWrite(ONOFFPIN, 0);
     }
     mode = 1;
 }
@@ -76,8 +79,8 @@ void Output_Stepper::bath() {
         digitalWrite(SHOWERPIN, 0);
         digitalWrite(BATHPIN, 1);
         digitalWrite(ONOFFPIN, 1);
-        delay(50);
-        digitalWrite(ONOFFPIN, 0);
+        //delay(100);
+        //digitalWrite(ONOFFPIN, 0);
     }
     mode = 0;
 }
