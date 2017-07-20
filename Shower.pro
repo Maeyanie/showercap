@@ -24,7 +24,10 @@ SOURCES += main.cpp\
     settempdialog.cpp \
     out_motor_softpwm.cpp \
     out_stepper.cpp \
-    manualwindow.cpp
+    tab_shower.cpp \
+    tab_bath.cpp \
+    tab_manual.cpp \
+    qpresetbutton.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \
@@ -32,14 +35,13 @@ HEADERS  += mainwindow.h \
     spline.h \
     io.h \
     settempdialog.h \
-    manualwindow.h \
     rt_usp10972.h \
     rt_ppg102a1.h \
-    rt_pr103j2.h
+    rt_pr103j2.h \
+    qpresetbutton.h
 
 FORMS    += mainwindow.ui \
-    settempdialog.ui \
-    manualwindow.ui
+    settempdialog.ui
 
 win32: LIBS += -LD:/Devel/build/wiringPiFake/lib/
 win32: INCLUDEPATH += D:/Devel/build/wiringPiFake/include

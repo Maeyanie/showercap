@@ -5,8 +5,12 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QMutex>
+#include <QPushButton>
 #include <wiringPi.h>
 #include "pidthread.h"
+#include "qpresetbutton.h"
+
+#define PRESETCOUNT 4
 
 namespace Ui {
     class MainWindow;
@@ -17,17 +21,20 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    static MainWindow* instance();
+
     explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
     void readSettings();
     void writeSettings();
-    void loadPreset(qint32 preset);
-    void savePreset(qint32 preset);
+    void loadPreset(qint32 id);
+    void savePreset(qint32 id);
     qint32 getSetTemp();
     void setSetTemp(qint32 t);
+    void setMode(qint32 mode);
     bool isOn();
     bool isShower() { return !bathMode; }
     bool isBath() { return bathMode; }
-    ~MainWindow();
 
     class Input* input;
     class Output* output;
@@ -37,43 +44,51 @@ private slots:
     void fullhot();
     void fullcold();
     void tick();
+    void modSetTemp(qint32);
+    void on_tabWidget_currentChanged(int index);
 
+    // Home tab
+    void tickHome();
+
+    // Shower tab
+    void tickShower();
     void on_plusButton_clicked();
     void on_minusButton_clicked();
-
-    void on_presetButton_1_pressed();
-    void on_presetButton_1_released();
-    void on_presetButton_2_pressed();
-    void on_presetButton_2_released();
-    void on_presetButton_3_pressed();
-    void on_presetButton_3_released();
-    void on_presetButton_4_pressed();
-    void on_presetButton_4_released();
-
     void on_onOffButton_clicked();
-
-    void on_showerButton_clicked();
-
-    void on_bathButton_clicked();
-
     void on_setTemp_clicked();
 
-    void on_manualButton_clicked();
+    // Bath tab
+    void tickBath();
+    void on_plusButtonBath_clicked();
+    void on_minusButtonBath_clicked();
+    void on_onOffButtonBath_clicked();
+    void on_setTempBath_clicked();
+
+    // Manual tab
+    void tickManual();
+    void on_plusButtonManual_clicked();
+    void on_minusButtonManual_clicked();
+    void on_onOffButtonManual_clicked();
+    void on_stepUpButton_clicked();
+    void on_stepDownButton_clicked();
+    void on_showerButton_clicked();
+    void on_bathButton_clicked();
+
 
 private:
     Ui::MainWindow *ui;
 
     PIDThread* pidthread;
     QMutex lock;
+    QPresetButton* presetButton[PRESETCOUNT*2];
+    qint32 preset[PRESETCOUNT*2];
     qint32 setTemp; // in decidegrees
     qreal curTemp;
     bool onOff;
     bool bathMode;
-    qint32 preset[4];
     QDateTime startTime;
     QTimer* timer;
-
-    QDateTime* pressStart;
+    qint32 step;
 };
 
 #endif // MAINWINDOW_H
