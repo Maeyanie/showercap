@@ -82,9 +82,9 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     pidthread = new PIDThread(this);
-    connect(pidthread, &PIDThread::update, this, &update);
-    connect(pidthread, &PIDThread::fullhot, this, &fullhot);
-    connect(pidthread, &PIDThread::fullcold, this, &fullcold);
+    connect(pidthread, &PIDThread::update, this, &MainWindow::update);
+    connect(pidthread, &PIDThread::fullhot, this, &MainWindow::fullhot);
+    connect(pidthread, &PIDThread::fullcold, this, &MainWindow::fullcold);
     connect(pidthread, &PIDThread::finished, pidthread, &QObject::deleteLater);
     pidthread->start();
 
