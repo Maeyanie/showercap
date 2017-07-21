@@ -22,12 +22,10 @@ void MainWindow::on_onOffButtonManual_clicked() {
     if (onOff) {
         // Turn off
         onOff = 0;
-        output->off();
         ui->tabWidget->tabBar()->setEnabled(true);
     } else {
         // Turn on
         onOff = 1;
-        output->on();
         ui->tabWidget->tabBar()->setEnabled(false);
     }
     tick();

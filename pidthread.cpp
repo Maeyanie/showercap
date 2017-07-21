@@ -45,7 +45,7 @@ void PIDThread::run()
             on = 1;
         }
 
-        if (start.msecsTo(now) < 10000 && curTemp < setTemp) { // 10-second warmup time
+        if (start.msecsTo(now) < 15000 && curTemp < setTemp) { // 15-second warmup time
             last = now;
             delay(100);
             continue;
