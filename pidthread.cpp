@@ -18,7 +18,9 @@ void PIDThread::run()
     qreal Kp = config.Kp, Ki = config.Ki, Kd = config.Kd;
     qreal iMax = 1.0, iMin = -1.0;
     qint32 d;
+    qreal home = 0.0;
     bool on = 0;
+    bool sync = 0;
 
     input = mw->input;
     output = mw->output;
@@ -33,6 +35,7 @@ void PIDThread::run()
         if (!mw->isOn()) {
             if (on) {
                 output->off();
+                output->set(home);
                 on = 0;
             }
             last = now;
@@ -55,6 +58,11 @@ void PIDThread::run()
 
         Dt = last.msecsTo(now) / 1000.0;
         error = setTemp - curTemp;
+
+        if (!sync && error < 0.2) {
+            sync = 1;
+            home = output->get();
+        }
 
         // track error over time, scaled to the timer interval
         integral = integral + (error * Dt);

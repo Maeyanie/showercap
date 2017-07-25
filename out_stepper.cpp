@@ -50,8 +50,8 @@ void Output_Stepper::on() {
     onOff = 1;
 
     digitalWrite(ONOFFPIN, 1);
-    //delay(100);
-    //digitalWrite(ONOFFPIN, 0);
+    delay(100);
+    digitalWrite(ONOFFPIN, 0);
 }
 void Output_Stepper::off() {
     onOff = 0;
@@ -69,8 +69,8 @@ void Output_Stepper::shower() {
         digitalWrite(BATHPIN, 0);
         digitalWrite(SHOWERPIN, 1);
         digitalWrite(ONOFFPIN, 1);
-        //delay(100);
-        //digitalWrite(ONOFFPIN, 0);
+        delay(100);
+        digitalWrite(ONOFFPIN, 0);
     }
     mode = 1;
 }
@@ -79,16 +79,19 @@ void Output_Stepper::bath() {
         digitalWrite(SHOWERPIN, 0);
         digitalWrite(BATHPIN, 1);
         digitalWrite(ONOFFPIN, 1);
-        //delay(100);
-        //digitalWrite(ONOFFPIN, 0);
+        delay(100);
+        digitalWrite(ONOFFPIN, 0);
     }
     mode = 0;
 }
 
 void Output_Stepper::set(double v) {
-    v *= 10.0;
+    if (!onOff) {
+        digitalWrite(STBYPIN, 1);
+        delay(10);
+    }
     if (v >= position+1) {
-        duration = ((v - position) * STEPTIME) / 1000 + 5;
+        duration = ((v - position) * STEPTIME * 2) / 1000 + 5;
         digitalWrite(DIRPIN, 1);
         digitalWrite(ENABLEPIN, 0);
         while (v >= position+1) {
@@ -101,7 +104,7 @@ void Output_Stepper::set(double v) {
         delay(5);
         digitalWrite(ENABLEPIN, 1);
     } else if (v <= position-1) {
-        duration = ((position - v) * STEPTIME) / 1000 + 5;
+        duration = ((position - v) * STEPTIME * 2) / 1000 + 5;
         digitalWrite(DIRPIN, 0);
         digitalWrite(ENABLEPIN, 1);
         while (v <= position-1) {
@@ -117,6 +120,9 @@ void Output_Stepper::set(double v) {
         duration = 0;
     }
     save();
+    if (!onOff) {
+        digitalWrite(STBYPIN, 0);
+    }
 }
 
 qint8 Output_Stepper::mod(double d) {
@@ -125,7 +131,7 @@ qint8 Output_Stepper::mod(double d) {
 
     if (d > 1.0) {
         if (d > MAXSTEPS) d = MAXSTEPS;
-        duration = (d * STEPTIME) / 1000 + 5;
+        duration = (d * STEPTIME * 2) / 1000 + 5;
         digitalWrite(ENABLEPIN, 0);
         digitalWrite(DIRPIN, 1);
         for (int i = 0; i < d; i++) {
@@ -140,7 +146,7 @@ qint8 Output_Stepper::mod(double d) {
         frac = 0.0;
     } else if (d < -1.0) {
         if (d < -MAXSTEPS) d = -MAXSTEPS;
-        duration = (-d * STEPTIME) / 1000 + 5;
+        duration = (-d * STEPTIME * 2) / 1000 + 5;
         digitalWrite(ENABLEPIN, 0);
         digitalWrite(DIRPIN, 0);
         for (int i = 0; i < -d; i++) {

@@ -38,6 +38,7 @@ public:
     virtual void bath() {}
     virtual void set(double) =0;
     virtual qint8 mod(double) =0;
+    virtual qreal get() { return 0.0; }
     virtual qint32 time(qint32) { return 10; }
 };
 class Output_Servo : public Output {
@@ -49,6 +50,7 @@ public:
     void off();
     void set(double);
     qint8 mod(double);
+    qreal get() { return position; }
     qint32 time(qint32);
 };
 
@@ -93,6 +95,7 @@ public:
     void bath();
     void set(double);
     qint8 mod(double);
+    qreal get() { return position; }
     qint32 time(qint32);
 };
 

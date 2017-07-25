@@ -39,6 +39,7 @@ void MainWindow::tickBath() {
     }
 
     ui->clockBath->setText(QTime::currentTime().toString("h:mm A"));
+    ui->posBath->setText(QString::number(output->get()));
 }
 
 void MainWindow::on_setTempBath_clicked() {
