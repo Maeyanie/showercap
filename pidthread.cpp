@@ -41,6 +41,8 @@ void PIDThread::run()
         }
         if (!on) {
             start = QDateTime::currentDateTime();
+            if (mw->isBath()) output->bath();
+            else output->shower();
             output->on();
             on = 1;
         }
