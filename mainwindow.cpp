@@ -144,8 +144,8 @@ qint32 MainWindow::getSetTemp() {
 void MainWindow::setSetTemp(qint32 t) {
     lock.lock();
     setTemp = t;
-    if (!bathMode && setTemp > config.maxTemp) setTemp = config.maxTemp;
-    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    if (setTemp > config.maxTemp) setTemp = config.maxTemp;
+    tick();
     lock.unlock();
 }
 
