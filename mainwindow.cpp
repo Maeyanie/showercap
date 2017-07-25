@@ -157,10 +157,16 @@ void MainWindow::update(qreal newTemp) {
     curTemp = newTemp;
 }
 void MainWindow::fullhot() {
-    ui->setTemp->setStyleSheet("QLabel { color: red; }");
+    switch (ui->tabWidget->currentIndex()) {
+    case 1: ui->setTemp->setStyleSheet("QLabel { color: red; }"); break;
+    case 2: ui->setTempBath->setStyleSheet("QLabel { color: red; }"); break;
+    }
 }
 void MainWindow::fullcold() {
-    ui->setTemp->setStyleSheet("QLabel { color: blue; }");
+    switch (ui->tabWidget->currentIndex()) {
+    case 1: ui->setTemp->setStyleSheet("QLabel { color: blue; }"); break;
+    case 2: ui->setTempBath->setStyleSheet("QLabel { color: blue; }"); break;
+    }
 }
 
 void MainWindow::tick() {
