@@ -59,9 +59,12 @@ void PIDThread::run()
         Dt = last.msecsTo(now) / 1000.0;
         error = setTemp - curTemp;
 
-        if (!sync && error < 0.2) {
-            sync = 1;
-            home = output->get();
+        if (error < 0.2) {
+            if (sync < 5) {
+                sync++;
+            } else {
+                home = output->get();
+            }
         }
 
         // track error over time, scaled to the timer interval
