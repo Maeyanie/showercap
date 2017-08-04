@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "config.h"
 #include <QTextStream>
+#include <cmath>
 
 PIDThread::PIDThread(QObject* parent) : QThread(parent)
 {
@@ -60,7 +61,7 @@ void PIDThread::run()
         Dt = last.msecsTo(now) / 1000.0;
         error = setTemp - curTemp;
 
-        if (error < 0.2) {
+        if (abs(error) < 0.2) {
             if (sync < 5) {
                 sync++;
             } else {
