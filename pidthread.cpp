@@ -30,12 +30,12 @@ void PIDThread::run()
         emit update(curTemp);
 
         now = QDateTime::currentDateTime();
-        setTemp = ((MainWindow*)this->parent())->getSetTemp() / 10.0;
+        setTemp = mw->getSetTemp() / 10.0;
 
         if (!mw->isOn()) {
             if (on) {
                 output->off();
-                output->set(home);
+                if (sync) output->set(home);
                 on = 0;
             }
             last = now;
@@ -48,6 +48,7 @@ void PIDThread::run()
             else output->shower();
             output->on();
             on = 1;
+            sync = 0;
         }
 
         if (start.msecsTo(now) < 15000 && curTemp < setTemp) { // 15-second warmup time
