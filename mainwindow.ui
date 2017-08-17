@@ -223,6 +223,11 @@
             </item>
             <item>
              <widget class="QLabel" name="pos">
+              <property name="font">
+               <font>
+                <pointsize>36</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>0</string>
               </property>

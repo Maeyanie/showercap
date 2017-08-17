@@ -19,7 +19,7 @@ void PIDThread::run()
     qreal Kp = config.Kp, Ki = config.Ki, Kd = config.Kd;
     qreal iMax = 1.0, iMin = -1.0;
     qint32 d;
-    qreal home = 0.0;
+    double home = qSNaN();
     bool on = 0;
     bool sync = 0;
 
@@ -36,7 +36,7 @@ void PIDThread::run()
         if (!mw->isOn()) {
             if (on) {
                 output->off();
-                if (sync) output->set(home);
+                if (!qIsNaN(home)) output->set(home);
                 on = 0;
             }
             last = now;
