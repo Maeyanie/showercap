@@ -9,6 +9,7 @@
 #define STEPTIME 5000 // in us
 #define FULLHOT 10000
 #define FULLCOLD 0
+#define PULSETIME -1
 #define MAXSTEPS ((CYCLETIME-5)/((STEPTIME/1000)*2))
 
 Output_Stepper::Output_Stepper() {
@@ -36,6 +37,16 @@ void Output_Stepper::save() {
 //    settings.setValue("stepperpos", position);
 }
 
+static void pulseSolenoid() {
+    if (PULSETIME < 0) {
+        digitalWrite(ONOFFPIN, 1);
+    } else if (PULSETIME > 0) {
+        digitalWrite(ONOFFPIN, 1);
+        delay(PULSETIME);
+        digitalWrite(ONOFFPIN, 0);
+    }
+}
+
 void Output_Stepper::on() {
     digitalWrite(STEPPIN, 0);
     digitalWrite(DIRPIN, 0);
@@ -48,10 +59,7 @@ void Output_Stepper::on() {
         digitalWrite(BATHPIN, 1);
     }
     onOff = 1;
-
-    digitalWrite(ONOFFPIN, 1);
-    delay(100);
-    digitalWrite(ONOFFPIN, 0);
+    pulseSolenoid();
 }
 void Output_Stepper::off() {
     onOff = 0;
@@ -68,9 +76,7 @@ void Output_Stepper::shower() {
     if (onOff) {
         digitalWrite(BATHPIN, 0);
         digitalWrite(SHOWERPIN, 1);
-        digitalWrite(ONOFFPIN, 1);
-        delay(100);
-        digitalWrite(ONOFFPIN, 0);
+        pulseSolenoid();
     }
     mode = 1;
 }
@@ -78,9 +84,7 @@ void Output_Stepper::bath() {
     if (onOff) {
         digitalWrite(SHOWERPIN, 0);
         digitalWrite(BATHPIN, 1);
-        digitalWrite(ONOFFPIN, 1);
-        delay(100);
-        digitalWrite(ONOFFPIN, 0);
+        pulseSolenoid();
     }
     mode = 0;
 }
