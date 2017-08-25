@@ -61,7 +61,7 @@ void PIDThread::run()
         Dt = last.msecsTo(now) / 1000.0;
         error = setTemp - curTemp;
 
-        if (abs(error) < 0.2) {
+        if (fabs(error) < 0.2) {
             if (sync < 5) {
                 sync++;
             } else {
