@@ -7,9 +7,13 @@ SetTempDialog::SetTempDialog(QWidget *parent) :
     ui(new Ui::SetTempDialog)
 {
     digit = 0;
+    qint32 temp = ((MainWindow*)parent)->getSetTemp();
 
     ui->setupUi(this);
     ui->tensButton->setDown(true);
+    ui->tensButton->setText(QString::number(temp / 100));
+    ui->onesButton->setText(QString::number((temp % 100) / 10));
+    ui->deciButton->setText(QString::number(temp % 10));
 }
 
 SetTempDialog::~SetTempDialog()
