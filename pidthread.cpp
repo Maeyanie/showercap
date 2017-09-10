@@ -64,7 +64,7 @@ void PIDThread::run()
         if (fabs(error) < 0.2) {
             if (sync < 5) {
                 sync++;
-            } else {
+            } else if (qIsNaN(home)) {
                 home = output->get();
             }
         }
