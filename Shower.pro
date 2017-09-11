@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     tab_shower.cpp \
     tab_bath.cpp \
     tab_manual.cpp \
-    qpresetbutton.cpp
+    qpresetbutton.cpp \
+    tab_tools.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \
@@ -49,6 +50,7 @@ win32: DEPENDPATH += D:/Devel/build/wiringPiFake/include
 
 LIBS += -lwiringPi
 
-DISTFILES +=
+DISTFILES += \
+    update.sh
 
 RESOURCES +=

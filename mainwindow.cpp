@@ -114,7 +114,7 @@ void MainWindow::readSettings() {
 void MainWindow::writeSettings() {
     QSettings settings("NMSoft", "Digital Shower Prototype");
     settings.setValue("setTemp", setTemp);
-    for (int i = 0; i < PRESETCOUNT*2; i++) {
+    for (int i = 0; i < (PRESETCOUNT*2); i++) {
         settings.setValue("preset"+QString::number(i), preset[i]);
     }
 }

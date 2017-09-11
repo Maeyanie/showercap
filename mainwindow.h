@@ -75,6 +75,10 @@ private slots:
     void on_bathButton_clicked();
 
 
+    void on_updateButton_clicked();
+
+    void on_restartButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
