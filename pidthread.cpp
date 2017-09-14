@@ -64,8 +64,10 @@ void PIDThread::run()
         if (fabs(error) < 0.2) {
             if (sync < 5) {
                 sync++;
+                printf("pidthread: Error %.2lf < 0.2, sync now %d\n", error, sync);
             } else if (qIsNaN(home)) {
                 home = output->get();
+                printf("pidthread: Got home position at %.1lf!\n", home);
             }
         }
 
@@ -85,8 +87,8 @@ void PIDThread::run()
         preError = error;
         last = now;
 
-        printf("pidthread: setTemp=%f curTemp=%f error=%f p=%f i=%f d=%f\n",
-            setTemp, curTemp, error, Kp*error, Ki*integral, Kp*derivative);
+        //printf("pidthread: setTemp=%f curTemp=%f error=%f p=%f i=%f d=%f\n",
+        //    setTemp, curTemp, error, Kp*error, Ki*integral, Kp*derivative);
 
         switch (output->mod(value)) {
         case 1:
