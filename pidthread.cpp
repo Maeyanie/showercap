@@ -21,7 +21,7 @@ void PIDThread::run()
     qint32 d;
     double home = qSNaN();
     bool on = 0;
-    bool sync = 0;
+    short sync = 0;
 
     input = mw->input;
     output = mw->output;
