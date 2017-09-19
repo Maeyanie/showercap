@@ -3,6 +3,6 @@
 git pull &&
 qmake-qt5 &&
 make &&
-chmod u+s Shower
+sudo chmod u+s Shower
 
 exec ./Shower

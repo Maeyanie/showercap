@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
     pwmSetRange(512);
 
 #if __linux__
-    //setuid(getuid());
-    //printf("Privileges dropped.\n");
+    setuid(getuid());
+    printf("Privileges dropped.\n");
 #endif
 
     QApplication a(argc, argv);
