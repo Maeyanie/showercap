@@ -52,6 +52,8 @@ win32: DEPENDPATH += D:/Devel/build/wiringPiFake/include
 LIBS += -lwiringPi
 
 DISTFILES += \
-    update.sh
+    update.sh \
+    showercap-overlay.dts \
+    setup.sh
 
 RESOURCES +=

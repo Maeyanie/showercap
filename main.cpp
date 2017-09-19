@@ -10,36 +10,40 @@ int main(int argc, char *argv[])
 {
 #if __linux__
     printf("Running as UID %d, EUID %d\n", getuid(), geteuid());
-#endif
 
-    wiringPiSetupGpio();
-    pinMode(ONOFFPIN, OUTPUT);
-    pinMode(BATHPIN, OUTPUT);
-    pinMode(SHOWERPIN, OUTPUT);
-    pinMode(HOTPIN, OUTPUT);
-    pinMode(COLDPIN, OUTPUT);
-    pinMode(STEPPIN, OUTPUT);
-    pinMode(DIRPIN, OUTPUT);
-    pinMode(ENABLEPIN, OUTPUT);
-    pinMode(STBYPIN, OUTPUT);
-    pinMode(MS1PIN, OUTPUT);
-    pinMode(MS2PIN, OUTPUT);
-    pinMode(MS3PIN, OUTPUT);
+    if (getuid()) {
+        printf("User mode. Hoping pins are already right.\n");
+        wiringPiSetupSys();
+    } else {
+        printf("Root mode. Setting up pins.\n");
+        wiringPiSetupGpio();
+        pinMode(ONOFFPIN, OUTPUT);
+        pinMode(BATHPIN, OUTPUT);
+        pinMode(SHOWERPIN, OUTPUT);
+        pinMode(HOTPIN, OUTPUT);
+        pinMode(COLDPIN, OUTPUT);
+        pinMode(STEPPIN, OUTPUT);
+        pinMode(DIRPIN, OUTPUT);
+        pinMode(ENABLEPIN, OUTPUT);
+        pinMode(STBYPIN, OUTPUT);
+        pinMode(MS1PIN, OUTPUT);
+        pinMode(MS2PIN, OUTPUT);
+        pinMode(MS3PIN, OUTPUT);
 
-    pinMode(PWMPIN, PWM_OUTPUT);
+        pinMode(PWMPIN, PWM_OUTPUT);
 
-    pinMode(FULLHOTPIN, INPUT);
-    pinMode(FULLCOLDPIN, INPUT);
-    pullUpDnControl(FULLHOTPIN, PUD_DOWN);
-    pullUpDnControl(FULLCOLDPIN, PUD_DOWN);
+        pinMode(FULLHOTPIN, INPUT);
+        pinMode(FULLCOLDPIN, INPUT);
+        pullUpDnControl(FULLHOTPIN, PUD_DOWN);
+        pullUpDnControl(FULLCOLDPIN, PUD_DOWN);
 
-	pwmSetMode(PWM_MODE_MS);
-    pwmSetClock(1);
-    pwmSetRange(512);
+        pwmSetMode(PWM_MODE_MS);
+        pwmSetClock(1);
+        pwmSetRange(512);
 
-#if __linux__
-    setuid(getuid());
-    printf("Privileges dropped.\n");
+        setuid(getuid());
+        printf("Privileges dropped.\n");
+    }
 #endif
 
     QApplication a(argc, argv);

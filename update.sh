@@ -2,7 +2,7 @@
 
 git pull &&
 qmake &&
-make &&
-sudo chmod u+s Shower
+make
+#sudo chmod u+s Shower
 
 exec ./Shower

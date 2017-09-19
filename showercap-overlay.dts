@@ -1,0 +1,46 @@
+// Definitions for ShowerCap module
+/dts-v1/;
+/plugin/;
+
+/ {
+    compatible = "brcm,bcm2708";
+
+    fragment@0 {
+        target-path = "/";
+        __overlay__ {
+            showercap: showercap {
+                compatible = "showercap";
+                gpios = <
+                    // OnOff_DoubleSolenoid
+                    &gpio 25 0 // ONOFFPIN
+                    &gpio 23 0 // SHOWERPIN
+                    &gpio 24 0 // BATHPIN
+
+                    // Output_Stepper
+                    &gpio 20 0 // STEPPIN
+                    &gpio 21 0 // DIRPIN
+                    &gpio 12 0 // STBYPIN
+                    &gpio 16 0 // ENABLEPIN
+                    &gpio 17 0 // MS1PIN
+                    &gpio 27 0 // MS2PIN
+                    &gpio 22 0 // MS3PIN
+
+                    // Limits
+                    &gpio 5 1 // FULLHOTPIN
+                    &gpio 6 1 // FULLCOLDPIN
+                >;
+                force;
+            };
+        };
+    };
+
+    fragment@1 {
+        target-path = <&gpio>;
+        __overlay__ {
+            gpio_showercap_pins: gpio_showercap_pins {
+                bcrm,pins = <25 23 24 20 21 12 16 17 27 22>;
+                bcrm,function = <1>;
+            };
+        };
+    };
+};
