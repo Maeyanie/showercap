@@ -1,7 +1,7 @@
 #!/bin/sh
 
 git pull &&
-qmake-qt5 &&
+qmake &&
 make &&
 sudo chmod u+s Shower
 
