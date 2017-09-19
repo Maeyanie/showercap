@@ -36,7 +36,10 @@ void PIDThread::run()
         if (!mw->isOn()) {
             if (on) {
                 output->off();
-                if (!qIsNaN(home)) output->set(home);
+                if (!qIsNaN(home)) {
+                    delay(100);
+                    output->set(home);
+                }
                 on = 0;
             }
             last = now;
