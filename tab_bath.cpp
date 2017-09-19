@@ -14,13 +14,13 @@ void MainWindow::on_minusButtonBath_clicked() {
 }
 
 void MainWindow::on_onOffButtonBath_clicked() {
-    if (onOff) {
+    if (onOffFlag) {
         // Turn off
-        onOff = 0;
+        onOffFlag = 0;
         ui->tabWidget->tabBar()->setEnabled(true);
     } else {
         // Turn on
-        onOff = 1;
+        onOffFlag = 1;
         startTime = QDateTime::currentDateTime();
         ui->tabWidget->tabBar()->setEnabled(false);
     }
@@ -31,7 +31,7 @@ void MainWindow::tickBath() {
     ui->curTempBath->setText(QString().sprintf("%.1lf", curTemp));
     ui->setTempBath->setStyleSheet("");
 
-    if (onOff) {
+    if (onOffFlag) {
         qint64 elapsed = startTime.msecsTo(QDateTime::currentDateTime()) / 1000;
         ui->timerBath->setText(QString().sprintf("%lld:%02lld", elapsed/60, elapsed%60));
     } else {

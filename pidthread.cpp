@@ -25,6 +25,7 @@ void PIDThread::run()
 
     input = mw->input;
     output = mw->output;
+    onOff = mw->onOff;
 
     while (!QThread::currentThread()->isInterruptionRequested()) {
         curTemp = input->read();
@@ -35,11 +36,10 @@ void PIDThread::run()
 
         if (!mw->isOn()) {
             if (on) {
+                onOff->off();
+                if (!qIsNaN(home)) output->set(home);
+                delay(100);
                 output->off();
-                if (!qIsNaN(home)) {
-                    delay(100);
-                    output->set(home);
-                }
                 on = 0;
             }
             last = now;
@@ -48,9 +48,10 @@ void PIDThread::run()
         }
         if (!on) {
             start = QDateTime::currentDateTime();
-            if (mw->isBath()) output->bath();
-            else output->shower();
+            if (mw->isBath()) onOff->bath();
+            else onOff->shower();
             output->on();
+            onOff->on();
             on = 1;
             sync = 0;
         }

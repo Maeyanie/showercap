@@ -29,18 +29,18 @@ public:
 };
 
 
+
 class Output {
 public:
     virtual ~Output() {}
     virtual void on() {}
     virtual void off() {}
-    virtual void shower() {}
-    virtual void bath() {}
     virtual void set(double) =0;
     virtual qint8 mod(double) =0;
     virtual qreal get() { return 0.0; }
     virtual qint32 time(qint32) { return 10; }
 };
+
 class Output_Servo : public Output {
     qint32 dev;
     double position;
@@ -69,6 +69,7 @@ public:
     friend void fullhot();
     friend void fullcold();
 };
+
 class Output_Motor_SoftPWM : public Output_Motor {
 public:
     Output_Motor_SoftPWM();
@@ -81,22 +82,46 @@ public:
 };
 
 class Output_Stepper : public Output {
+protected:
     void save();
     double position;
     int duration;
     bool onOff;
-    bool mode;
 
 public:
     Output_Stepper();
+    ~Output_Stepper();
     void on();
     void off();
-    void shower();
-    void bath();
     void set(double);
     qint8 mod(double);
     qreal get() { return position; }
     qint32 time(qint32);
+};
+
+
+
+class OnOff {
+public:
+    virtual ~OnOff() {}
+    virtual void on() =0;
+    virtual void off() =0;
+    virtual void shower() {}
+    virtual void bath() {}
+};
+
+class OnOff_DoubleSolenoid : public OnOff {
+protected:
+    bool onOff;
+    bool mode;
+
+public:
+    OnOff_DoubleSolenoid();
+    ~OnOff_DoubleSolenoid();
+    void on();
+    void off();
+    void shower();
+    void bath();
 };
 
 #endif // IO_H

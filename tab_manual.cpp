@@ -19,13 +19,13 @@ void MainWindow::on_stepDownButton_clicked() {
 }
 
 void MainWindow::on_onOffButtonManual_clicked() {
-    if (onOff) {
+    if (onOffFlag) {
         // Turn off
-        onOff = 0;
+        onOffFlag = 0;
         ui->tabWidget->tabBar()->setEnabled(true);
     } else {
         // Turn on
-        onOff = 1;
+        onOffFlag = 1;
         ui->tabWidget->tabBar()->setEnabled(false);
     }
     tick();

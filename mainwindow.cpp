@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setTemp = 0;
     curTemp = 0;
-    onOff = 0;
+    onOffFlag = 0;
     bathMode = 0;
     step = 8;
     memset(preset, 0, sizeof(preset));
@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     case THERMISTOR:
         input = new Input_Thermistor();
     }
+
     switch (config.outputType) {
     case SERVO:
         output = new Output_Servo();
@@ -73,12 +74,17 @@ MainWindow::MainWindow(QWidget *parent) :
         output = new Output_Stepper();
     }
 
+    switch (config.onOffType) {
+    case DOUBLESOLENOID:
+        onOff = new OnOff_DoubleSolenoid();
+    }
+
     if (bathMode) {
         ui->bathButton->setChecked(true);
-        output->bath();
+        onOff->bath();
     } else {
         ui->showerButton->setChecked(true);
-        output->shower();
+        onOff->shower();
     }
 
     pidthread = new PIDThread(this);
@@ -94,11 +100,30 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow() {
-    pidthread->requestInterruption();
-    pidthread->wait();
-    writeSettings();
-    delete pidthread;
+    cleanup();
     delete ui;
+}
+
+void MainWindow::cleanup() {
+    if (pidthread) {
+        pidthread->requestInterruption();
+        pidthread->wait();
+        delete pidthread;
+        pidthread = NULL;
+    }
+    if (onOff) {
+        delete onOff;
+        onOff = NULL;
+    }
+    if (output) {
+        delete output;
+        output = NULL;
+    }
+    if (input) {
+        delete input;
+        input = NULL;
+    }
+    writeSettings();
 }
 
 void MainWindow::readSettings() {
@@ -124,6 +149,7 @@ void MainWindow::loadPreset(qint32 p) {
     setTemp = preset[p];
     ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
     ui->setTempBath->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    writeSettings();
     lock.unlock();
 }
 void MainWindow::savePreset(qint32 p) {
@@ -146,6 +172,7 @@ void MainWindow::setSetTemp(qint32 t) {
     setTemp = t;
     if (setTemp > config.maxTemp) setTemp = config.maxTemp;
     tick();
+    writeSettings();
     lock.unlock();
 }
 
@@ -204,6 +231,7 @@ void MainWindow::modSetTemp(qint32 val) {
     if (setTemp > config.maxTemp) setTemp = config.maxTemp;
     ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
     ui->setTempBath->setText(QString().sprintf("%.1lf", setTemp/10.0));
+    writeSettings();
     lock.unlock();
 }
 

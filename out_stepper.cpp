@@ -9,16 +9,12 @@
 #define STEPTIME 5000 // in us
 #define FULLHOT 10000
 #define FULLCOLD 0
-#define PULSETIME -1
-#define MAXSTEPS ((CYCLETIME-5)/((STEPTIME/1000)*2))
+#define MAXSTEPS ((CYCLETIME-5)/(STEPTIME/500))
 
 Output_Stepper::Output_Stepper() {
     digitalWrite(STEPPIN, 0);
     digitalWrite(DIRPIN, 0);
     digitalWrite(STBYPIN, 0);
-    digitalWrite(ONOFFPIN, 0);
-    digitalWrite(SHOWERPIN, 0);
-    digitalWrite(BATHPIN, 0);
     digitalWrite(MS1PIN, 0);
     digitalWrite(MS2PIN, 0);
     digitalWrite(MS3PIN, 0);
@@ -26,25 +22,19 @@ Output_Stepper::Output_Stepper() {
     position = 0;
     duration = 0;
     onOff = 0;
-    mode = 1;
 //    QSettings settings("NMSoft", "Digital Shower Prototype");
 //    position = settings.value("stepperpos", 0).toInt();
 
     printf("Output_Stepper initialized.\n");
 }
+
+Output_Stepper::~Output_Stepper() {
+    off();
+}
+
 void Output_Stepper::save() {
 //    static QSettings settings("NMSoft", "Digital Shower Prototype");
 //    settings.setValue("stepperpos", position);
-}
-
-static void pulseSolenoid() {
-    if (PULSETIME < 0) {
-        digitalWrite(ONOFFPIN, 1);
-    } else if (PULSETIME > 0) {
-        digitalWrite(ONOFFPIN, 1);
-        delay(PULSETIME);
-        digitalWrite(ONOFFPIN, 0);
-    }
 }
 
 void Output_Stepper::on() {
@@ -52,48 +42,23 @@ void Output_Stepper::on() {
     digitalWrite(DIRPIN, 0);
     digitalWrite(ENABLEPIN, 1);
     digitalWrite(STBYPIN, 1);
-
-    if (mode == 1) {
-        digitalWrite(SHOWERPIN, 1);
-    } else {
-        digitalWrite(BATHPIN, 1);
-    }
     onOff = 1;
-    pulseSolenoid();
 }
 void Output_Stepper::off() {
     onOff = 0;
-    digitalWrite(ONOFFPIN, 0);
     digitalWrite(STEPPIN, 0);
     digitalWrite(DIRPIN, 0);
     digitalWrite(ENABLEPIN, 1);
     digitalWrite(STBYPIN, 0);
-    digitalWrite(SHOWERPIN, 0);
-    digitalWrite(BATHPIN, 0);
-}
 
-void Output_Stepper::shower() {
-    if (onOff) {
-        digitalWrite(BATHPIN, 0);
-        digitalWrite(SHOWERPIN, 1);
-        pulseSolenoid();
-    }
-    mode = 1;
-}
-void Output_Stepper::bath() {
-    if (onOff) {
-        digitalWrite(SHOWERPIN, 0);
-        digitalWrite(BATHPIN, 1);
-        pulseSolenoid();
-    }
-    mode = 0;
 }
 
 void Output_Stepper::set(double v) {
     if (!onOff) {
-        digitalWrite(STBYPIN, 1);
-        delay(10);
+        printf("[Output_Stepper] Error: set() called when turned off!\n");
+        return;
     }
+
     if (v >= position+1) {
         duration = ((v - position) * STEPTIME * 2) / 1000 + 5;
         digitalWrite(DIRPIN, 1);
@@ -124,12 +89,13 @@ void Output_Stepper::set(double v) {
         duration = 0;
     }
     save();
-    if (!onOff) {
-        digitalWrite(STBYPIN, 0);
-    }
 }
 
 qint8 Output_Stepper::mod(double d) {
+    if (!onOff) {
+        printf("[Output_Stepper] Error: mod() called when turned off!\n");
+        return 0;
+    }
     static double frac = 0.0;
     d += frac;
 
@@ -164,7 +130,7 @@ qint8 Output_Stepper::mod(double d) {
         digitalWrite(ENABLEPIN, 1);
         frac = 0.0;
     } else {
-        if (d > 0.01 || d < -0.01) frac = d;
+        frac = d;
         duration = 0;
     }
     save();

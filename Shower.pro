@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     tab_bath.cpp \
     tab_manual.cpp \
     qpresetbutton.cpp \
-    tab_tools.cpp
+    tab_tools.cpp \
+    onoff_doublesolenoid.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \

@@ -8,9 +8,7 @@
 
 void MainWindow::on_updateButton_clicked()
 {
-    pidthread->requestInterruption();
-    pidthread->wait();
-    writeSettings();
+    cleanup();
 
     execlp("/bin/bash", "/bin/bash", "update.sh", NULL);
 }
@@ -18,9 +16,7 @@ void MainWindow::on_updateButton_clicked()
 
 void MainWindow::on_restartButton_clicked()
 {
-    pidthread->requestInterruption();
-    pidthread->wait();
-    writeSettings();
+    cleanup();
 
 #if __linux__
     char buf[PATH_MAX];

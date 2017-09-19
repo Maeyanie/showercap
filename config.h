@@ -16,15 +16,21 @@ enum OutputType {
     STEPPER
 };
 
+enum OnOffType {
+    DOUBLESOLENOID
+};
+
 class Config
 {
 public:
     Config();
 
     SensorType sensorType;
+    OutputType outputType;
+    OnOffType onOffType;
+
     QString sensorFile;
     qint32 maxTemp;
-    OutputType outputType;
     qreal Kp, Ki, Kd;
 };
 

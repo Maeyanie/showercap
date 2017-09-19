@@ -12,6 +12,7 @@ class PIDThread : public QThread
 
     class Input* input;
     class Output* output;
+    class OnOff* onOff;
 
     void run() Q_DECL_OVERRIDE;
 

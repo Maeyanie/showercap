@@ -38,8 +38,10 @@ public:
 
     class Input* input;
     class Output* output;
+    class OnOff* onOff;
 
 private slots:
+    void cleanup();
     void update(qreal newTemp);
     void fullhot();
     void fullcold();
@@ -74,9 +76,8 @@ private slots:
     void on_showerButton_clicked();
     void on_bathButton_clicked();
 
-
+    // Tools tab
     void on_updateButton_clicked();
-
     void on_restartButton_clicked();
 
 private:
@@ -88,7 +89,7 @@ private:
     qint32 preset[PRESETCOUNT*2];
     qint32 setTemp; // in decidegrees
     qreal curTemp;
-    bool onOff;
+    bool onOffFlag;
     bool bathMode;
     QDateTime startTime;
     QTimer* timer;
