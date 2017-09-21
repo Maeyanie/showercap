@@ -21,7 +21,7 @@ void PIDThread::run()
     qint32 d;
     double home = qSNaN();
     bool on = 0;
-    short sync = 0;
+    qint8 sync = 0;
 
     input = mw->input;
     output = mw->output;
@@ -37,7 +37,10 @@ void PIDThread::run()
         if (!mw->isOn()) {
             if (on) {
                 onOff->off();
-                if (!qIsNaN(home)) output->set(home);
+                if (!qIsNaN(home)) {
+                    printf("[pidthread] Returning to home position %.1lf\n", home);
+                    output->set(home);
+                }
                 delay(100);
                 output->off();
                 on = 0;
