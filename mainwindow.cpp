@@ -177,7 +177,7 @@ void MainWindow::setSetTemp(qint32 t) {
 }
 
 bool MainWindow::isOn() {
-    return onOff;
+    return onOffFlag;
 }
 
 void MainWindow::update(qreal newTemp) {
