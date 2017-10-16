@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 #if __linux__
     printf("Running as UID %d, EUID %d\n", getuid(), geteuid());
 
-    if (getuid()) {
+	if (geteuid()) {
         printf("User mode. Hoping pins are already right.\n");
         wiringPiSetupSys();
     } else {
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         pwmSetClock(1);
         pwmSetRange(512);
 
-        setuid(getuid());
+		setuid(getuid());
         printf("Privileges dropped.\n");
     }
 #endif
