@@ -36,6 +36,7 @@ void PIDThread::run()
 
         if (!mw->isOn()) {
             if (on) {
+				// State changed on->off
                 onOff->off();
                 if (!qIsNaN(home)) {
                     printf("[pidthread] Returning to home position %.1lf\n", home);
@@ -50,6 +51,7 @@ void PIDThread::run()
             continue;
         }
         if (!on) {
+			// State changed off->on
             start = QDateTime::currentDateTime();
             if (mw->isBath()) onOff->bath();
             else onOff->shower();
@@ -72,8 +74,9 @@ void PIDThread::run()
             if (sync < 5) {
                 sync++;
                 printf("pidthread: Error %.2lf < 0.2, sync now %d\n", error, sync);
-            } else if (qIsNaN(home)) {
+			} else if (sync == 5) {
                 home = output->get();
+				sync++;
                 printf("pidthread: Got home position at %.1lf!\n", home);
             }
         }
