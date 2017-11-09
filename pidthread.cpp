@@ -19,7 +19,7 @@ void PIDThread::run()
     qreal Kp = config.Kp, Ki = config.Ki, Kd = config.Kd;
     qreal iMax = 1.0, iMin = -1.0;
     qint32 d;
-	volatile double home = qSNaN();
+	double home = qSNaN();
     bool on = 0;
     qint8 sync = 0;
 
@@ -42,7 +42,7 @@ void PIDThread::run()
                 if (!qIsNaN(home)) {
                     printf("[pidthread] Returning to home position %.1lf\n", home);
                     output->set(home);
-					printf("[pidthread] Done.\n");
+					printf("[pidthread] Done in %d ms.\n", now.msecsTo(QDateTime::currentDateTime()));
                 }
                 delay(100);
                 output->off();

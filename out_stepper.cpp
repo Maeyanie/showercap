@@ -59,6 +59,7 @@ void Output_Stepper::set(double v) {
 		printf("[Output_Stepper] Error: set() called when turned off!\n");
 		return;
 	}
+	printf("[Output_Stepper] set: Moving from %d to %d.\n", position, v);
 
 	if (v >= position+1) {
 		duration = ((v - position) * STEPTIME * 2) / 1000 + 10;
@@ -77,7 +78,7 @@ void Output_Stepper::set(double v) {
 	} else if (v <= position-1) {
 		duration = ((position - v) * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(DIRPIN, 0);
-		digitalWrite(ENABLEPIN, 1);
+		digitalWrite(ENABLEPIN, 0);
 		delay(5);
 		while (v <= position-1) {
 			digitalWrite(STEPPIN, 1);
