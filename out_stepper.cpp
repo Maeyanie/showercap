@@ -9,7 +9,7 @@
 #define STEPTIME 5000 // in us
 #define FULLHOT 10000
 #define FULLCOLD 0
-#define MAXSTEPS ((CYCLETIME-5)/(STEPTIME/500))
+#define MAXSTEPS ((CYCLETIME-10)/(STEPTIME/500))
 
 Output_Stepper::Output_Stepper() {
 	digitalWrite(STEPPIN, 0);
@@ -43,14 +43,15 @@ void Output_Stepper::on() {
 	digitalWrite(ENABLEPIN, 1);
 	digitalWrite(STBYPIN, 1);
 	onOff = 1;
+	printf("[Output_Stepper] Turned on.\n");
 }
 void Output_Stepper::off() {
+	printf("[Output_Stepper] Turned off.\n");
 	onOff = 0;
 	digitalWrite(STEPPIN, 0);
 	digitalWrite(DIRPIN, 0);
 	digitalWrite(ENABLEPIN, 1);
 	digitalWrite(STBYPIN, 0);
-
 }
 
 void Output_Stepper::set(double v) {
@@ -60,9 +61,10 @@ void Output_Stepper::set(double v) {
 	}
 
 	if (v >= position+1) {
-		duration = ((v - position) * STEPTIME * 2) / 1000 + 5;
+		duration = ((v - position) * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(DIRPIN, 1);
 		digitalWrite(ENABLEPIN, 0);
+		delay(5);
 		while (v >= position+1) {
 			digitalWrite(STEPPIN, 1);
 			delayMicroseconds(STEPTIME);
@@ -73,9 +75,10 @@ void Output_Stepper::set(double v) {
 		delay(5);
 		digitalWrite(ENABLEPIN, 1);
 	} else if (v <= position-1) {
-		duration = ((position - v) * STEPTIME * 2) / 1000 + 5;
+		duration = ((position - v) * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(DIRPIN, 0);
 		digitalWrite(ENABLEPIN, 1);
+		delay(5);
 		while (v <= position-1) {
 			digitalWrite(STEPPIN, 1);
 			delayMicroseconds(STEPTIME);
@@ -101,9 +104,10 @@ qint8 Output_Stepper::mod(double d) {
 
 	if (d > 1.0) {
 		if (d > MAXSTEPS) d = MAXSTEPS;
-		duration = (d * STEPTIME * 2) / 1000 + 5;
+		duration = (d * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(ENABLEPIN, 0);
 		digitalWrite(DIRPIN, 1);
+		delay(5);
 		for (int i = 0; i < d; i++) {
 			digitalWrite(STEPPIN, 1);
 			delayMicroseconds(STEPTIME);
@@ -116,9 +120,10 @@ qint8 Output_Stepper::mod(double d) {
 		frac = 0.0;
 	} else if (d < -1.0) {
 		if (d < -MAXSTEPS) d = -MAXSTEPS;
-		duration = (-d * STEPTIME * 2) / 1000 + 5;
+		duration = (-d * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(ENABLEPIN, 0);
 		digitalWrite(DIRPIN, 0);
+		delay(5);
 		for (int i = 0; i < -d; i++) {
 			digitalWrite(STEPPIN, 1);
 			delayMicroseconds(STEPTIME);
