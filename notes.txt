@@ -1,0 +1,43 @@
+Over the course of development I tried a number of things, many of which didn't work.
+To save anyone else repeating the same experiments, I'll note them here.
+
+
+Temperature control:
+- High-Torque Servos
+I tried the highest torque one I could find. It didn't have enough torque.
+I'm not sure if it would be accurate enough even if it did work, though, they tend to have a bit of a deadband.
+
+- Gearmotor
+It had enough torque, but couldn't do fine control. There was a minimum amount of power to overcome
+static friction to get it to move, and when it did move, it would move too far.
+
+- Stepper Motor
+Not enough torque again.
+
+- Geared Stepper Motor
+This one finally worked. It had fine enough control, and enough torque to use it.
+
+
+Temperature sensing:
+Both thermistors and RTDs work fine, but the RTD I tested seemed to be more responsive.
+(Thermocouples should theoretically work, but I didn't try, since it would be a lot more complex for little benefit.)
+I took some regular off-the-shelf sensors, got an off-the-shelf size adapter, and used epoxy to
+encase the parts inside the adapter. It's worth noting that they often come with thin lead wires, which
+are prone to breaking, so should be trimmed and soldered to better wire with the joint inside the epoxy.
+They should definitely be placed as close to the output of the mixing valve as possible to improve response time.
+
+
+On/Off Control:
+I used solenoid valves here because if power goes out, they will automatically close and
+not waste water endlessly. A ball valve could theoretically be better, if it had some sort of auto-close
+feature, or an easy manual control.
+
+Initially I used one solenoid valve for on/off, and a latching solenoid or ball valve (tried both) for
+shower/bath control, relying on gravity to pull the flow down when the valve was open.
+This didn't work, there was enough pressure to have a small flow from the shower even when the valve
+was open. Instead, I switched to having two identical solenoid valves, one going up, and one going down.
+
+To save some power, it's possible to run a resistor in series with the solenoid, with a short initial full-power
+pulse to open it and then a lower, resisted, hold-open current. My initial design had this in hardware using
+some MOSFETs and a 555 timer, but I later switched to having the microcontroller handle it. This ended up being
+far cheaper, easier, and more reliable.

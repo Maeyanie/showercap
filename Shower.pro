@@ -54,6 +54,7 @@ LIBS += -lwiringPi
 DISTFILES += \
     update.sh \
     showercap-overlay.dts \
-    setup.sh
+    setup.sh \
+    notes.txt
 
 RESOURCES +=
