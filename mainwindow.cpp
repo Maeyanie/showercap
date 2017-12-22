@@ -129,7 +129,8 @@ void MainWindow::cleanup() {
 void MainWindow::readSettings() {
     QSettings settings("NMSoft", "Digital Shower Prototype");
     setTemp = settings.value("setTemp", 405).toInt(); // Average shower temperature is 105F, which is ~40.5C
-    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
+	ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
+	ui->setTempBath->setText(QString().sprintf("%.1lf", setTemp/10.0));
     for (int i = 0; i < (PRESETCOUNT*2); i++) {
         preset[i] = settings.value("preset"+QString::number(i), 405).toInt();
         presetButton[i]->setText(QString().sprintf("%.1lf", preset[i]/10.0));
