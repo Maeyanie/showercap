@@ -44,7 +44,7 @@ void MainWindow::tickBath() {
 
 void MainWindow::on_setTempBath_clicked() {
     SetTempDialog* std = new SetTempDialog(this);
-    std->show();
+	std->showFullScreen();
 }
 
 

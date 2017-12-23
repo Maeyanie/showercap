@@ -44,7 +44,7 @@ void MainWindow::tickShower() {
 
 void MainWindow::on_setTemp_clicked() {
     SetTempDialog* std = new SetTempDialog(this);
-    std->show();
+	std->showFullScreen();
 }
 
 

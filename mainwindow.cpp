@@ -173,6 +173,8 @@ void MainWindow::setSetTemp(qint32 t) {
     lock.lock();
     setTemp = t;
     if (setTemp > config.maxTemp) setTemp = config.maxTemp;
+	ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
+	ui->setTempBath->setText(QString().sprintf("%.1lf", setTemp/10.0));
     tick();
     writeSettings();
     lock.unlock();
