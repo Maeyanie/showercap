@@ -18,6 +18,7 @@ class PIDThread : public QThread
 
 signals:
     void update(qreal curTemp);
+	void noHotWater();
     void fullhot();
     void fullcold();
 

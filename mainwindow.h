@@ -43,6 +43,7 @@ public:
 private slots:
     void cleanup();
     void update(qreal newTemp);
+	void noHotWater();
     void fullhot();
     void fullcold();
     void tick();

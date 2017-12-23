@@ -89,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     pidthread = new PIDThread(this);
     connect(pidthread, &PIDThread::update, this, &MainWindow::update);
+	connect(pidthread, &PIDThread::noHotWater, this, &MainWindow::noHotWater);
     connect(pidthread, &PIDThread::fullhot, this, &MainWindow::fullhot);
     connect(pidthread, &PIDThread::fullcold, this, &MainWindow::fullcold);
     connect(pidthread, &PIDThread::finished, pidthread, &QObject::deleteLater);
@@ -183,6 +184,10 @@ bool MainWindow::isOn() {
 
 void MainWindow::update(qreal newTemp) {
     curTemp = newTemp;
+}
+void MainWindow::noHotWater() {
+	onOffFlag = 0;
+	ui->tabWidget->tabBar()->setEnabled(true);
 }
 void MainWindow::fullhot() {
     switch (ui->tabWidget->currentIndex()) {
