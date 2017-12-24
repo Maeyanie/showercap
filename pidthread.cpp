@@ -51,16 +51,20 @@ void PIDThread::run()
 					syncTime = NULL;
 				}
                 onOff->off();
-				delay(100);
-                if (!qIsNaN(home)) {
-                    printf("[pidthread] Returning to home position %.1lf\n", home);
-                    output->set(home);
-					printf("[pidthread] Done in %lld ms.\n", now.msecsTo(QDateTime::currentDateTime()));
-                }
-                delay(100);
                 output->off();
                 on = 0;
-            }
+			} else {
+				if (mw->getTab() == 0 && !qIsNaN(home)) {
+					printf("[pidthread] Returning to home position %.1lf\n", home);
+					output->on();
+					delay(100);
+					output->set(home);
+					printf("[pidthread] Done in %lld ms.\n", now.msecsTo(QDateTime::currentDateTime()));
+					delay(100);
+					output->off();
+					home = qSNaN();
+				}
+			}
             last = now;
             delay(100);
             continue;
