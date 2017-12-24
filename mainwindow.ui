@@ -450,6 +450,11 @@
             </item>
             <item>
              <widget class="QLabel" name="posBath">
+              <property name="font">
+               <font>
+                <pointsize>24</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>0</string>
               </property>
@@ -783,6 +788,11 @@
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QRadioButton" name="useC">
+               <property name="font">
+                <font>
+                 <pointsize>24</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>Celsius</string>
                </property>
@@ -790,6 +800,11 @@
              </item>
              <item>
               <widget class="QRadioButton" name="useF">
+               <property name="font">
+                <font>
+                 <pointsize>24</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>Fahrenheit</string>
                </property>

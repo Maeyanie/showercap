@@ -254,8 +254,8 @@ void MainWindow::modSetTemp(qint32 val) {
     lock.lock();
     setTemp += val;
     if (setTemp > config.maxTemp) setTemp = config.maxTemp;
-    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
-    ui->setTempBath->setText(QString().sprintf("%.1lf", setTemp/10.0));
+	ui->setTemp->setText(asTemp(setTemp/10.0));
+	ui->setTempBath->setText(asTemp(setTemp/10.0));
     writeSettings();
     lock.unlock();
 }
