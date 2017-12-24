@@ -20,20 +20,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-private:
-	Ui::MainWindow *ui;
-	PIDThread* pidthread;
-	QMutex lock;
-	QPresetButton* presetButton[PRESETCOUNT*2];
-	qint32 preset[PRESETCOUNT*2];
-	qint32 setTemp; // in decidegrees
-	qreal curTemp;
-	bool onOffFlag;
-	bool bathMode;
-	QDateTime startTime;
-	QTimer* timer;
-	qint32 step;
-
 public:
     static MainWindow* instance();
 
@@ -97,8 +83,26 @@ private slots:
     // Tools tab
     void on_updateButton_clicked();
     void on_restartButton_clicked();
+
+
 	void on_useC_toggled(bool checked);
+
 	void on_useF_toggled(bool checked);
+
+private:
+    Ui::MainWindow *ui;
+
+    PIDThread* pidthread;
+    QMutex lock;
+    QPresetButton* presetButton[PRESETCOUNT*2];
+    qint32 preset[PRESETCOUNT*2];
+    qint32 setTemp; // in decidegrees
+    qreal curTemp;
+    bool onOffFlag;
+    bool bathMode;
+    QDateTime startTime;
+    QTimer* timer;
+    qint32 step;
 };
 
 #endif // MAINWINDOW_H
