@@ -96,7 +96,7 @@ void PIDThread::run()
 		if (!sync && fabs(error) < 0.2) {
 			if (!syncTime) {
 				syncTime = new QDateTime(QDateTime::currentDateTime());
-				printf("pidthread: Sync gained, starting timer.");
+				printf("pidthread: Sync gained, starting timer.\n");
 			} else if (syncTime->msecsTo(QDateTime::currentDateTime()) >= SYNCTIMER) {
 				delete syncTime;
 				syncTime = NULL;
