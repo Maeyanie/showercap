@@ -197,6 +197,9 @@ const QString MainWindow::asDegrees(double degrees) {
 bool MainWindow::isOn() {
     return onOffFlag;
 }
+qint32 MainWindow::getTab() {
+	return ui->tabWidget->currentIndex();
+}
 
 void MainWindow::update(qreal newTemp) {
     curTemp = newTemp;

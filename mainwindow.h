@@ -35,7 +35,7 @@ public:
     bool isOn();
     bool isShower() { return !bathMode; }
     bool isBath() { return bathMode; }
-	qint32 getTab() { return ui->tabWidget->currentIndex(); }
+	qint32 getTab();
 	const QString asTemp(double degrees);
 	const QString asDegrees(double degrees);
 
