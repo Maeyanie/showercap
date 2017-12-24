@@ -130,11 +130,11 @@ void MainWindow::cleanup() {
 void MainWindow::readSettings() {
     QSettings settings("NMSoft", "Digital Shower Prototype");
     setTemp = settings.value("setTemp", 405).toInt(); // Average shower temperature is 105F, which is ~40.5C
-	ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
-	ui->setTempBath->setText(QString().sprintf("%.1lf", setTemp/10.0));
+	ui->setTemp->setText(asTemp(setTemp/10.0));
+	ui->setTempBath->setText(asTemp(setTemp/10.0));
     for (int i = 0; i < (PRESETCOUNT*2); i++) {
         preset[i] = settings.value("preset"+QString::number(i), 405).toInt();
-        presetButton[i]->setText(QString().sprintf("%.1lf", preset[i]/10.0));
+		presetButton[i]->setText(asTemp(preset[i]/10.0));
     }
     bathMode = settings.value("bathMode", 0).toBool();
 }
@@ -149,15 +149,15 @@ void MainWindow::writeSettings() {
 void MainWindow::loadPreset(qint32 p) {
     lock.lock();
     setTemp = preset[p];
-    ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
-    ui->setTempBath->setText(QString().sprintf("%.1lf", setTemp/10.0));
+	ui->setTemp->setText(asTemp(setTemp/10.0));
+	ui->setTempBath->setText(asTemp(setTemp/10.0));
     writeSettings();
     lock.unlock();
 }
 void MainWindow::savePreset(qint32 p) {
     lock.lock();
     preset[p] = setTemp;
-    presetButton[p]->setText(QString().sprintf("%.1lf", preset[p]/10.0));
+	presetButton[p]->setText(asTemp(preset[p]/10.0));
     writeSettings();
     lock.unlock();
 }
@@ -173,11 +173,25 @@ void MainWindow::setSetTemp(qint32 t) {
     lock.lock();
     setTemp = t;
     if (setTemp > config.maxTemp) setTemp = config.maxTemp;
-	ui->setTemp->setText(QString().sprintf("%.1lf", setTemp/10.0));
-	ui->setTempBath->setText(QString().sprintf("%.1lf", setTemp/10.0));
+	ui->setTemp->setText(asTemp(setTemp/10.0));
+	ui->setTempBath->setText(asTemp(setTemp/10.0));
     tick();
     writeSettings();
     lock.unlock();
+}
+const QString MainWindow::asTemp(double degrees) {
+	if (config.useF) {
+		return QString().sprintf("%.1lf", degrees * 1.8 + 32);
+	} else {
+		return QString().sprintf("%.1lf", degrees);
+	}
+}
+const QString MainWindow::asDegrees(double degrees) {
+	if (config.useF) {
+		return QString().sprintf("%.1lf°F", degrees * 1.8 + 32);
+	} else {
+		return QString().sprintf("%.1lf°C", degrees);
+	}
 }
 
 bool MainWindow::isOn() {

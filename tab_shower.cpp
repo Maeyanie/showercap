@@ -28,7 +28,7 @@ void MainWindow::on_onOffButton_clicked() {
 }
 
 void MainWindow::tickShower() {
-    ui->curTemp->setText(QString().sprintf("%.1lf", curTemp));
+	ui->curTemp->setText(asDegrees(curTemp));
     ui->setTemp->setStyleSheet("");
 
     if (onOffFlag) {

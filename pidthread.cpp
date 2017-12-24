@@ -55,7 +55,7 @@ void PIDThread::run()
                 if (!qIsNaN(home)) {
                     printf("[pidthread] Returning to home position %.1lf\n", home);
                     output->set(home);
-					printf("[pidthread] Done in %d ms.\n", now.msecsTo(QDateTime::currentDateTime()));
+					printf("[pidthread] Done in %lld ms.\n", now.msecsTo(QDateTime::currentDateTime()));
                 }
                 delay(100);
                 output->off();

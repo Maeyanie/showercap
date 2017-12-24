@@ -59,7 +59,7 @@ void Output_Stepper::set(double v) {
 		printf("[Output_Stepper] Error: set() called when turned off!\n");
 		return;
 	}
-	printf("[Output_Stepper] set: Moving from %d to %d.\n", position, v);
+	printf("[Output_Stepper] set: Moving from %d to %d.\n", (int)position, (int)v);
 
 	if (v >= position+1) {
 		duration = ((v - position) * STEPTIME * 2) / 1000 + 10;

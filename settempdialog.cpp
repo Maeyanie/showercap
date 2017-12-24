@@ -1,6 +1,7 @@
 #include "settempdialog.h"
 #include "ui_settempdialog.h"
 #include "mainwindow.h"
+#include "config.h"
 
 SetTempDialog::SetTempDialog(QWidget *parent) :
     QDialog(parent),
@@ -8,6 +9,7 @@ SetTempDialog::SetTempDialog(QWidget *parent) :
 {
     digit = 0;
     qint32 temp = ((MainWindow*)parent)->getSetTemp();
+	if (config.useF) temp = (int)(temp * 1.8 + 320);
 
     ui->setupUi(this);
     ui->tensButton->setDown(true);
@@ -83,6 +85,7 @@ void SetTempDialog::on_button0_clicked() { setDigit(0); }
 void SetTempDialog::on_okButton_clicked()
 {
     qint32 temp = ui->tensButton->text().toInt() * 100 + ui->onesButton->text().toInt() * 10 + ui->deciButton->text().toInt();
+	if (config.useF) temp = (int)((temp - 320) / 1.8);
     ((MainWindow*)this->parent())->setSetTemp(temp);
     this->hide();
     this->destroy();

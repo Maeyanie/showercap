@@ -35,7 +35,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tabHome">
        <attribute name="title">
@@ -195,7 +195,7 @@
                </font>
               </property>
               <property name="text">
-               <string>00.0</string>
+               <string>00.0°C</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -422,7 +422,7 @@
                </font>
               </property>
               <property name="text">
-               <string>00.0</string>
+               <string>00.0°C</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -778,6 +778,26 @@
           <property name="title">
            <string>Settings</string>
           </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QRadioButton" name="useC">
+               <property name="text">
+                <string>Celsius</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="useF">
+               <property name="text">
+                <string>Fahrenheit</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>

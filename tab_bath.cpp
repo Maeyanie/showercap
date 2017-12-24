@@ -28,7 +28,7 @@ void MainWindow::on_onOffButtonBath_clicked() {
 }
 
 void MainWindow::tickBath() {
-    ui->curTempBath->setText(QString().sprintf("%.1lf", curTemp));
+	ui->curTempBath->setText(asDegrees(curTemp));
     ui->setTempBath->setStyleSheet("");
 
     if (onOffFlag) {

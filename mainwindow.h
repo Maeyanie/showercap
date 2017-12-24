@@ -35,6 +35,8 @@ public:
     bool isOn();
     bool isShower() { return !bathMode; }
     bool isBath() { return bathMode; }
+	const QString asTemp(double degrees);
+	const QString asDegrees(double degrees);
 
     class Input* input;
     class Output* output;
@@ -80,6 +82,11 @@ private slots:
     // Tools tab
     void on_updateButton_clicked();
     void on_restartButton_clicked();
+
+
+	void on_useC_toggled(bool checked);
+
+	void on_useF_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

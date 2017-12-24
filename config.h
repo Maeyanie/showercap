@@ -32,6 +32,8 @@ public:
     QString sensorFile;
     qint32 maxTemp;
     qreal Kp, Ki, Kd;
+
+	bool useF;
 };
 
 extern Config config;
