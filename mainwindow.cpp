@@ -129,21 +129,30 @@ void MainWindow::cleanup() {
 
 void MainWindow::readSettings() {
     QSettings settings("NMSoft", "Digital Shower Prototype");
-    setTemp = settings.value("setTemp", 405).toInt(); // Average shower temperature is 105F, which is ~40.5C
+
+	setTemp = settings.value("setTemp", 405).toInt(); // Average shower temperature is supposedly 105F, which is ~40.5C
 	ui->setTemp->setText(asTemp(setTemp/10.0));
 	ui->setTempBath->setText(asTemp(setTemp/10.0));
+
     for (int i = 0; i < (PRESETCOUNT*2); i++) {
         preset[i] = settings.value("preset"+QString::number(i), 405).toInt();
 		presetButton[i]->setText(asTemp(preset[i]/10.0));
     }
+
     bathMode = settings.value("bathMode", 0).toBool();
+
+	config.useF = settings.value("useF", 0).toBool();
+	if (config.useF) ui->useF->setChecked(true);
+	else ui->useC->setChecked(true);
 }
 void MainWindow::writeSettings() {
     QSettings settings("NMSoft", "Digital Shower Prototype");
+
     settings.setValue("setTemp", setTemp);
     for (int i = 0; i < (PRESETCOUNT*2); i++) {
         settings.setValue("preset"+QString::number(i), preset[i]);
     }
+	settings.setValue("useF", config.useF);
 }
 
 void MainWindow::loadPreset(qint32 p) {
@@ -181,14 +190,14 @@ void MainWindow::setSetTemp(qint32 t) {
 }
 const QString MainWindow::asTemp(double degrees) {
 	if (config.useF) {
-		return QString().sprintf("%.1lf", degrees * 1.8 + 32);
+		return QString().sprintf("%.1lf", degrees * 1.8 + 32.05); // Extra .05 because I'd rather round than truncate.
 	} else {
 		return QString().sprintf("%.1lf", degrees);
 	}
 }
 const QString MainWindow::asDegrees(double degrees) {
 	if (config.useF) {
-		return QString().sprintf("%.1lf°F", degrees * 1.8 + 32);
+		return QString().sprintf("%.1lf°F", degrees * 1.8 + 32.05);
 	} else {
 		return QString().sprintf("%.1lf°C", degrees);
 	}
