@@ -47,6 +47,7 @@ public:
 	virtual void sync();
 
 private:
+	int i2c;
 	qint8 page;
 	bool corked;
 	bool dirty;

@@ -49,7 +49,7 @@ FRAMSettings::FRAMSettings() {
 	corked = false;
 	dirty = false;
 
-	int i2c = open("/dev/i2c-1", O_RDWR);
+	i2c = open("/dev/i2c-1", O_RDWR);
 	assert(i2c >= 0);
 	assert(ioctl(i2c, I2C_SLAVE, FRAMADDR) >= 0);
 
@@ -82,7 +82,6 @@ FRAMSettings::FRAMSettings() {
 	buffer.setVersion(QDataStream::Qt_5_0);
 	buffer >> map;
 
-	close(i2c);
 	if (++page >= FRAMPAGES) page = 0;
 }
 FRAMSettings::~FRAMSettings() {
@@ -118,10 +117,6 @@ void FRAMSettings::sync() {
 	unsigned short len = bytes.size();
 	assert(len <= FRAMPAGESIZE);
 
-	int i2c = open("/dev/i2c-1", O_RDWR);
-	assert(i2c >= 0);
-	assert(ioctl(i2c, I2C_SLAVE, FRAMADDR) >= 0);
-
 	unsigned short pos = FRAMHEADER + (FRAMPAGESIZE * page);
 	char data[bytes.size()+2];
 	data[0] = (pos & 0xFF00) >> 8;
@@ -141,6 +136,5 @@ void FRAMSettings::sync() {
 	data[2] = page;
 	write(i2c, data, 3);
 
-	close(i2c);
 	if (++page >= FRAMPAGES) page = 0;
 }
