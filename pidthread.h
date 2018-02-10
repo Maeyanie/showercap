@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include <QFile>
-#include "io.h"
+#include "iodriver.h"
 
 class PIDThread : public QThread
 {

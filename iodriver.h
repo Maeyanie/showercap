@@ -84,7 +84,7 @@ public:
 class Output_Stepper : public Output {
 protected:
     void save();
-    double position;
+	int position;
     int duration;
     bool onOff;
 

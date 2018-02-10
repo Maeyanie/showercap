@@ -1,9 +1,8 @@
 #include <wiringPi.h>
-#include <wiringPiI2C.h>
 #include <cstdio>
-#include <QSettings>
-#include "io.h"
+#include "iodriver.h"
 #include "config.h"
+#include "settings.h"
 
 #define CYCLETIME 250 // in ms
 #define STEPTIME 5000 // in us
@@ -22,19 +21,18 @@ Output_Stepper::Output_Stepper() {
 	position = 0;
 	duration = 0;
 	onOff = 0;
-//	QSettings settings("NMSoft", "Digital Shower Prototype");
-//	position = settings.value("stepperpos", 0).toInt();
+	position = settings->value("stepperpos", 0).toInt();
 
-	printf("Output_Stepper initialized.\n");
+	printf("Output_Stepper initialized: Starting at %d\n", position);
 }
 
 Output_Stepper::~Output_Stepper() {
+	settings->setValue("stepperpos", position);
 	off();
 }
 
 void Output_Stepper::save() {
-//	static QSettings settings("NMSoft", "Digital Shower Prototype");
-//	settings.setValue("stepperpos", position);
+	//settings->setValue("stepperpos", position);
 }
 
 void Output_Stepper::on() {

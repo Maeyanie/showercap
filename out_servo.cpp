@@ -2,7 +2,7 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <cstdio>
-#include "io.h"
+#include "iodriver.h"
 #include "config.h"
 
 Output_Servo::Output_Servo() {

@@ -2,7 +2,7 @@
 #include <wiringPiI2C.h>
 #include <cstdio>
 #include <QSettings>
-#include "io.h"
+#include "iodriver.h"
 #include "config.h"
 
 #define PULSETIME -1

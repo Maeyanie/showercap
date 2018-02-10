@@ -29,18 +29,20 @@ SOURCES += main.cpp\
     tab_manual.cpp \
     qpresetbutton.cpp \
     tab_tools.cpp \
-    onoff_doublesolenoid.cpp
+    onoff_doublesolenoid.cpp \
+    settings.cpp
 
 HEADERS  += mainwindow.h \
     pidthread.h \
     config.h \
     spline.h \
-    io.h \
     settempdialog.h \
     rt_usp10972.h \
     rt_ppg102a1.h \
     rt_pr103j2.h \
-    qpresetbutton.h
+    qpresetbutton.h \
+    settings.h \
+    iodriver.h
 
 FORMS    += mainwindow.ui \
     settempdialog.ui

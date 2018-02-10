@@ -2,7 +2,7 @@
 #include <wiringPiI2C.h>
 #include <softPwm.h>
 #include <cstdio>
-#include "io.h"
+#include "iodriver.h"
 #include "config.h"
 
 static Output_Motor_SoftPWM* omotor;

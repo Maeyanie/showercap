@@ -1,7 +1,7 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <cstdio>
-#include "io.h"
+#include "iodriver.h"
 #include "config.h"
 
 static Output_Motor* omotor;

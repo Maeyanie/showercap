@@ -3,7 +3,7 @@
 #include "settempdialog.h"
 #include "pidthread.h"
 #include "config.h"
-#include <QSettings>
+#include "settings.h"
 
 static MainWindow* maininstance;
 
@@ -47,6 +47,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QMainWindow::showFullScreen();
 
+	switch (config.settingsType) {
+	case QSETTINGS:
+		settings = new FileSettings();
+		break;
+	case FRAM:
+		settings = new FRAMSettings();
+	}
     readSettings();
 
     switch (config.sensorType) {
@@ -128,31 +135,29 @@ void MainWindow::cleanup() {
 }
 
 void MainWindow::readSettings() {
-    QSettings settings("NMSoft", "Digital Shower Prototype");
-
-	setTemp = settings.value("setTemp", 405).toInt(); // Average shower temperature is supposedly 105F, which is ~40.5C
+	setTemp = settings->value("setTemp", 405).toInt(); // Average shower temperature is supposedly 105F, which is ~40.5C
 	ui->setTemp->setText(asTemp(setTemp/10.0));
 	ui->setTempBath->setText(asTemp(setTemp/10.0));
 
     for (int i = 0; i < (PRESETCOUNT*2); i++) {
-        preset[i] = settings.value("preset"+QString::number(i), 405).toInt();
+		preset[i] = settings->value("preset"+QString::number(i), 405).toInt();
 		presetButton[i]->setText(asTemp(preset[i]/10.0));
     }
 
-    bathMode = settings.value("bathMode", 0).toBool();
+	bathMode = settings->value("bathMode", 0).toBool();
 
-	config.useF = settings.value("useF", 0).toBool();
+	config.useF = settings->value("useF", 0).toBool();
 	if (config.useF) ui->useF->setChecked(true);
 	else ui->useC->setChecked(true);
 }
 void MainWindow::writeSettings() {
-    QSettings settings("NMSoft", "Digital Shower Prototype");
-
-    settings.setValue("setTemp", setTemp);
+	settings->cork();
+	settings->setValue("setTemp", setTemp);
     for (int i = 0; i < (PRESETCOUNT*2); i++) {
-        settings.setValue("preset"+QString::number(i), preset[i]);
+		settings->setValue("preset"+QString::number(i), preset[i]);
     }
-	settings.setValue("useF", config.useF);
+	settings->setValue("useF", config.useF);
+	settings->uncork();
 }
 
 void MainWindow::loadPreset(qint32 p) {

@@ -20,6 +20,11 @@ enum OnOffType {
     DOUBLESOLENOID
 };
 
+enum SettingsType {
+	QSETTINGS,
+	FRAM
+};
+
 class Config
 {
 public:
@@ -28,6 +33,7 @@ public:
     SensorType sensorType;
     OutputType outputType;
     OnOffType onOffType;
+	SettingsType settingsType;
 
     QString sensorFile;
     qint32 maxTemp;
