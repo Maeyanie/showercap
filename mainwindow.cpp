@@ -215,6 +215,9 @@ void MainWindow::update(qreal newTemp) {
 }
 void MainWindow::noHotWater() {
 	onOffFlag = 0;
+	ui->onOffButton->setChecked(false);
+	ui->onOffButtonBath->setChecked(false);
+	ui->onOffButtonManual->setChecked(false);
 	ui->tabWidget->tabBar()->setEnabled(true);
 }
 void MainWindow::fullhot() {
