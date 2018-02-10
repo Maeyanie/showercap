@@ -6,6 +6,7 @@
 #define I2C_SLAVE 0x0703
 int ioctl(int fd, unsigned long request, ...) { fd=fd; request=request; return 0; }
 #endif
+#include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <assert.h>
