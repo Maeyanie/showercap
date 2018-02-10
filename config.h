@@ -40,6 +40,8 @@ public:
     qreal Kp, Ki, Kd;
 
 	bool useF;
+	QString timeStr;
+	QString dateStr;
 };
 
 extern Config config;

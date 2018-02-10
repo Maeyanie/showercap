@@ -33,6 +33,6 @@ void MainWindow::on_onOffButtonManual_clicked() {
 
 void MainWindow::tickManual() {
 	ui->curTempManual->setText(asDegrees(curTemp));
-    ui->clockManual->setText(QTime::currentTime().toString("h:mm A"));
+	ui->clockManual->setText(QTime::currentTime().toString(config.timeStr));
 }
 

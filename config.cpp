@@ -21,6 +21,8 @@ Config::Config()
     config.Kp = 5.0;
     config.Ki = 0.0;
     config.Kd = 0.1;
+	config.timeStr = "h:mm A";
+	config.dateStr = "ddd, MMM d, yyyy";
 
     QFile file(ETCDIR"/showercap.conf");
     QString line;
@@ -39,13 +41,14 @@ Config::Config()
             continue;
         }
 
-        if (parts.at(0) == "MaxTemp") {
+		QString key = parts.at(0);
+		if (key == "MaxTemp") {
             maxTemp = parts.at(1).toInt();
             QTextStream(stdout) << "[Config] Set MaxTemp to " << maxTemp << endl;
-        } else if (parts.at(0) == "SensorFile") {
+		} else if (key == "SensorFile") {
             sensorFile = parts.at(1);
             QTextStream(stdout) << "[Config] Set SensorFile to '" << sensorFile << "'" << endl;
-        } else if (parts.at(0) == "SensorType") {
+		} else if (key == "SensorType") {
             QString type = parts.at(1).toUpper();
             if (type == "ONEWIRE") {
                 config.sensorType = ONEWIRE;
@@ -59,7 +62,7 @@ Config::Config()
             } else {
                 QTextStream(stderr) << "[Config] Warning: Unrecognized sensorType '" << type << "'" << endl;
             }
-		} else if (parts.at(0) == "SettingsType") {
+		} else if (key == "SettingsType") {
 			QString type = parts.at(1).toUpper();
 			if (type == "FILE") {
 				config.settingsType = QSETTINGS;
@@ -68,16 +71,22 @@ Config::Config()
 				config.settingsType = FRAM;
 				QTextStream(stdout) << "[Config] Set SettingsType to FRAM'" << endl;
 			}
-		} else if (parts.at(0) == "P") {
+		} else if (key == "P") {
             config.Kp = parts.at(1).toDouble();
             QTextStream(stdout) << "[Config] Set P to " << config.Kp << endl;
-        } else if (parts.at(0) == "I") {
+		} else if (key == "I") {
             config.Ki = parts.at(1).toDouble();
             QTextStream(stdout) << "[Config] Set I to " << config.Ki << endl;
-        } else if (parts.at(0) == "D") {
+		} else if (key == "D") {
             config.Kd = parts.at(1).toDouble();
             QTextStream(stdout) << "[Config] Set D to " << config.Kd << endl;
-        }
+		} else if (key == "TimeFormat") {
+			config.timeStr = parts.at(1);
+			QTextStream(stdout) << "[Config] Set TimeFormat to " << config.timeStr << endl;
+		} else if (key == "DateFormat") {
+			config.dateStr = parts.at(1);
+			QTextStream(stdout) << "[Config] Set DateFormat to " << config.dateStr << endl;
+		}
     }
     file.close();
 }

@@ -248,7 +248,8 @@ void MainWindow::tick() {
 }
 
 void MainWindow::tickHome() {
-    ui->clockHome->setText(QTime::currentTime().toString("h:mm A"));
+	ui->clockHome->setText(QTime::currentTime().toString(config.timeStr));
+	ui->dateHome->setText(QDateTime::currentDateTime().toString(config.dateStr));
 }
 
 void MainWindow::setMode(qint32 mode) {

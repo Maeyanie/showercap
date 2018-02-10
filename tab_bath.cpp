@@ -38,7 +38,7 @@ void MainWindow::tickBath() {
         ui->timerBath->setText("");
     }
 
-    ui->clockBath->setText(QTime::currentTime().toString("h:mm A"));
+	ui->clockBath->setText(QTime::currentTime().toString(config.timeStr));
     ui->posBath->setText(QString::number(output->get()));
 }
 

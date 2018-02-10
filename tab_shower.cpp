@@ -38,7 +38,7 @@ void MainWindow::tickShower() {
         ui->timer->setText("");
     }
 
-    ui->clock->setText(QTime::currentTime().toString("h:mm A"));
+	ui->clock->setText(QTime::currentTime().toString(config.timeStr));
     ui->pos->setText(QString::number(output->get()));
 }
 
