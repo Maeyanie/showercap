@@ -14,8 +14,10 @@ Config::Config()
     // Defaults
     config.sensorType = THERMISTOR;
     config.sensorFile = "";
-    config.maxTemp = 450;
-    config.outputType = STEPPER;
+	config.outputType = STEPPER;
+	config.onOffType = DOUBLESOLENOID;
+	config.settingsType = QSETTINGS;
+	config.maxTemp = 450;
     config.Kp = 5.0;
     config.Ki = 0.0;
     config.Kd = 0.1;
@@ -57,7 +59,16 @@ Config::Config()
             } else {
                 QTextStream(stderr) << "[Config] Warning: Unrecognized sensorType '" << type << "'" << endl;
             }
-        } else if (parts.at(0) == "P") {
+		} else if (parts.at(0) == "SettingsType") {
+			QString type = parts.at(1).toUpper();
+			if (type == "FILE") {
+				config.settingsType = QSETTINGS;
+				QTextStream(stdout) << "[Config] Set SettingsType to FILE'" << endl;
+			} else if (type == "FRAM") {
+				config.settingsType = FRAM;
+				QTextStream(stdout) << "[Config] Set SettingsType to FRAM'" << endl;
+			}
+		} else if (parts.at(0) == "P") {
             config.Kp = parts.at(1).toDouble();
             QTextStream(stdout) << "[Config] Set P to " << config.Kp << endl;
         } else if (parts.at(0) == "I") {
