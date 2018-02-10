@@ -46,6 +46,7 @@ void Output_Motor::off() {
 }
 
 void Output_Motor::set(double v) {
+	v = v;
     fprintf(stderr, "Error: Cannot set() on Output_Motor.\n");
     exit(1);
 }
@@ -135,5 +136,6 @@ qint8 Output_Motor::mod(double d) {
 }
 
 qint32 Output_Motor::time(qint32 t) {
+	t = t;
     return 0;
 }
