@@ -12,7 +12,7 @@ Config config;
 Config::Config()
 {
     // Defaults
-    config.sensorType = THERMISTOR;
+	config.sensorType = ADS1115;
     config.sensorFile = "";
 	config.outputType = STEPPER;
 	config.onOffType = DOUBLESOLENOID;
@@ -56,11 +56,14 @@ Config::Config()
             } else if (type == "I2CSENSOR") {
                 config.sensorType = I2CSENSOR;
                 QTextStream(stdout) << "[Config] Set SensorType to I2CSENSOR'" << endl;
-            } else if (type == "THERMISTOR") {
-                config.sensorType = THERMISTOR;
-                QTextStream(stdout) << "[Config] Set SensorType to THERMISTOR'" << endl;
+			} else if (type == "ADS1115") {
+				config.sensorType = ADS1115;
+				QTextStream(stdout) << "[Config] Set SensorType to ADS1115'" << endl;
+			} else if (type == "LTC2451") {
+				config.sensorType = LTC2451;
+				QTextStream(stdout) << "[Config] Set SensorType to LTC2451'" << endl;
             } else {
-                QTextStream(stderr) << "[Config] Warning: Unrecognized sensorType '" << type << "'" << endl;
+				QTextStream(stderr) << "[Config] Warning: Unrecognized SensorType '" << type << "'" << endl;
             }
 		} else if (key == "SettingsType") {
 			QString type = parts.at(1).toUpper();
@@ -70,6 +73,8 @@ Config::Config()
 			} else if (type == "FRAM") {
 				config.settingsType = FRAM;
 				QTextStream(stdout) << "[Config] Set SettingsType to FRAM'" << endl;
+			} else {
+				QTextStream(stderr) << "[Config] Warning: Unrecognized SettingsType '" << type << "'" << endl;
 			}
 		} else if (key == "P") {
             config.Kp = parts.at(1).toDouble();

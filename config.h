@@ -6,7 +6,8 @@
 enum SensorType {
     ONEWIRE,
     I2CSENSOR,
-    THERMISTOR
+	ADS1115,
+	LTC2451
 };
 
 enum OutputType {

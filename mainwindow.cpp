@@ -48,42 +48,27 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow::showFullScreen();
 
 	switch (config.settingsType) {
-	case QSETTINGS:
-		settings = new FileSettings();
-		break;
-	case FRAM:
-		settings = new FRAMSettings();
+	case QSETTINGS: settings = new FileSettings(); break;
+	case FRAM: settings = new FRAMSettings(); break;
 	}
     readSettings();
 
     switch (config.sensorType) {
-    case ONEWIRE:
-        input = new Input_Onewire();
-        break;
-    case I2CSENSOR:
-        input = new Input_I2CSensor();
-        break;
-    case THERMISTOR:
-		input = new Input_ADS1115();
+	case ONEWIRE: input = new Input_Onewire(); break;
+	case I2CSENSOR: input = new Input_I2CSensor(); break;
+	case ADS1115: input = new Input_ADS1115(); break;
+	case LTC2451: input = new Input_LTC2451(); break;
     }
 
     switch (config.outputType) {
-    case SERVO:
-        output = new Output_Servo();
-        break;
-    case MOTOR:
-        output = new Output_Motor();
-        break;
-    case MOTORSOFTPWM:
-        output = new Output_Motor_SoftPWM();
-        break;
-    case STEPPER:
-        output = new Output_Stepper();
+	case SERVO: output = new Output_Servo(); break;
+	case MOTOR: output = new Output_Motor(); break;
+	case MOTORSOFTPWM: output = new Output_Motor_SoftPWM(); break;
+	case STEPPER: output = new Output_Stepper(); break;
     }
 
     switch (config.onOffType) {
-    case DOUBLESOLENOID:
-        onOff = new OnOff_DoubleSolenoid();
+	case DOUBLESOLENOID: onOff = new OnOff_DoubleSolenoid(); break;
     }
 
     if (bathMode) {
