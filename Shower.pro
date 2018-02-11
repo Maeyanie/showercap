@@ -14,11 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    pidthread.cpp \
     config.cpp \
     in_i2csensor.cpp \
     in_onewire.cpp \
-    in_thermistor.cpp \
     out_servo.cpp \
     out_motor.cpp \
     settempdialog.cpp \
@@ -30,10 +28,13 @@ SOURCES += main.cpp\
     qpresetbutton.cpp \
     tab_tools.cpp \
     onoff_doublesolenoid.cpp \
-    settings.cpp
+    settings.cpp \
+    in_ads1115.cpp \
+    in_ltc2451.cpp \
+    outthread.cpp \
+    inthread.cpp
 
 HEADERS  += mainwindow.h \
-    pidthread.h \
     config.h \
     spline.h \
     settempdialog.h \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     rt_pr103j2.h \
     qpresetbutton.h \
     settings.h \
-    iodriver.h
+    iodriver.h \
+    iothread.h
 
 FORMS    += mainwindow.ui \
     settempdialog.ui

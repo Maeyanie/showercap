@@ -21,12 +21,19 @@ public:
     Input_I2CSensor();
     virtual double read();
 };
-class Input_Thermistor : public Input {
+class Input_ADS1115 : public Input {
     qint32 dev;
 public:
-    Input_Thermistor();
+	Input_ADS1115();
     virtual double read();
 };
+class Input_LTC2451 : public Input {
+	qint32 dev;
+public:
+	Input_LTC2451();
+	virtual double read();
+};
+
 
 
 

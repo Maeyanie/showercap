@@ -3,7 +3,7 @@
 #include <QTextStream>
 #include <cmath>
 #include "config.h"
-#include "pidthread.h"
+#include "iothread.h"
 
 Input_Onewire::Input_Onewire() {
     dev.setFileName(config.sensorFile);

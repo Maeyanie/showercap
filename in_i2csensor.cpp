@@ -1,7 +1,7 @@
 #include <QTypeInfo>
 #include <wiringPiI2C.h>
 #include <cstdio>
-#include "pidthread.h"
+#include "iothread.h"
 #include "config.h"
 
 Input_I2CSensor::Input_I2CSensor() {

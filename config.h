@@ -48,7 +48,8 @@ extern Config config;
 
 #define I2C_THERMOMETER 0x18
 #define I2C_PWM 0x40
-#define I2C_ADC 0x48
+#define I2C_ADS1115 0x48
+#define I2C_LTC2451 0x14
 
 #define ONOFFPIN 25
 #define SHOWERPIN 23

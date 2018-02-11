@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "settempdialog.h"
-#include "pidthread.h"
+#include "iothread.h"
 #include "config.h"
 #include <QSettings>
 

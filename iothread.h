@@ -6,24 +6,35 @@
 #include <QFile>
 #include "iodriver.h"
 
-class PIDThread : public QThread
+class InThread : public QThread
+{
+	Q_OBJECT
+
+	void run() Q_DECL_OVERRIDE;
+
+signals:
+	void update(qreal curTemp);
+
+public:
+	InThread(QObject* parent);
+};
+
+class OutThread : public QThread
 {
     Q_OBJECT
 
-    class Input* input;
     class Output* output;
     class OnOff* onOff;
 
     void run() Q_DECL_OVERRIDE;
 
 signals:
-    void update(qreal curTemp);
 	void noHotWater();
     void fullhot();
     void fullcold();
 
 public:
-    PIDThread(QObject* parent);
+	OutThread(QObject* parent);
 };
 
 #endif // PIDTHREAD_H

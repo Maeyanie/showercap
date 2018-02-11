@@ -2,7 +2,7 @@
 #include <vector>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
-#include "pidthread.h"
+#include "iothread.h"
 #include "config.h"
 #include "spline.h"
 using namespace std;
@@ -37,7 +37,7 @@ static inline short bswap16(short a) {
     return ((((a) & 0xFF00) >> 8) | (((a) & 0x00FF) << 8));
 }
 
-Input_Thermistor::Input_Thermistor() {
+Input_ADS1115::Input_ADS1115() {
     int count = sizeof(thermistor_curve) / sizeof(thermistor_curve[0]);
     vector<double> x(count), y(count);
 
@@ -48,11 +48,11 @@ Input_Thermistor::Input_Thermistor() {
 
     thermistor_spline.set_points(x, y);
 
-    dev = wiringPiI2CSetup(I2C_ADC);
+	dev = wiringPiI2CSetup(I2C_ADS1115);
     if (dev == -1) { fprintf(stderr, "Error opening I2C thermistor ADC: %m\n"); exit(1); }
 }
 
-double Input_Thermistor::read() {
+double Input_ADS1115::read() {
     static unsigned int last;
     /*
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));

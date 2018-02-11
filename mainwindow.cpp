@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "settempdialog.h"
-#include "pidthread.h"
+#include "iothread.h"
 #include "config.h"
 #include "settings.h"
 
@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
         input = new Input_I2CSensor();
         break;
     case THERMISTOR:
-        input = new Input_Thermistor();
+		input = new Input_ADS1115();
     }
 
     switch (config.outputType) {
@@ -94,13 +94,17 @@ MainWindow::MainWindow(QWidget *parent) :
         onOff->shower();
     }
 
-    pidthread = new PIDThread(this);
-    connect(pidthread, &PIDThread::update, this, &MainWindow::update);
-	connect(pidthread, &PIDThread::noHotWater, this, &MainWindow::noHotWater);
-    connect(pidthread, &PIDThread::fullhot, this, &MainWindow::fullhot);
-    connect(pidthread, &PIDThread::fullcold, this, &MainWindow::fullcold);
-    connect(pidthread, &PIDThread::finished, pidthread, &QObject::deleteLater);
-    pidthread->start();
+	inthread = new InThread(this);
+	connect(inthread, &InThread::update, this, &MainWindow::update);
+	connect(inthread, &OutThread::finished, inthread, &QObject::deleteLater);
+	inthread->start();
+
+	outthread = new OutThread(this);
+	connect(outthread, &OutThread::noHotWater, this, &MainWindow::noHotWater);
+	connect(outthread, &OutThread::fullhot, this, &MainWindow::fullhot);
+	connect(outthread, &OutThread::fullcold, this, &MainWindow::fullcold);
+	connect(outthread, &OutThread::finished, outthread, &QObject::deleteLater);
+	outthread->start();
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
@@ -113,12 +117,18 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::cleanup() {
-    if (pidthread) {
-        pidthread->requestInterruption();
-        pidthread->wait();
-        delete pidthread;
-        pidthread = NULL;
+	if (outthread) {
+		outthread->requestInterruption();
+		outthread->wait();
+		delete outthread;
+		outthread = NULL;
     }
+	if (inthread) {
+		inthread->requestInterruption();
+		inthread->wait();
+		delete inthread;
+		inthread = NULL;
+	}
     if (onOff) {
         delete onOff;
         onOff = NULL;
@@ -215,8 +225,17 @@ qint32 MainWindow::getTab() {
 	return ui->tabWidget->currentIndex();
 }
 
+qreal MainWindow::getCurTemp() {
+	qreal ret;
+	ctLock.lock();
+	ret = curTemp;
+	ctLock.unlock();
+	return ret;
+}
 void MainWindow::update(qreal newTemp) {
+	ctLock.lock();
     curTemp = newTemp;
+	ctLock.unlock();
 }
 void MainWindow::noHotWater() {
 	onOffFlag = 0;

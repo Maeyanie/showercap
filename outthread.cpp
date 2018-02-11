@@ -1,4 +1,4 @@
-#include "pidthread.h"
+#include "iothread.h"
 #include "mainwindow.h"
 #include "config.h"
 #include <QTextStream>
@@ -7,11 +7,11 @@
 #define SYNCTIMER 2000
 #define DESYNCTIMER 5000
 
-PIDThread::PIDThread(QObject* parent) : QThread(parent)
+OutThread::OutThread(QObject* parent) : QThread(parent)
 {
 }
 
-void PIDThread::run()
+void OutThread::run()
 {
     MainWindow* mw = (MainWindow*)this->parent();
     QDateTime start, now, last = QDateTime::currentDateTime();
@@ -27,13 +27,11 @@ void PIDThread::run()
 	bool sync = 0;
 	QDateTime* syncTime = NULL;
 
-    input = mw->input;
     output = mw->output;
     onOff = mw->onOff;
 
     while (!QThread::currentThread()->isInterruptionRequested()) {
-        curTemp = input->read();
-        emit update(curTemp);
+		curTemp = mw->getCurTemp();
 
         now = QDateTime::currentDateTime();
         setTemp = mw->getSetTemp() / 10.0;
@@ -144,10 +142,7 @@ void PIDThread::run()
             emit fullcold();
         }
 
-        d = output->time(input->time());
+		d = output->time(0);
         if (d > 0) delay(d);
     }
-
-    delete input;
-    delete output;
 }

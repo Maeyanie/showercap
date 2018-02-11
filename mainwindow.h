@@ -7,7 +7,7 @@
 #include <QMutex>
 #include <QPushButton>
 #include <wiringPi.h>
-#include "pidthread.h"
+#include "iothread.h"
 #include "qpresetbutton.h"
 
 #define PRESETCOUNT 4
@@ -29,6 +29,7 @@ public:
     void writeSettings();
     void loadPreset(qint32 id);
     void savePreset(qint32 id);
+	qreal getCurTemp();
     qint32 getSetTemp();
     void setSetTemp(qint32 t);
     void setMode(qint32 mode);
@@ -92,8 +93,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    PIDThread* pidthread;
-    QMutex lock;
+	InThread* inthread;
+	OutThread* outthread;
+	QMutex lock, ctLock;
     QPresetButton* presetButton[PRESETCOUNT*2];
     qint32 preset[PRESETCOUNT*2];
     qint32 setTemp; // in decidegrees
