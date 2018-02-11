@@ -9,6 +9,7 @@ using namespace std;
 using namespace tk;
 
 #define RESISTOR 10000.0
+#define DELAY 17 // 60 sps = 16.666... ms/s
 //#include "rt_usp10972.h"
 #include "rt_ppg102a1.h"
 
@@ -42,9 +43,9 @@ double Input_LTC2451::read() {
 	if (millis() - last > 100) {
 		wiringPiI2CRead(dev); // Read the stale conversion and throw it out.
 		last = millis();
-		delay(17);
-	} else if (millis() - last < 17) {
-		delay(17 - (millis() - last));
+		delay(DELAY);
+	} else if (millis() - last < DELAY) {
+		delay(DELAY - (millis() - last));
 	}
 
 	int data = wiringPiI2CRead(dev);

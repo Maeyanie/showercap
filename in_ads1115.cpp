@@ -13,7 +13,7 @@ using namespace tk;
 #include "rt_ppg102a1.h"
 
 // The reference voltage seems pretty stable at 3.284600 V, and we can save 8 ms by not checking it.
-#define REF (26276.0*4.0)
+#define REF (26276.0*2.0)
 
 #define ONESHOT 0b1000000000000000
 #define MUX0G   0b0100000000000000
@@ -22,6 +22,8 @@ using namespace tk;
 #define PGA2    0b0000010000000000
 #define PGA3    0b0000100000000000
 #define MODESS  0b0000000100000000
+#define DR32    0b0000000001000000
+#define DR64    0b0000000001100000
 #define DR128   0b0000000010000000
 #define CMPOFF  0b0000000000000011
 
@@ -29,7 +31,8 @@ using namespace tk;
 #define PGA2048V (PGA2)
 #define PGA1024V (PGA2|PGA1)
 
-#define READTEMP (ONESHOT|MUX0G|PGA1024V|MODESS|DR128|CMPOFF)
+#define READTEMP (ONESHOT|MUX0G|PGA2048V|MODESS|DR64|CMPOFF)
+#define DELAY 16 // 64 sps = 15.625 ms/s
 
 static spline thermistor_spline;
 
@@ -57,7 +60,7 @@ double Input_ADS1115::read() {
     /*
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
     // 128 SPS = ~7.8 ms/read
-    delay(8);
+	delay(DELAY);
 
     int ref = bswap16(wiringPiI2CReadReg16(dev, 0x00));
     double v = 4.096 / (32767.0 / (double)ref);
@@ -67,9 +70,9 @@ double Input_ADS1115::read() {
     if (millis() - last > 100) {
         wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
         last = millis();
-        delay(8);
-    } else if (millis() - last < 8) {
-        delay(8 - (millis() - last));
+		delay(DELAY);
+	} else if (millis() - last < DELAY) {
+		delay(DELAY - (millis() - last));
     }
 
     int data = bswap16(wiringPiI2CReadReg16(dev, 0x00));

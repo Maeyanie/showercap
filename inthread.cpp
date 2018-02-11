@@ -15,6 +15,8 @@ void InThread::run()
 	Input* in = mw->input;
 
 	while (!QThread::currentThread()->isInterruptionRequested()) {
+		if (!mw->onOff) delay(100);
+
 		qreal curTemp = in->read();
 		emit update(curTemp);
 	}
