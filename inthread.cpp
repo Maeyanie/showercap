@@ -13,11 +13,13 @@ void InThread::run()
 {
 	MainWindow* mw = (MainWindow*)this->parent();
 	Input* in = mw->input;
+	qreal value = 0.0;
 
 	while (!QThread::currentThread()->isInterruptionRequested()) {
 		if (!mw->onOff) delay(100);
 
-		qreal curTemp = in->read();
-		emit update(curTemp);
+		value += in->read();
+		value /= 2;
+		emit update(value);
 	}
 }
