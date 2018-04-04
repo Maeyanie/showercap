@@ -4,7 +4,7 @@
 #include <QTextStream>
 #include <cmath>
 
-#define SYNCTIMER 2000
+#define SYNCTIMER 5000
 #define DESYNCTIMER 5000
 
 OutThread::OutThread(QObject* parent) : QThread(parent)
