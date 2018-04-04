@@ -1,5 +1,6 @@
 #include "iothread.h"
 #include "mainwindow.h"
+#include "pointcloud.h"
 #include "config.h"
 #include <QTextStream>
 #include <cmath>
@@ -26,6 +27,7 @@ void OutThread::run()
     bool on = 0;
 	bool sync = 0;
 	QDateTime* syncTime = NULL;
+	Pointcloud startPoints("startPoints");
 
     output = mw->output;
     onOff = mw->onOff;
@@ -101,6 +103,7 @@ void OutThread::run()
 				sync = 1;
 				if (qIsNaN(home)) home = output->get();
 				printf("pidthread: Sync timer hit %d ms, now in sync. Home position is %.2lf\n", SYNCTIMER, home);
+				startPoints.add(QPoint(setTemp, output->get()));
 			}
 		} else if (sync && fabs(error) > 1.0) {
 			if (!syncTime) {

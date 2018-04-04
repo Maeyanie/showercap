@@ -32,7 +32,7 @@ Output_Stepper::~Output_Stepper() {
 }
 
 void Output_Stepper::save() {
-	//settings->setValue("stepperpos", position);
+	settings->setValue("stepperpos", position);
 }
 
 void Output_Stepper::on() {

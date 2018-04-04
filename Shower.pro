@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     in_ads1115.cpp \
     in_ltc2451.cpp \
     outthread.cpp \
-    inthread.cpp
+    inthread.cpp \
+    pointcloud.cpp
 
 HEADERS  += mainwindow.h \
     config.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     qpresetbutton.h \
     settings.h \
     iodriver.h \
-    iothread.h
+    iothread.h \
+    pointcloud.h
 
 FORMS    += mainwindow.ui \
     settempdialog.ui
