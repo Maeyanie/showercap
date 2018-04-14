@@ -15,6 +15,7 @@ void InThread::run()
 	Input* in = mw->input;
 	qreal value = 0.0;
 
+	printf("[InThread] Starting.\n");
 	while (!QThread::currentThread()->isInterruptionRequested()) {
 		if (!mw->onOff) delay(100);
 
@@ -22,4 +23,5 @@ void InThread::run()
 		value /= 2;
 		emit update(value);
 	}
+	printf("[InThread] Ending.\n");
 }

@@ -61,6 +61,7 @@ DISTFILES += \
     update.sh \
     showercap-overlay.dts \
     setup.sh \
-    notes.txt
+    notes.txt \
+    datapoints.txt
 
 RESOURCES +=

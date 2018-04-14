@@ -57,6 +57,7 @@ Input_ADS1115::Input_ADS1115() {
 
 double Input_ADS1115::read() {
     static unsigned int last;
+	unsigned int now = millis();
     /*
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
     // 128 SPS = ~7.8 ms/read
@@ -67,12 +68,12 @@ double Input_ADS1115::read() {
     ref *= 2; // ref is read at half the gain of temperature.
     printf("[Thermistor] Ref:  %d (%x) = %lf v\n", ref, ref, v);
     */
-    if (millis() - last > 100) {
+	if (now - last > 100) {
         wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
-        last = millis();
+		last = now;
 		delay(DELAY);
-	} else if (millis() - last < DELAY) {
-		delay(DELAY - (millis() - last));
+	} else if (DELAY > (now - last)) {
+		delay(DELAY - (now - last));
     }
 
     int data = bswap16(wiringPiI2CReadReg16(dev, 0x00));
@@ -86,7 +87,7 @@ double Input_ADS1115::read() {
     //printf("[Thermistor] Temperature: %lf C\n", t);
 
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
-    last = millis();
+	last = now;
 
     return t;
 }
