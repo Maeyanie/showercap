@@ -96,12 +96,12 @@ void OutThread::run()
 		if (!sync && fabs(error) < 0.2) {
 			if (!syncTime) {
 				syncTime = new QDateTime(QDateTime::currentDateTime());
-				printf("pidthread: Sync gained at %s, starting timer.\n", syncTime->toString("%mm:%ss.%zzz"));
+				printf("pidthread: Sync gained at %s, starting timer.\n", syncTime->toString("%mm:%ss.%zzz").toStdString().c_str());
 			} else if (syncTime->msecsTo(QDateTime::currentDateTime()) >= SYNCTIMER) {
 				sync = 1;
 				if (qIsNaN(home)) home = output->get();
 				printf("pidthread: Sync timer hit %d ms at %s, now in sync. Home position is %.2lf\n",
-					   SYNCTIMER, syncTime->toString("%mm:%ss.%zzz"), home);
+					   SYNCTIMER, syncTime->toString("%mm:%ss.%zzz").toStdString().c_str(), home);
 				delete syncTime;
 				syncTime = NULL;
 				startPoints.add(QPoint(setTemp, output->get()));
