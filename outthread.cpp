@@ -96,13 +96,13 @@ void OutThread::run()
 		if (!sync && fabs(error) < 0.2) {
 			if (!syncTime) {
 				syncTime = new QDateTime(QDateTime::currentDateTime());
-				printf("pidthread: Sync gained, starting timer.\n");
+				printf("pidthread: Sync gained at "+syncTime->toTime_t()+", starting timer.\n");
 			} else if (syncTime->msecsTo(QDateTime::currentDateTime()) >= SYNCTIMER) {
-				delete syncTime;
-				syncTime = NULL;
 				sync = 1;
 				if (qIsNaN(home)) home = output->get();
-				printf("pidthread: Sync timer hit %d ms, now in sync. Home position is %.2lf\n", SYNCTIMER, home);
+				printf("pidthread: Sync timer hit %d ms at "+syncTime->toTime_t()+", now in sync. Home position is %.2lf\n", SYNCTIMER, home);
+				delete syncTime;
+				syncTime = NULL;
 				startPoints.add(QPoint(setTemp, output->get()));
 			}
 		} else if (sync && fabs(error) > 1.0) {
@@ -116,6 +116,9 @@ void OutThread::run()
 				printf("pidthread: Sync timer hit %d ms, assuming out of hot water and giving up.\n", DESYNCTIMER);
 				emit noHotWater();
 			}
+		} else if (syncTime) {
+			delete syncTime;
+			syncTime = NULL;
 		}
 
         // track error over time, scaled to the timer interval
