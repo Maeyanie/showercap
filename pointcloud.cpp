@@ -1,8 +1,8 @@
 #include "pointcloud.h"
 #include "settings.h"
 
-#include <interpolation.h>
-using namespace alglib;
+//#include <interpolation.h>
+//using namespace alglib;
 
 #define CLOUDSIZE 1024
 
@@ -49,4 +49,5 @@ int Pointcloud::get(int x) {
 	for (QList<QPoint>::iterator i = data.begin(); i != data.end(); i++) {
 
 	}
+	return 0;
 }
