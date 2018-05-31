@@ -68,7 +68,7 @@ double Input_ADS1115::read() {
     ref *= 2; // ref is read at half the gain of temperature.
     printf("[Thermistor] Ref:  %d (%x) = %lf v\n", ref, ref, v);
     */
-	if (now - last > 100) {
+    if (now > last + 100 || now < last) {
         wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
 		last = now;
 		delay(DELAY);
