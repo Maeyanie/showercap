@@ -61,6 +61,11 @@ FRAMSettings::FRAMSettings() {
 	write(i2c, data, 2);
 	assert(read(i2c, data, 1) == 1);
 	page = data[0];
+    if (page > FRAMPAGES) {
+        fprintf(stderr, "[FRAMSettings] Error: FRAM specifies current page as %hhu of %d. Not loading.\n", page, FRAMPAGES);
+        page = 0;
+        return;
+    }
 	printf("[FRAMSettings] Loading from page %hhu.\n", page);
 
 	unsigned short ver;
@@ -69,11 +74,18 @@ FRAMSettings::FRAMSettings() {
 	data[1] = 4 + (4*page);
 	write(i2c, data, 2);
 	read(i2c, &ver, 2);
-	assert(ver == 1);
+    if (ver != 1) {
+        fprintf(stderr, "[FRAMSettings] Error: FRAM page saved with version %hu (expected 1). Not loading.\n", ver);
+        return;
+    }
 	read(i2c, &len, 2);
-	assert(len <= FRAMPAGESIZE);
+    if (len > FRAMPAGESIZE) {
+        fprintf(stderr, "[FRAMSettings] Error: FRAM page reports length %hu of %d. Not loading.\n", len, FRAMPAGESIZE);
+        return;
+    }
 
 	unsigned short pos = FRAMHEADER + (FRAMPAGESIZE * page);
+    printf("[FRAMSettings] Loading %hu bytes at position %hu.\n", len, pos);
 	data[0] = (pos & 0xFF00) >> 8;
 	data[1] = (pos & 0x00FF);
 	write(i2c, data, 2);
