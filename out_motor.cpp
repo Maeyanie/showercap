@@ -58,7 +58,7 @@ qint8 Output_Motor::mod(double d) {
 
     if (d > 100) d = 100;
     else if (d < -100) d = -100;
-    v = (512 * abs(d)) / 100;
+    v = (512 * abs((int)d)) / 100;
 
     if (d > DEADBAND) {
         if (hotflag) return 1;

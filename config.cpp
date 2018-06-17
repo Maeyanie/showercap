@@ -24,11 +24,11 @@ Config::Config()
 	config.timeStr = "h:mm A";
 	config.dateStr = "ddd, MMM d, yyyy";
 
-    QFile file(ETCDIR"/showercap.conf");
+    QFile file(ETCDIR "/showercap.conf");
     QString line;
 
     if (!file.open(QIODevice::ReadOnly)) {
-        QTextStream(stderr) << "[Config] Warning: Could not open "ETCDIR"/showercap.conf. Using defaults." << endl;
+        QTextStream(stderr) << "[Config] Warning: Could not open " ETCDIR "/showercap.conf. Using defaults." << endl;
         return;
     }
 
