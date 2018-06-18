@@ -38,13 +38,18 @@ QVariant FileSettings::value(const QString& key, const QVariant& defaultValue) c
 
 /* Header Format:
  * 0: last written page
- * 1-3: reserved
+ * 1: header version
+ * 2-3: reserved
  *
  * 4-5: page0 version
  * 6-7: page0 size
+ * 8-9: page0 crc16
+ * 10-11: reserved
  *
- * 8-9: page1 version
- * 10-11: page1 size
+ * 12-13: page1 version
+ * 14-15: page1 size
+ * 16-17: page1 crc16
+ * 18-19: reserved
  * ...
  */
 FRAMSettings::FRAMSettings() {
@@ -59,17 +64,23 @@ FRAMSettings::FRAMSettings() {
 	data[0] = 0;
 	data[1] = 0;
 	write(i2c, data, 2);
-	assert(read(i2c, data, 1) == 1);
+    assert(read(i2c, data, 2) == 2);
 	page = data[0];
     if (page > FRAMPAGES) {
         fprintf(stderr, "[FRAMSettings] Error: FRAM specifies current page as %hhu of %d. Not loading.\n", page, FRAMPAGES);
         page = 0;
         return;
     }
+    if (data[1] != 1) {
+        fprintf(stderr, "[FRAMSettings] Error: FRAM header specifies version %hhu, expected 1. Not loading.\n", data[1]);
+        return;
+    }
 	printf("[FRAMSettings] Loading from page %hhu.\n", page);
 
-	unsigned short ver;
-	unsigned short len;
+
+    quint16 ver;
+    quint16 len;
+    quint16 crc;
 	data[0] = 0;
 	data[1] = 4 + (4*page);
 	write(i2c, data, 2);
@@ -83,6 +94,7 @@ FRAMSettings::FRAMSettings() {
         fprintf(stderr, "[FRAMSettings] Error: FRAM page reports length %hu of %d. Not loading.\n", len, FRAMPAGESIZE);
         return;
     }
+    read(i2c, &crc, 2);
 
 	unsigned short pos = FRAMHEADER + (FRAMPAGESIZE * page);
     printf("[FRAMSettings] Loading %hu bytes at position %hu.\n", len, pos);
@@ -91,12 +103,19 @@ FRAMSettings::FRAMSettings() {
 	write(i2c, data, 2);
 	assert(read(i2c, data, len) == len);
 
+    qint16 checkcrc = qChecksum(data, len);
+    if (checkcrc != crc) {
+        fprintf(stderr, "[FRAMSettings] Error: Bad CRC16. Calculated %hx, expected %hx. Not loading.\n", checkcrc, crc);
+        // For now, exiting for debugging purposes. Change this to "return;" later, or maybe try loading the other page.
+        exit(1);
+    }
+
 	QByteArray bytes(data, len);
 	QDataStream buffer(&bytes, QIODevice::ReadOnly);
 	buffer.setVersion(QDataStream::Qt_5_0);
 	buffer >> map;
 
-	if (++page >= FRAMPAGES) page = 0;
+    if (++page >= FRAMPAGES) page = 0;
 }
 FRAMSettings::~FRAMSettings() {
 	sync();
@@ -127,28 +146,34 @@ void FRAMSettings::sync() {
 	buffer.setVersion(QDataStream::Qt_5_0);
 	buffer << map;
 
-	unsigned short ver = 1;
-	unsigned short len = bytes.size();
-	assert(len <= FRAMPAGESIZE);
+    quint16 ver = 1;
+    quint16 len = bytes.size();
+    quint16 crc = qChecksum(bytes.data(), bytes.size());
+    assert(len <= FRAMPAGESIZE);
 
-	unsigned short pos = FRAMHEADER + (FRAMPAGESIZE * page);
-	char data[bytes.size()+2];
+    quint8 pos = FRAMHEADER + (FRAMPAGESIZE * page);
+    char data[FRAMPAGESIZE];
 	data[0] = (pos & 0xFF00) >> 8;
 	data[1] = (pos & 0x00FF);
 	memcpy(data+2, bytes.data(), bytes.size());
-
-	write(i2c, data, bytes.size()+2);
+    write(i2c, data, bytes.size()+2);
 
 	data[0] = 0;
-	data[1] = 4 + (4*page);
+    data[1] = 4 + (8*page);
 	memcpy(data+2, &ver, 2);
 	memcpy(data+4, &len, 2);
-	write(i2c, data, 6);
+    memcpy(data+6, &crc, 2);
+    data[8] = 0;
+    data[9] = 0;
+    write(i2c, data, 10);
 
 	data[0] = 0;
 	data[1] = 0;
 	data[2] = page;
-	write(i2c, data, 3);
+    data[3] = 1;
+    data[4] = 0;
+    data[5] = 0;
+    write(i2c, data, 6);
 
 	if (++page >= FRAMPAGES) page = 0;
 }
