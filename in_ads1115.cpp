@@ -12,9 +12,6 @@ using namespace tk;
 //#include "rt_usp10972.h"
 #include "rt_ppg102a1.h"
 
-// The reference voltage seems pretty stable at 3.284600 V, and we can save 8 ms by not checking it.
-#define REF (26276.0*2.0)
-
 #define ONESHOT 0b1000000000000000
 #define MUX0G   0b0100000000000000
 #define MUX1G   0b0101000000000000
@@ -31,6 +28,7 @@ using namespace tk;
 #define PGA2048V (PGA2)
 #define PGA1024V (PGA2|PGA1)
 
+#define READREF (ONESHOT|MUX1G|PGA4096V|MODESS|DR32|CMPOFF)
 #define READTEMP (ONESHOT|MUX0G|PGA2048V|MODESS|DR64|CMPOFF)
 #define DELAY 16 // 64 sps = 15.625 ms/s
 
@@ -53,21 +51,25 @@ Input_ADS1115::Input_ADS1115() {
 
 	dev = wiringPiI2CSetup(I2C_ADS1115);
     if (dev == -1) { fprintf(stderr, "Error opening I2C thermistor ADC: %m\n"); exit(1); }
+    delay(100);
+
+    wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
+    delay(DELAY*2);
+
+    ref = bswap16(wiringPiI2CReadReg16(dev, 0x00));
+    double v = 4.096 / (32767.0 / (double)ref);
+    ref *= 2; // ref is read at half the gain of temperature.
+    printf("[Thermistor] Ref:  %d (%x) = %lf v\n", ref, ref, v);
+
+    // Sanity check: 52552 is the value on my Pi2, 53050 on my Pi0W.
+    // If the measured vref is very different from these, it's probably a bad measurement.
+    if (ref > 60000 || ref < 45000) ref = 52750;
 }
 
 double Input_ADS1115::read() {
     static unsigned int last;
 	unsigned int now = millis();
-    /*
-    wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
-    // 128 SPS = ~7.8 ms/read
-	delay(DELAY);
 
-    int ref = bswap16(wiringPiI2CReadReg16(dev, 0x00));
-    double v = 4.096 / (32767.0 / (double)ref);
-    ref *= 2; // ref is read at half the gain of temperature.
-    printf("[Thermistor] Ref:  %d (%x) = %lf v\n", ref, ref, v);
-    */
     if (now > last + 100 || now < last) {
         wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
 		last = now;
@@ -80,7 +82,7 @@ double Input_ADS1115::read() {
     //double v = 2.048 / (32767.0 / (double)data);
     //printf("[Thermistor] Data: %d (%x) = %lf v\n", data, data, v);
 
-    double R = RESISTOR / (REF / (double)data - 1);
+    double R = RESISTOR / (ref / (double)data - 1);
     //printf("[Thermistor] Resistance: %lf Ω\n", R);
 
     double t = thermistor_spline(R);

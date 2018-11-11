@@ -23,6 +23,7 @@ public:
 };
 class Input_ADS1115 : public Input {
     qint32 dev;
+    qint32 ref;
 public:
 	Input_ADS1115();
     virtual double read();
