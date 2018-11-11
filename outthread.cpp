@@ -104,7 +104,7 @@ void OutThread::run()
 					   SYNCTIMER, syncTime->toString("%mm:%ss.%zzz").toStdString().c_str(), home);
 				delete syncTime;
 				syncTime = NULL;
-				startPoints.add(QPoint(setTemp, output->get()));
+                startPoints.add(QPoint(setTemp*10, output->get()));
 			}
 		} else if (sync && fabs(error) > 1.0) {
 			if (!syncTime) {
