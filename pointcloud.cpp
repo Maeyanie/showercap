@@ -4,7 +4,7 @@
 //#include <interpolation.h>
 //using namespace alglib;
 
-#define CLOUDSIZE 1024
+#define CLOUDSIZE 64
 
 Pointcloud::Pointcloud() {
 
@@ -23,12 +23,20 @@ Pointcloud::Pointcloud(const char* n) {
 	}
 }
 
-static bool sortX(QPoint& lhs, QPoint& rhs) {
+static bool sortX(const QPoint& lhs, const QPoint& rhs) {
 	return lhs.x() < rhs.x() ? true : lhs.y() < rhs.y();
 }
 void Pointcloud::add(QPoint point) {
 	data.push_back(point);
-	std::sort(data.begin(), data.end(), sortX);
+
+    // TODO: Not the most efficient sort ever, but it'll do for now.
+    for (int i = 0; i < data.size()-1; i++) {
+        if (!sortX(data[i], data[i+1])) {
+            data.swap(i, i+1);
+            i = -1;
+        }
+    }
+
 	while (data.size() > CLOUDSIZE) {
 		// TODO: Change this to remove the least-useful point.
 		// Currently removes a random entry, but never the first or last.
