@@ -51,10 +51,10 @@ Input_ADS1115::Input_ADS1115() {
 
 	dev = wiringPiI2CSetup(I2C_ADS1115);
     if (dev == -1) { fprintf(stderr, "Error opening I2C thermistor ADC: %m\n"); exit(1); }
-    delay(100);
+    msleep(100);
 
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
-    delay(DELAY*2);
+    msleep(DELAY*2);
 
     ref = bswap16(wiringPiI2CReadReg16(dev, 0x00));
     double v = 4.096 / (32767.0 / (double)ref);
@@ -73,9 +73,9 @@ double Input_ADS1115::read() {
     if (now > last + 100 || now < last) {
         wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
 		last = now;
-		delay(DELAY);
+        msleep(DELAY);
 	} else if (DELAY > (now - last)) {
-		delay(DELAY - (now - last));
+        msleep(DELAY - (now - last));
     }
 
     int data = bswap16(wiringPiI2CReadReg16(dev, 0x00));

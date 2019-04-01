@@ -43,9 +43,9 @@ double Input_LTC2451::read() {
 	if (millis() - last > 100) {
 		wiringPiI2CRead(dev); // Read the stale conversion and throw it out.
 		last = millis();
-		delay(DELAY);
+        msleep(DELAY);
 	} else if (millis() - last < DELAY) {
-		delay(DELAY - (millis() - last));
+        msleep(DELAY - (millis() - last));
 	}
 
 	int data = wiringPiI2CRead(dev);

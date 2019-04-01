@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <QSettings>
 #include "iodriver.h"
+#include "iothread.h"
 #include "config.h"
 
 #define PULSETIME -1
@@ -29,7 +30,7 @@ static void pulseSolenoid() {
     } else if (PULSETIME > 0) {
 		printf("[OnOff_DoubleSolenoid] Solenoid pulse: %d ms.\n", PULSETIME);
         digitalWrite(ONOFFPIN, 1);
-        delay(PULSETIME);
+        msleep(PULSETIME);
         digitalWrite(ONOFFPIN, 0);
     }
 }

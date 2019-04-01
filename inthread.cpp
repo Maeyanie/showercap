@@ -17,7 +17,7 @@ void InThread::run()
 
 	printf("[InThread] Starting.\n");
 	while (!QThread::currentThread()->isInterruptionRequested()) {
-		if (!mw->onOff) delay(100);
+        if (!mw->onOff) msleep(100);
 
 		value += in->read();
 		value /= 2;

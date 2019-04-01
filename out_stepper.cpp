@@ -1,6 +1,7 @@
 #include <wiringPi.h>
 #include <cstdio>
 #include "iodriver.h"
+#include "iothread.h"
 #include "config.h"
 #include "settings.h"
 
@@ -63,29 +64,29 @@ void Output_Stepper::set(double v) {
 		duration = ((v - position) * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(DIRPIN, 1);
 		digitalWrite(ENABLEPIN, 0);
-		delay(5);
+        msleep(5);
 		while (v >= position+1) {
 			digitalWrite(STEPPIN, 1);
-			delayMicroseconds(STEPTIME);
+            usleep(STEPTIME);
 			digitalWrite(STEPPIN, 0);
-			delayMicroseconds(STEPTIME);
+            usleep(STEPTIME);
 			position++;
 		}
-		delay(5);
+        msleep(5);
 		digitalWrite(ENABLEPIN, 1);
 	} else if (v <= position-1) {
 		duration = ((position - v) * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(DIRPIN, 0);
 		digitalWrite(ENABLEPIN, 0);
-		delay(5);
+        msleep(5);
 		while (v <= position-1) {
 			digitalWrite(STEPPIN, 1);
-			delayMicroseconds(STEPTIME);
+            usleep(STEPTIME);
 			digitalWrite(STEPPIN, 0);
-			delayMicroseconds(STEPTIME);
+            usleep(STEPTIME);
 			position--;
 		}
-		delay(5);
+        msleep(5);
 		digitalWrite(ENABLEPIN, 1);
 	} else {
 		duration = 0;
@@ -106,15 +107,15 @@ qint8 Output_Stepper::mod(double d) {
 		duration = (d * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(ENABLEPIN, 0);
 		digitalWrite(DIRPIN, 1);
-		delay(5);
+        msleep(5);
 		for (int i = 0; i < d; i++) {
 			digitalWrite(STEPPIN, 1);
-			delayMicroseconds(STEPTIME);
+            usleep(STEPTIME);
 			digitalWrite(STEPPIN, 0);
-			delayMicroseconds(STEPTIME);
+            usleep(STEPTIME);
 			position++;
 		}
-		delay(5);
+        msleep(5);
 		digitalWrite(ENABLEPIN, 1);
 		frac = 0.0;
 	} else if (d < -1.0) {
@@ -122,15 +123,15 @@ qint8 Output_Stepper::mod(double d) {
 		duration = (-d * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(ENABLEPIN, 0);
 		digitalWrite(DIRPIN, 0);
-		delay(5);
+        msleep(5);
 		for (int i = 0; i < -d; i++) {
 			digitalWrite(STEPPIN, 1);
-			delayMicroseconds(STEPTIME);
+            usleep(STEPTIME);
 			digitalWrite(STEPPIN, 0);
-			delayMicroseconds(STEPTIME);
+            usleep(STEPTIME);
 			position--;
 		}
-		delay(5);
+        msleep(5);
 		digitalWrite(ENABLEPIN, 1);
 		frac = 0.0;
 	} else {

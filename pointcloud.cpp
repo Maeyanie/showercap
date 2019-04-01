@@ -30,6 +30,8 @@ void Pointcloud::add(QPoint point) {
 	data.push_back(point);
 
     // TODO: Not the most efficient sort ever, but it'll do for now.
+    // For some reason, despite it being the official recommendation,
+    // using std::sort crashes.
     for (int i = 0; i < data.size()-1; i++) {
         if (!sortX(data[i], data[i+1])) {
             data.swap(i, i+1);

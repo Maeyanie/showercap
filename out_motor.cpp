@@ -2,6 +2,7 @@
 #include <wiringPiI2C.h>
 #include <cstdio>
 #include "iodriver.h"
+#include "iothread.h"
 #include "config.h"
 
 static Output_Motor* omotor;
@@ -85,12 +86,12 @@ qint8 Output_Motor::mod(double d) {
         if (v < MINPWM) {
             int t = (double)(CYCLETIME*1000.0) * ((double)v/(double)MINPWM);
             pwmWrite(PWMPIN, MINPWM);
-            delayMicroseconds(t);
+            usleep(t);
             pwmWrite(PWMPIN, 0);
-            delayMicroseconds((CYCLETIME*1000)-t);
+            usleep((CYCLETIME*1000)-t);
         } else {
             pwmWrite(PWMPIN, v);
-            delay(CYCLETIME);
+            msleep(CYCLETIME);
         }
     } else if (d < -DEADBAND) {
         if (coldflag) return -1;
@@ -117,12 +118,12 @@ qint8 Output_Motor::mod(double d) {
         if (v < MINPWM) {
             int t = (double)(CYCLETIME*1000.0) * ((double)v/(double)MINPWM);
             pwmWrite(PWMPIN, MINPWM);
-            delayMicroseconds(t);
+            usleep(t);
             pwmWrite(PWMPIN, 0);
-            delayMicroseconds((CYCLETIME*1000)-t);
+            usleep((CYCLETIME*1000)-t);
         } else {
             pwmWrite(PWMPIN, v);
-            delay(CYCLETIME);
+            msleep(CYCLETIME);
         }
     } else {
         if (dir != 0) {
@@ -130,7 +131,7 @@ qint8 Output_Motor::mod(double d) {
             digitalWrite(COLDPIN, 0);
             pwmWrite(PWMPIN, 0);
         }
-        delay(CYCLETIME);
+        msleep(CYCLETIME);
     }
     return 0;
 }

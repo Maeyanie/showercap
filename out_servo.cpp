@@ -3,6 +3,7 @@
 #include <wiringPiI2C.h>
 #include <cstdio>
 #include "iodriver.h"
+#include "iothread.h"
 #include "config.h"
 
 Output_Servo::Output_Servo() {
@@ -24,7 +25,7 @@ void Output_Servo::on() {
     wiringPiI2CWriteReg8(dev, 0x08, 0);
     wiringPiI2CWriteReg8(dev, 0x09, 0);
     wiringPiI2CWriteReg8(dev, 0x00, 0b00000001);
-    delay(1);
+    msleep(1);
 }
 void Output_Servo::off() {
     wiringPiI2CWriteReg8(dev, 0x00, 0b00010001);

@@ -57,16 +57,16 @@ void OutThread::run()
 				if (mw->getTab() == 0 && !qIsNaN(home)) {
 					printf("[pidthread] Returning to home position %.1lf\n", home);
 					output->on();
-					delay(100);
+                    msleep(100);
 					output->set(home);
 					printf("[pidthread] Done in %lld ms.\n", now.msecsTo(QDateTime::currentDateTime()));
-					delay(100);
+                    msleep(100);
 					output->off();
 					home = qSNaN();
 				}
 			}
             last = now;
-            delay(100);
+            msleep(100);
             continue;
         }
         if (!on) {
@@ -86,7 +86,7 @@ void OutThread::run()
 
         if (start.msecsTo(now) < 15000 && curTemp < setTemp) { // 15-second warmup time
             last = now;
-            delay(100);
+            msleep(100);
             continue;
         }
 
@@ -150,6 +150,6 @@ void OutThread::run()
         }
 
 		d = output->time(0);
-        if (d > 0) delay(d);
+        if (d > 0) msleep(d);
     }
 }
