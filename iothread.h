@@ -6,7 +6,7 @@
 #include <QFile>
 #include "iodriver.h"
 
-extern inline void usleep(qint64 us)
+extern inline void usleep(qint32 us)
 {
     if (us <= 0) return;
 #ifdef Q_OS_WIN
