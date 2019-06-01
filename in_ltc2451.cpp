@@ -1,5 +1,6 @@
 #include <QTypeInfo>
 #include <vector>
+#include <unistd.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include "iothread.h"
@@ -43,9 +44,9 @@ double Input_LTC2451::read() {
 	if (millis() - last > 100) {
 		wiringPiI2CRead(dev); // Read the stale conversion and throw it out.
 		last = millis();
-        msleep(DELAY);
+        usleep(DELAY*1000);
 	} else if (millis() - last < DELAY) {
-        msleep(DELAY - (millis() - last));
+        usleep((DELAY - (millis() - last)) * 1000);
 	}
 
 	int data = wiringPiI2CRead(dev);

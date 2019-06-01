@@ -1,5 +1,6 @@
 #include <QTypeInfo>
 #include <vector>
+#include <unistd.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include "iothread.h"
@@ -51,10 +52,10 @@ Input_ADS1115::Input_ADS1115() {
 
 	dev = wiringPiI2CSetup(I2C_ADS1115);
     if (dev == -1) { fprintf(stderr, "Error opening I2C thermistor ADC: %m\n"); exit(1); }
-    msleep(100);
+    usleep(100000);
 
     wiringPiI2CWriteReg16(dev, 0x01, bswap16(READREF));
-    msleep(DELAY*2);
+    usleep(DELAY*2000);
 
     ref = bswap16(wiringPiI2CReadReg16(dev, 0x00));
     double v = 4.096 / (32767.0 / (double)ref);
@@ -73,9 +74,9 @@ double Input_ADS1115::read() {
     if (now > last + 100 || now < last) {
         wiringPiI2CWriteReg16(dev, 0x01, bswap16(READTEMP));
 		last = now;
-        msleep(DELAY);
+        usleep(DELAY*1000);
 	} else if (DELAY > (now - last)) {
-        msleep(DELAY - (now - last));
+        usleep((DELAY - (now - last)) * 1000);
     }
 
     int data = bswap16(wiringPiI2CReadReg16(dev, 0x00));
