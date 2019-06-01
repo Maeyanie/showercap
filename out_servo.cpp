@@ -1,4 +1,5 @@
 #include <QTypeInfo>
+#include <unistd.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <cstdio>
@@ -25,7 +26,7 @@ void Output_Servo::on() {
     wiringPiI2CWriteReg8(dev, 0x08, 0);
     wiringPiI2CWriteReg8(dev, 0x09, 0);
     wiringPiI2CWriteReg8(dev, 0x00, 0b00000001);
-    msleep(1);
+    usleep(1000);
 }
 void Output_Servo::off() {
     wiringPiI2CWriteReg8(dev, 0x00, 0b00010001);

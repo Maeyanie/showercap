@@ -1,6 +1,7 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <cstdio>
+#include <unistd.h>
 #include "iodriver.h"
 #include "iothread.h"
 #include "config.h"
@@ -91,7 +92,7 @@ qint8 Output_Motor::mod(double d) {
             usleep((CYCLETIME*1000)-t);
         } else {
             pwmWrite(PWMPIN, v);
-            msleep(CYCLETIME);
+            usleep(CYCLETIME*1000);
         }
     } else if (d < -DEADBAND) {
         if (coldflag) return -1;
@@ -123,7 +124,7 @@ qint8 Output_Motor::mod(double d) {
             usleep((CYCLETIME*1000)-t);
         } else {
             pwmWrite(PWMPIN, v);
-            msleep(CYCLETIME);
+            usleep(CYCLETIME*1000);
         }
     } else {
         if (dir != 0) {
@@ -131,7 +132,7 @@ qint8 Output_Motor::mod(double d) {
             digitalWrite(COLDPIN, 0);
             pwmWrite(PWMPIN, 0);
         }
-        msleep(CYCLETIME);
+        sleep(CYCLETIME*1000);
     }
     return 0;
 }

@@ -1,6 +1,7 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <cstdio>
+#include <unistd.h>
 #include <QSettings>
 #include "iodriver.h"
 #include "iothread.h"
@@ -30,7 +31,7 @@ static void pulseSolenoid() {
     } else if (PULSETIME > 0) {
 		printf("[OnOff_DoubleSolenoid] Solenoid pulse: %d ms.\n", PULSETIME);
         digitalWrite(ONOFFPIN, 1);
-        msleep(PULSETIME);
+        usleep(PULSETIME*1000);
         digitalWrite(ONOFFPIN, 0);
     }
 }

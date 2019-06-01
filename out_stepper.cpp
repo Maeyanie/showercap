@@ -1,5 +1,6 @@
 #include <wiringPi.h>
 #include <cstdio>
+#include <unistd.h>
 #include "iodriver.h"
 #include "iothread.h"
 #include "config.h"
@@ -64,7 +65,7 @@ void Output_Stepper::set(double v) {
 		duration = ((v - position) * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(DIRPIN, 1);
 		digitalWrite(ENABLEPIN, 0);
-        msleep(5);
+        usleep(5000);
 		while (v >= position+1) {
 			digitalWrite(STEPPIN, 1);
             usleep(STEPTIME);
@@ -72,13 +73,13 @@ void Output_Stepper::set(double v) {
             usleep(STEPTIME);
 			position++;
 		}
-        msleep(5);
+        usleep(5000);
 		digitalWrite(ENABLEPIN, 1);
 	} else if (v <= position-1) {
 		duration = ((position - v) * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(DIRPIN, 0);
 		digitalWrite(ENABLEPIN, 0);
-        msleep(5);
+        usleep(5000);
 		while (v <= position-1) {
 			digitalWrite(STEPPIN, 1);
             usleep(STEPTIME);
@@ -86,7 +87,7 @@ void Output_Stepper::set(double v) {
             usleep(STEPTIME);
 			position--;
 		}
-        msleep(5);
+        usleep(5000);
 		digitalWrite(ENABLEPIN, 1);
 	} else {
 		duration = 0;
@@ -107,7 +108,7 @@ qint8 Output_Stepper::mod(double d) {
 		duration = (d * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(ENABLEPIN, 0);
 		digitalWrite(DIRPIN, 1);
-        msleep(5);
+        usleep(5000);
 		for (int i = 0; i < d; i++) {
 			digitalWrite(STEPPIN, 1);
             usleep(STEPTIME);
@@ -115,7 +116,7 @@ qint8 Output_Stepper::mod(double d) {
             usleep(STEPTIME);
 			position++;
 		}
-        msleep(5);
+        usleep(5000);
 		digitalWrite(ENABLEPIN, 1);
 		frac = 0.0;
 	} else if (d < -1.0) {
@@ -123,7 +124,7 @@ qint8 Output_Stepper::mod(double d) {
 		duration = (-d * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(ENABLEPIN, 0);
 		digitalWrite(DIRPIN, 0);
-        msleep(5);
+        usleep(5000);
 		for (int i = 0; i < -d; i++) {
 			digitalWrite(STEPPIN, 1);
             usleep(STEPTIME);
@@ -131,7 +132,7 @@ qint8 Output_Stepper::mod(double d) {
             usleep(STEPTIME);
 			position--;
 		}
-        msleep(5);
+        usleep(5000);
 		digitalWrite(ENABLEPIN, 1);
 		frac = 0.0;
 	} else {
