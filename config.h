@@ -39,6 +39,7 @@ public:
     QString sensorFile;
     qint32 maxTemp;
     qreal Kp, Ki, Kd;
+    qint32 warmupTime;
 
 	bool useF;
 	QString timeStr;

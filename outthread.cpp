@@ -84,7 +84,7 @@ void OutThread::run()
 			}
         }
 
-        if (start.msecsTo(now) < 15000 && curTemp < setTemp) { // 15-second warmup time
+        if (start.msecsTo(now) < config.warmupTime && curTemp < setTemp) {
             last = now;
             msleep(100);
             continue;
@@ -150,6 +150,7 @@ void OutThread::run()
         }
 
 		d = output->time(0);
+        if (d > 1000) d = 1000;
         if (d > 0) msleep(d);
     }
 }

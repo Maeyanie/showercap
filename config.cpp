@@ -21,7 +21,8 @@ Config::Config()
     config.Kp = 5.0;
     config.Ki = 0.0;
     config.Kd = 0.1;
-	config.timeStr = "h:mm A";
+    config.warmupTime = 15;
+    config.timeStr = "h:mm A";
 	config.dateStr = "ddd, MMM d, yyyy";
 
     QFile file(ETCDIR "/showercap.conf");
@@ -85,6 +86,9 @@ Config::Config()
 		} else if (key == "D") {
             config.Kd = parts.at(1).toDouble();
             QTextStream(stdout) << "[Config] Set D to " << config.Kd << endl;
+        } else if (key == "WarmupTime") {
+            config.warmupTime = parts.at(1).toInt();
+            QTextStream(stdout) << "[Config] Set WarmupTime to " << config.warmupTime << endl;
 		} else if (key == "TimeFormat") {
 			config.timeStr = parts.at(1);
 			QTextStream(stdout) << "[Config] Set TimeFormat to " << config.timeStr << endl;
