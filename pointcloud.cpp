@@ -1,5 +1,6 @@
 #include "pointcloud.h"
 #include "settings.h"
+using namespace std;
 
 //#include <interpolation.h>
 //using namespace alglib;
@@ -10,7 +11,7 @@ Pointcloud::Pointcloud() {
 
 }
 
-Pointcloud::Pointcloud(QList<QPoint> d) {
+Pointcloud::Pointcloud(list<QPoint> d) {
 	data = d;
 }
 
@@ -27,14 +28,15 @@ static bool sortX(const QPoint& lhs, const QPoint& rhs) {
 	return lhs.x() < rhs.x() ? true : lhs.y() < rhs.y();
 }
 void Pointcloud::add(QPoint point) {
-    QList<QPoint>::iterator i = data.begin();
+    list<QPoint>::iterator i = data.begin();
     while (true) {
         if (i == data.end()) {
-            data.append(point);
+            data.push_back(point);
             break;
         }
         if (sortX(*i, point)) {
             data.insert(i, point);
+            break;
         }
         i++;
     }
@@ -54,14 +56,19 @@ void Pointcloud::add(QPoint point) {
 	while (data.size() > CLOUDSIZE) {
 		// TODO: Change this to remove the least-useful point.
 		// Currently removes a random entry, but never the first or last.
-		data.removeAt((rand() % (data.size()-2)) + 1);
+        //data.removeAt((rand() % (data.size()-2)) + 1);
+
+        qint32 r = (rand() % (data.size()-2)) + 1;
+        list<QPoint>::iterator i = data.begin();
+        for (qint32 j = 0; j < r; j++) i++;
+        data.erase(i);
 	}
 	save();
 }
 
 void Pointcloud::save() {
 	QList<QVariant> list;
-	for (QList<QPoint>::iterator i = data.begin(); i != data.end(); i++) {
+    for (std::list<QPoint>::iterator i = data.begin(); i != data.end(); i++) {
 		list.push_back(*i);
 	}
 	settings->setValue(name, list);
@@ -71,7 +78,7 @@ int Pointcloud::get(int x) {
     int total;
     int count;
 
-	for (QList<QPoint>::iterator i = data.begin(); i != data.end(); i++) {
+    for (list<QPoint>::iterator i = data.begin(); i != data.end(); i++) {
         if (i->x() == x) {
             total += i->y();
             count++;

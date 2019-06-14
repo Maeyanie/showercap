@@ -4,6 +4,7 @@
 #include <QList>
 #include <QPoint>
 #include <vector>
+#include <list>
 #include <algorithm>
 
 #include "spline.h"
@@ -11,11 +12,11 @@
 class Pointcloud {
 private:
 	const char* name;
-	QList<QPoint> data;
+    std::list<QPoint> data;
 
 public:
 	Pointcloud();
-	Pointcloud(QList<QPoint> data);
+    Pointcloud(std::list<QPoint> data);
 	Pointcloud(const char* name);
 
 	void add(QPoint point);
