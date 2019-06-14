@@ -21,7 +21,7 @@ Config::Config()
     config.Kp = 5.0;
     config.Ki = 0.0;
     config.Kd = 0.1;
-    config.warmupTime = 15;
+    config.warmupTime = 15000;
     config.timeStr = "h:mm A";
 	config.dateStr = "ddd, MMM d, yyyy";
 
