@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QMutex>
 #include <QPushButton>
+#include <QTabBar>
 #include <wiringPi.h>
 #include "iothread.h"
 #include "qpresetbutton.h"
