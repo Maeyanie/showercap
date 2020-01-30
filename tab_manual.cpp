@@ -24,10 +24,21 @@ void MainWindow::on_onButtonManual_clicked() {
     tick();
 }
 
-
 void MainWindow::on_offButtonManual_clicked() {
     onOff->off();
     output->off();
+    tick();
+}
+
+void MainWindow::on_bathButtonManual_clicked()
+{
+    onOff->bath();
+    tick();
+}
+
+void MainWindow::on_showerButtonManual_clicked()
+{
+    onOff->shower();
     tick();
 }
 

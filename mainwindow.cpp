@@ -72,10 +72,8 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     if (bathMode) {
-        ui->bathButton->setChecked(true);
         onOff->bath();
     } else {
-        ui->showerButton->setChecked(true);
         onOff->shower();
     }
 
@@ -258,14 +256,10 @@ void MainWindow::tickHome() {
 void MainWindow::setMode(qint32 mode) {
     switch (mode) {
     case 0: // Shower Mode
-        ui->showerButton->setChecked(true);
-        ui->bathButton->setChecked(false);
         bathMode = false;
         if (setTemp > config.maxTemp) setTemp = config.maxTemp;
         break;
     case 1: // Bath Mode
-        ui->bathButton->setChecked(true);
-        ui->showerButton->setChecked(false);
         bathMode = true;
         break;
     }
@@ -279,13 +273,6 @@ void MainWindow::modSetTemp(qint32 val) {
 	ui->setTempBath->setText(asTemp(setTemp/10.0));
     writeSettings();
     lock.unlock();
-}
-
-void MainWindow::on_showerButton_clicked() {
-    setMode(0);
-}
-void MainWindow::on_bathButton_clicked() {
-    setMode(1);
 }
 
 void MainWindow::on_tabWidget_currentChanged(int index) {
@@ -305,3 +292,5 @@ void MainWindow::on_tabWidget_currentChanged(int index) {
         tickManual();
     }
 }
+
+

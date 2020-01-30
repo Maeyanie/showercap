@@ -544,7 +544,7 @@
        <attribute name="title">
         <string>   Manual   </string>
        </attribute>
-       <widget class="QPushButton" name="showerButton">
+       <widget class="QPushButton" name="showerButtonManual">
         <property name="geometry">
          <rect>
           <x>210</x>
@@ -571,7 +571,7 @@
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QPushButton" name="bathButton">
+       <widget class="QPushButton" name="bathButtonManual">
         <property name="geometry">
          <rect>
           <x>20</x>

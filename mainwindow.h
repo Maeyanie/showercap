@@ -80,8 +80,8 @@ private slots:
     void on_offButtonManual_clicked();
     void on_stepUpButton_clicked();
     void on_stepDownButton_clicked();
-    void on_showerButton_clicked();
-    void on_bathButton_clicked();
+    void on_bathButtonManual_clicked();
+    void on_showerButtonManual_clicked();
 
     // Tools tab
     void on_updateButton_clicked();
