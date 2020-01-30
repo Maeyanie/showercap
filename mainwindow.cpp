@@ -106,25 +106,25 @@ void MainWindow::cleanup() {
 		outthread->requestInterruption();
 		outthread->wait();
 		delete outthread;
-		outthread = NULL;
+        outthread = nullptr;
     }
 	if (inthread) {
 		inthread->requestInterruption();
 		inthread->wait();
 		delete inthread;
-		inthread = NULL;
+        inthread = nullptr;
 	}
     if (onOff) {
         delete onOff;
-        onOff = NULL;
+        onOff = nullptr;
     }
     if (output) {
         delete output;
-        output = NULL;
+        output = nullptr;
     }
     if (input) {
         delete input;
-        input = NULL;
+        input = nullptr;
     }
     writeSettings();
 }
@@ -226,7 +226,6 @@ void MainWindow::noHotWater() {
 	onOffFlag = 0;
 	ui->onOffButton->setChecked(false);
 	ui->onOffButtonBath->setChecked(false);
-	ui->onOffButtonManual->setChecked(false);
 	ui->tabWidget->tabBar()->setEnabled(true);
 }
 void MainWindow::fullhot() {

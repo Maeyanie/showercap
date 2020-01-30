@@ -24,7 +24,7 @@ class MainWindow : public QMainWindow
 public:
     static MainWindow* instance();
 
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void readSettings();
     void writeSettings();
@@ -76,7 +76,8 @@ private slots:
     void tickManual();
     void on_plusButtonManual_clicked();
     void on_minusButtonManual_clicked();
-    void on_onOffButtonManual_clicked();
+    void on_onButtonManual_clicked();
+    void on_offButtonManual_clicked();
     void on_stepUpButton_clicked();
     void on_stepDownButton_clicked();
     void on_showerButton_clicked();
@@ -85,15 +86,10 @@ private slots:
     // Tools tab
     void on_updateButton_clicked();
     void on_restartButton_clicked();
-
-
 	void on_useC_toggled(bool checked);
-
 	void on_useF_toggled(bool checked);
 
-    void on_offButtonManual_clicked();
 
-    void on_onButtonManual_clicked();
 
 private:
     Ui::MainWindow *ui;

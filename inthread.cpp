@@ -12,7 +12,7 @@ InThread::InThread(QObject* parent) : QThread(parent)
 
 void InThread::run()
 {
-	MainWindow* mw = (MainWindow*)this->parent();
+    MainWindow* mw = static_cast<MainWindow*>(this->parent());
 	Input* in = mw->input;
     qreal window[WINSIZE];
     qint32 winpos = 0;
