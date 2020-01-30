@@ -23,7 +23,10 @@ Output_Stepper::Output_Stepper() {
 	position = 0;
 	duration = 0;
 	onOff = 0;
+    useLimits = true;
 	position = settings->value("stepperpos", 0).toInt();
+    minpos = settings->value("minpos", INT_MIN).toInt();
+    maxpos = settings->value("maxpos", INT_MAX).toInt();
 
 	printf("Output_Stepper initialized: Starting at %d\n", position);
 }
@@ -36,6 +39,18 @@ Output_Stepper::~Output_Stepper() {
 void Output_Stepper::save() {
 	settings->setValue("stepperpos", position);
 }
+
+void Output_Stepper::setMin(double val) {
+    minpos = static_cast<qint32>(val);
+    settings->setValue("minpos", minpos);
+}
+void Output_Stepper::setMax(double val) {
+    maxpos = static_cast<qint32>(val);
+    settings->setValue("maxpos", maxpos);
+}
+double Output_Stepper::getMin() { return minpos; }
+double Output_Stepper::getMax() { return maxpos; }
+void Output_Stepper::limits(bool val) { useLimits = val; }
 
 void Output_Stepper::on() {
 	digitalWrite(STEPPIN, 0);
@@ -54,12 +69,15 @@ void Output_Stepper::off() {
 	digitalWrite(STBYPIN, 0);
 }
 
-void Output_Stepper::set(double v) {
+void Output_Stepper::set(double d) {
+    qint32 v = static_cast<qint32>(d);
 	if (!onOff) {
 		printf("[Output_Stepper] Error: set() called when turned off!\n");
 		return;
-	}
-	printf("[Output_Stepper] set: Moving from %d to %d.\n", (int)position, (int)v);
+    }
+    if (useLimits) v = qBound(minpos, v, maxpos);
+
+    printf("[Output_Stepper] set: Moving from %d to %d.\n", position, v);
 
 	if (v >= position+1) {
 		duration = ((v - position) * STEPTIME * 2) / 1000 + 10;
@@ -100,11 +118,19 @@ qint8 Output_Stepper::mod(double d) {
 		printf("[Output_Stepper] Error: mod() called when turned off!\n");
 		return 0;
 	}
+
+    if (d > MAXSTEPS) d = MAXSTEPS;
+    else if (d < -MAXSTEPS) d = -MAXSTEPS;
+
+    if (useLimits) {
+        if (position + d >= maxpos) return 1;
+        if (position - d <= minpos) return -1;
+    }
+
 	static double frac = 0.0;
 	d += frac;
 
 	if (d > 1.0) {
-		if (d > MAXSTEPS) d = MAXSTEPS;
 		duration = (d * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(ENABLEPIN, 0);
 		digitalWrite(DIRPIN, 1);
@@ -119,8 +145,8 @@ qint8 Output_Stepper::mod(double d) {
         usleep(5000);
 		digitalWrite(ENABLEPIN, 1);
 		frac = 0.0;
-	} else if (d < -1.0) {
-		if (d < -MAXSTEPS) d = -MAXSTEPS;
+        save();
+    } else if (d < -1.0) {
 		duration = (-d * STEPTIME * 2) / 1000 + 10;
 		digitalWrite(ENABLEPIN, 0);
 		digitalWrite(DIRPIN, 0);
@@ -135,11 +161,11 @@ qint8 Output_Stepper::mod(double d) {
         usleep(5000);
 		digitalWrite(ENABLEPIN, 1);
 		frac = 0.0;
-	} else {
+        save();
+    } else {
 		frac = d;
 		duration = 0;
 	}
-	save();
 	return 0;
 }
 

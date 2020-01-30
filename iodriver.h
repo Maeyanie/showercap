@@ -47,6 +47,11 @@ public:
     virtual qint8 mod(double) =0;
     virtual qreal get() { return 0.0; }
     virtual qint32 time(qint32) { return 10; }
+    virtual void setMin(double) {}
+    virtual void setMax(double) {}
+    virtual double getMin() { return -INFINITY; }
+    virtual double getMax() { return INFINITY; }
+    virtual void limits(bool) {}
 };
 
 class Output_Servo : public Output {
@@ -92,9 +97,9 @@ public:
 class Output_Stepper : public Output {
 protected:
     void save();
-	int position;
+    qint32 position, minpos, maxpos;
     int duration;
-    bool onOff;
+    bool onOff, useLimits;
 
 public:
     Output_Stepper();
@@ -105,6 +110,11 @@ public:
     qint8 mod(double);
     qreal get() { return position; }
     qint32 time(qint32);
+    void setMin(double);
+    void setMax(double);
+    double getMin();
+    double getMax();
+    void limits(bool);
 };
 
 

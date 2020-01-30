@@ -82,6 +82,8 @@ private slots:
     void on_stepDownButton_clicked();
     void on_bathButtonManual_clicked();
     void on_showerButtonManual_clicked();
+    void on_setMinManual_clicked();
+    void on_setMaxManual_clicked();
 
     // Tools tab
     void on_updateButton_clicked();

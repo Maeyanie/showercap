@@ -5,8 +5,18 @@
 #include "ui_mainwindow.h"
 
 
-void MainWindow::on_plusButtonManual_clicked() { output->mod(step); }
-void MainWindow::on_minusButtonManual_clicked() { output->mod(-step); }
+void MainWindow::on_plusButtonManual_clicked() {
+    output->limits(false);
+    output->mod(step);
+    output->limits(true);
+    tick();
+}
+void MainWindow::on_minusButtonManual_clicked() {
+    output->limits(false);
+    output->mod(-step);
+    output->limits(true);
+    tick();
+}
 
 void MainWindow::on_stepUpButton_clicked() {
     step *= 2;
@@ -42,8 +52,20 @@ void MainWindow::on_showerButtonManual_clicked()
     tick();
 }
 
+void MainWindow::on_setMinManual_clicked()
+{
+    output->setMin(output->get());
+}
+void MainWindow::on_setMaxManual_clicked()
+{
+    output->setMax(output->get());
+}
+
 void MainWindow::tickManual() {
 	ui->curTempManual->setText(asDegrees(curTemp));
 	ui->clockManual->setText(QTime::currentTime().toString(config.timeStr));
+    ui->posManual->setText(QString().sprintf("Pos: %.0lf", output->get()));
+    ui->maxManual->setText(QString().sprintf("Max: %.0lf", output->getMax()));
+    ui->minManual->setText(QString().sprintf("Min: %.0lf", output->getMin()));
 }
 

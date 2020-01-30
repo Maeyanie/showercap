@@ -35,7 +35,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tabHome">
        <attribute name="title">
@@ -550,7 +550,7 @@
           <x>210</x>
           <y>20</y>
           <width>166</width>
-          <height>124</height>
+          <height>101</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -577,7 +577,7 @@
           <x>20</x>
           <y>20</y>
           <width>161</width>
-          <height>124</height>
+          <height>101</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -620,9 +620,9 @@
         <property name="geometry">
          <rect>
           <x>390</x>
-          <y>370</y>
+          <y>430</y>
           <width>221</width>
-          <height>151</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="font">
@@ -677,9 +677,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>370</y>
+          <y>430</y>
           <width>211</width>
-          <height>151</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="font">
@@ -737,7 +737,7 @@
         <property name="geometry">
          <rect>
           <x>220</x>
-          <y>410</y>
+          <y>430</y>
           <width>171</width>
           <height>71</height>
          </rect>
@@ -773,6 +773,71 @@
         </property>
         <property name="checkable">
          <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="setMinManual">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>320</y>
+          <width>101</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="minManual">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>330</y>
+          <width>211</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Min: 0</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="posManual">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>250</y>
+          <width>251</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Pos: 0</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="setMaxManual">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>160</y>
+          <width>101</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="maxManual">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>170</y>
+          <width>211</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Max: 0</string>
         </property>
        </widget>
       </widget>

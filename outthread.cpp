@@ -96,7 +96,7 @@ void OutThread::run()
 		if (!sync && fabs(error) < 0.2) {
 			if (!syncTime) {
 				syncTime = new QDateTime(QDateTime::currentDateTime());
-                printf("pidthread: Sync gained at %s, position %l2.f, starting timer.\n",
+                printf("pidthread: Sync gained at %s, position %.2lf, starting timer.\n",
                        syncTime->toString("mm:ss.zzz").toStdString().c_str(), output->get());
 			} else if (syncTime->msecsTo(QDateTime::currentDateTime()) >= SYNCTIMER) {
 				sync = 1;
