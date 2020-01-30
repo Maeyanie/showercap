@@ -14,7 +14,7 @@ OutThread::OutThread(QObject* parent) : QThread(parent)
 
 void OutThread::run()
 {
-    MainWindow* mw = (MainWindow*)this->parent();
+    MainWindow* mw = static_cast<MainWindow*>(this->parent());
     QDateTime start, now, last = QDateTime::currentDateTime();
     qreal error, integral = 0.0, derivative, value;
 	qreal setTemp = 40.5, prevTemp = 0.0, curTemp = 0.0;
@@ -26,7 +26,7 @@ void OutThread::run()
 	double home = qSNaN();
     bool on = 0;
 	bool sync = 0;
-	QDateTime* syncTime = NULL;
+    QDateTime* syncTime = nullptr;
 	Pointcloud startPoints("startPoints");
 
     output = mw->output;
@@ -48,7 +48,7 @@ void OutThread::run()
 				// State changed on->off
 				if (syncTime) {
 					delete syncTime;
-					syncTime = NULL;
+                    syncTime = nullptr;
 				}
                 onOff->off();
                 output->off();
@@ -80,7 +80,7 @@ void OutThread::run()
             sync = 0;
 			if (syncTime) {
 				delete syncTime;
-				syncTime = NULL;
+                syncTime = nullptr;
 			}
         }
 
@@ -96,15 +96,16 @@ void OutThread::run()
 		if (!sync && fabs(error) < 0.2) {
 			if (!syncTime) {
 				syncTime = new QDateTime(QDateTime::currentDateTime());
-				printf("pidthread: Sync gained at %s, starting timer.\n", syncTime->toString("%mm:%ss.%zzz").toStdString().c_str());
+                printf("pidthread: Sync gained at %s, position %l2.f, starting timer.\n",
+                       syncTime->toString("mm:ss.zzz").toStdString().c_str(), output->get());
 			} else if (syncTime->msecsTo(QDateTime::currentDateTime()) >= SYNCTIMER) {
 				sync = 1;
 				if (qIsNaN(home)) home = output->get();
 				printf("pidthread: Sync timer hit %d ms at %s, now in sync. Home position is %.2lf\n",
-					   SYNCTIMER, syncTime->toString("%mm:%ss.%zzz").toStdString().c_str(), home);
+                       SYNCTIMER, syncTime->toString("mm:ss.zzz").toStdString().c_str(), home);
 				delete syncTime;
-				syncTime = NULL;
-                startPoints.add(QPoint(setTemp*10, output->get()));
+                syncTime = nullptr;
+                startPoints.add(QPoint(static_cast<qint32>(setTemp)*10, static_cast<qint32>(output->get())));
 			}
 		} else if (sync && fabs(error) > 1.0) {
 			if (!syncTime) {
@@ -112,14 +113,14 @@ void OutThread::run()
 				printf("pidthread: Lost sync, starting timer.");
 			} else if (syncTime->msecsTo(QDateTime::currentDateTime()) >= DESYNCTIMER) {
 				delete syncTime;
-				syncTime = NULL;
+                syncTime = nullptr;
 				sync = 0;
 				printf("pidthread: Sync timer hit %d ms, assuming out of hot water and giving up.\n", DESYNCTIMER);
 				emit noHotWater();
 			}
 		} else if (syncTime) {
 			delete syncTime;
-			syncTime = NULL;
+            syncTime = nullptr;
 		}
 
         // track error over time, scaled to the timer interval
