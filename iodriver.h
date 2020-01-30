@@ -49,8 +49,8 @@ public:
     virtual qint32 time(qint32) { return 10; }
     virtual void setMin(double) {}
     virtual void setMax(double) {}
-    virtual double getMin() { return -INFINITY; }
-    virtual double getMax() { return INFINITY; }
+    virtual double getMin() { return -Q_INFINITY; }
+    virtual double getMax() { return Q_INFINITY; }
     virtual void limits(bool) {}
 };
 
