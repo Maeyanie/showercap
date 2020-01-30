@@ -91,6 +91,10 @@ private slots:
 
 	void on_useF_toggled(bool checked);
 
+    void on_offButtonManual_clicked();
+
+    void on_onButtonManual_clicked();
+
 private:
     Ui::MainWindow *ui;
 

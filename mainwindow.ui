@@ -619,9 +619,9 @@
        <widget class="QPushButton" name="stepUpButton">
         <property name="geometry">
          <rect>
-          <x>490</x>
+          <x>390</x>
           <y>370</y>
-          <width>251</width>
+          <width>221</width>
           <height>151</height>
          </rect>
         </property>
@@ -652,12 +652,12 @@
          <string>+</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="onOffButtonManual">
+       <widget class="QPushButton" name="onButtonManual">
         <property name="geometry">
          <rect>
-          <x>770</x>
+          <x>820</x>
           <y>380</y>
-          <width>221</width>
+          <width>171</width>
           <height>131</height>
          </rect>
         </property>
@@ -678,7 +678,7 @@
          <rect>
           <x>10</x>
           <y>370</y>
-          <width>251</width>
+          <width>211</width>
           <height>151</height>
          </rect>
         </property>
@@ -736,9 +736,9 @@
        <widget class="QLabel" name="stepSize">
         <property name="geometry">
          <rect>
-          <x>300</x>
-          <y>420</y>
-          <width>161</width>
+          <x>220</x>
+          <y>410</y>
+          <width>171</width>
           <height>71</height>
          </rect>
         </property>
@@ -752,6 +752,27 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="offButtonManual">
+        <property name="geometry">
+         <rect>
+          <x>640</x>
+          <y>380</y>
+          <width>171</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>36</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Off</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

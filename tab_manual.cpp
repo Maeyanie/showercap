@@ -18,16 +18,14 @@ void MainWindow::on_stepDownButton_clicked() {
     ui->stepSize->setText(QString().sprintf("%d", step));
 }
 
-void MainWindow::on_onOffButtonManual_clicked() {
-    if (onOffFlag) {
-        // Turn off
-        onOffFlag = 0;
-        ui->tabWidget->tabBar()->setEnabled(true);
-    } else {
-        // Turn on
-        onOffFlag = 1;
-        ui->tabWidget->tabBar()->setEnabled(false);
-    }
+void MainWindow::on_onButtonManual_clicked() {
+    output->on();
+    tick();
+}
+
+
+void MainWindow::on_offButtonManual_clicked() {
+    output->off();
     tick();
 }
 
