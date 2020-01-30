@@ -19,12 +19,14 @@ void MainWindow::on_stepDownButton_clicked() {
 }
 
 void MainWindow::on_onButtonManual_clicked() {
+    onOff->on();
     output->on();
     tick();
 }
 
 
 void MainWindow::on_offButtonManual_clicked() {
+    onOff->off();
     output->off();
     tick();
 }
