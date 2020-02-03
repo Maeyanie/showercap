@@ -1,10 +1,10 @@
 #include <QDataStream>
-#if __linux__
+#ifdef __linux__
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #else
 #define I2C_SLAVE 0x0703
-int ioctl(int fd, unsigned long request, ...) { fd=fd; request=request; return 0; }
+int ioctl(int fd, unsigned long request, ...) { fd=request; return 0; }
 #endif
 #include <stdio.h>
 #include <unistd.h>

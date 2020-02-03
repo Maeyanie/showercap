@@ -21,6 +21,8 @@ Config::Config()
     config.Kp = 5.0;
     config.Ki = 0.0;
     config.Kd = 0.1;
+    config.iMin = -1.0;
+    config.iMax = 1.0;
     config.warmupTime = 15000;
     config.timeStr = "h:mm A";
 	config.dateStr = "ddd, MMM d, yyyy";
@@ -86,6 +88,12 @@ Config::Config()
 		} else if (key == "D") {
             config.Kd = parts.at(1).toDouble();
             QTextStream(stdout) << "[Config] Set D to " << config.Kd << endl;
+        } else if (key == "IMIN") {
+            config.iMin = parts.at(1).toDouble();
+            QTextStream(stdout) << "[Config] Set iMin to " << config.iMin << endl;
+        } else if (key == "IMAX") {
+            config.iMax = parts.at(1).toDouble();
+            QTextStream(stdout) << "[Config] Set iMax to " << config.iMax << endl;
         } else if (key == "WarmupTime") {
             config.warmupTime = parts.at(1).toInt();
             QTextStream(stdout) << "[Config] Set WarmupTime to " << config.warmupTime << endl;

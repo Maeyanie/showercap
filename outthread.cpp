@@ -21,7 +21,7 @@ void OutThread::run()
     qreal preError = 0.0;
     qreal Dt = 0.0;
     qreal Kp = config.Kp, Ki = config.Ki, Kd = config.Kd;
-    qreal iMax = 1.0, iMin = -1.0;
+    qreal iMax = config.iMax, iMin = config.iMin;
     qint32 d;
 	double home = qSNaN();
     bool on = 0;
