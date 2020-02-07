@@ -119,11 +119,10 @@ qint8 Output_Stepper::mod(double d) {
 		return 0;
 	}
 
-    if (d > MAXSTEPS) d = MAXSTEPS;
-    else if (d < -MAXSTEPS) d = -MAXSTEPS;
-
     if (useLimits) {
-        if (position + d >= maxpos) return 1;
+		if (d > MAXSTEPS) d = MAXSTEPS;
+		else if (d < -MAXSTEPS) d = -MAXSTEPS;
+		if (position + d >= maxpos) return 1;
         if (position - d <= minpos) return -1;
     }
 
