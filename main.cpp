@@ -1,4 +1,4 @@
-#if __linux__
+#ifdef __linux__
 #include <sys/types.h>
 #include <unistd.h>
 #endif
@@ -8,7 +8,9 @@
 
 int main(int argc, char *argv[])
 {
-#if __linux__
+	setvbuf(stdout, nullptr, _IOLBF, BUFSIZ);
+
+#ifdef __linux__
     printf("Running as UID %d, EUID %d\n", getuid(), geteuid());
 
 	if (geteuid()) {
