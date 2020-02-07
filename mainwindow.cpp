@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     memset(preset, 0, sizeof(preset));
 
     ui->setupUi(this);
+	ui->tabWidget->setCurrentIndex(0);
 
     for (int i = 0; i < PRESETCOUNT; i++) {
         QPresetButton* p = new QPresetButton(i, QString(i+1), this);
